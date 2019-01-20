@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: tr
+# key: tr
+# --
+(defun ${1:fun-name} (time)
+  (aat (+ time #[${2:1} b]) #'$1 it))
+    
+(aat (tempo-sync #[$2 b]) #'$1 it)
+(defun $1 ())

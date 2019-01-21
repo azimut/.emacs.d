@@ -13,6 +13,9 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
+;; Yasnippet
+(yas-reload-all)
+
 (defun transparency (value)
    "Sets the transparency of the frame window. 0=transparent/100=opaque"
    (interactive "nTransparency Value 0 - 100 opaque:")
@@ -27,7 +30,6 @@
    (define-package (as defpackage))
    (define-constant (as defconstant))))
 (custom-set-variables '(common-lisp-style-default "asdf"))
-
 ;; (put 'if 'lisp-indent-function nil)
 ;; (put 'when 'lisp-indent-function 1)
 ;; (put 'unless 'lisp-indent-function 1)

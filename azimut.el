@@ -7,8 +7,8 @@
 (require 'whitespace)
 (global-whitespace-mode 0)
 
-; disable menu-bar
-; https://www.emacswiki.org/emacs/MenuBar
+;; disable menu-bar
+;; https://www.emacswiki.org/emacs/MenuBar
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -16,29 +16,19 @@
 ;; Yasnippet
 (yas-reload-all)
 
+;; powerline
+(require 'powerline)
+(powerline-default-theme)
+
 (defun transparency (value)
    "Sets the transparency of the frame window. 0=transparent/100=opaque"
    (interactive "nTransparency Value 0 - 100 opaque:")
    (set-frame-parameter (selected-frame) 'alpha value))
 
-;; FIX lisp ident
-(put :default-initargs 'common-lisp-indent-function '(&rest))
-(require 'slime-cl-indent)
-(define-common-lisp-style "asdf"
-  (:inherit "modern")
-  (:indentation
-   (define-package (as defpackage))
-   (define-constant (as defconstant))))
-(custom-set-variables '(common-lisp-style-default "asdf"))
-;; (put 'if 'lisp-indent-function nil)
-;; (put 'when 'lisp-indent-function 1)
-;; (put 'unless 'lisp-indent-function 1)
-;; (put 'do 'lisp-indent-function 2)
-;; (put 'do* 'lisp-indent-function 2)
-
 ;; kill this
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
-; window resize
+
+;; window resize
 (global-set-key (kbd "<C-up>") 'shrink-window)
 (global-set-key (kbd "<C-down>") 'enlarge-window)
 (global-set-key (kbd "<C-left>") 'shrink-window-horizontally)
@@ -58,28 +48,6 @@
 (setq python-shell-interpreter "jupyter"
       python-shell-interpreter-args "console --simple-prompt")
 
-
-; pretty lambda
-(global-prettify-symbols-mode 1)
-(defun my-add-pretty-lambda ()
-  "make some word or string show as pretty Unicode symbols"
-  (setq prettify-symbols-alist
-        '(
-          ("lambda" . 955)            ; λ
-          ;;          ("->" . 8594)    ; →
-          ("=>" . 8658)                 ; ⇒
-          (":->" . 8594)                ;
-          )))
-(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
-;;(add-hook 'sly-mrepl-mode-hook (lambda () (paredit-mode +1)))
-
-(add-hook 'lisp-mode-hook
-          (lambda ()
-            (paredit-mode +1)
-            (yas-minor-mode)
-            ;;(whitespace-mode 0)
-            (my-add-pretty-lambda)))
-
 (add-hook 'yaml-mode-hook (lambda () (ansible 1)))
 (add-hook 'python-mode-hook (lambda () (elpy-mode)))
 (add-hook 'go-mode-hook
@@ -87,9 +55,46 @@
         (set (make-local-variable 'company-backends) '(company-go))
         (company-mode)))
 
-;; Some hacky wip emacs intergration.. still feels good though :)
-;; requires slime
+;;--------------------------------------------------
+;; Common-lisp
 
+(defun my-add-pretty-lambda ()
+  "make some word or string show as pretty Unicode symbols"
+  (setq prettify-symbols-alist
+        '(("lambda" . 955) ;; λ
+          ;;("->" . 8594)    ; →
+          ("=>" . 8658)                 ; ⇒
+          (":->" . 8594)                ;
+          )))
+
+; pretty lambda
+(global-prettify-symbols-mode 1)
+
+(add-hook 'lisp-mode-hook
+          (lambda ()
+            (paredit-mode +1)
+            (yas-minor-mode)
+            (my-add-pretty-lambda)))
+
+;; FIX lisp ident
+(put :default-initargs 'common-lisp-indent-function '(&rest))
+(require 'slime-cl-indent)
+(define-common-lisp-style "asdf"
+  (:inherit "modern")
+  (:indentation
+   (define-package (as defpackage))
+   (define-constant (as defconstant))))
+(custom-set-variables '(common-lisp-style-default "asdf"))
+;; (put 'if 'lisp-indent-function nil)
+;; (put 'when 'lisp-indent-function 1)
+;; (put 'unless 'lisp-indent-function 1)
+;; (put 'do 'lisp-indent-function 2)
+;; (put 'do* 'lisp-indent-function 2)
+
+;;--------------------------------------------------
+;; Common Lisp - Slime
+
+;; cbaggers/varjo
 (defun slime-vari-describe-symbol (symbol-name)
   "Describe the symbol at point."
   (interactive (list (slime-read-symbol-name "Describe symbol: ")))
@@ -99,12 +104,7 @@
     (slime-eval-describe
      `(vari.cl::vari-describe ,symbol-name nil ,pkg))))
 
-(define-key lisp-mode-map (kbd "C-c C-v C-v")
-			    'slime-vari-describe-symbol)
-
-
-
-
+(define-key lisp-mode-map (kbd "C-c C-v C-v") 'slime-vari-describe-symbol)
 
 ;;; concurrent hints
 ;; https://www.reddit.com/r/lisp/comments/72v6p3/pushing_pixels_with_lisp_episode_18_shadow/
@@ -112,7 +112,24 @@
   (interactive)
   (setq slime-inhibit-pipelining nil))
 
-; melpa
+;; paredit on repl
+(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
+;;(add-hook 'sly-mrepl-mode-hook (lambda () (paredit-mode +1)))
+
+;; sbcl real
+(setq slime-lisp-implementations
+      '((sbcl ("set_rlimits" "sbcl")) ...))
+
+;;--------------------------------------------------
+;; Emacs
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (paredit-mode +1)
+            (eldoc-mode +1)
+            (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'compile-defun)))
+;;--------------------------------------------------
+;; melpa
+
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
@@ -125,18 +142,16 @@
     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
 (package-initialize)
 
+;;--------------------------------------------------
+
 ; https://www.emacswiki.org/emacs/ShowParenMode
-; parens match
+;; parens match
 (show-paren-mode 1)
 
-; Fuck tilde!
+;; Fuck tilde!
 (setq make-backup-files nil)
 
-;; sbcl real
-(setq slime-lisp-implementations
-      '((sbcl ("set_rlimits" "sbcl")) ...))
-
-; I want spaces for indentation
+;; I want spaces for indentation
 (setq-default indent-tabs-mode nil)
 
 ;; https://emacs.stackexchange.com/questions/24719/set-indentation-for-shell-script-function
@@ -147,8 +162,7 @@
 ;; Neotree
 (global-set-key [f8] 'neotree-toggle)
 (setq neo-theme 'arrow)
-(setq neo-hidden-regexp-list
-      '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$"))
+(setq neo-hidden-regexp-list '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$"))
 (put 'erase-buffer 'disabled nil)
 
 ;; Flycheck - Erlang
@@ -177,12 +191,6 @@
 (add-hook 'erlang-mode-hook #'my-erlang-hook)
 (add-hook 'after-save-hook #'ivy-erlang-complete-reparse)
 
-;; Emacs
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (paredit-mode +1)
-            (eldoc-mode +1)
-            (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'compile-defun)))
 
 ;; C / C++
 (defun my-cmode-hook ()

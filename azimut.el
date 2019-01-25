@@ -3,7 +3,24 @@
 ; replace LOC below with the directory you put the files in
 ; (setq load-path (cons "LOC" load-path))
 
-; I do NOT want white spaces to be highlighted
+;;--------------------------------------------------
+;; melpa
+
+(require 'package)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
+(package-initialize)
+
+;;--------------------------------------------------
+
+;; I do NOT want white spaces to be highlighted
 (require 'whitespace)
 (global-whitespace-mode 0)
 
@@ -13,12 +30,11 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
-;; Yasnippet
-(yas-reload-all)
-
 ;; powerline
-(require 'powerline)
-(powerline-default-theme)
+;; (require 'powerline)
+;; (powerline-default-theme)
+(require 'spaceline-config)
+(spaceline-emacs-theme)
 
 (defun transparency (value)
    "Sets the transparency of the frame window. 0=transparent/100=opaque"
@@ -73,7 +89,9 @@
 (add-hook 'lisp-mode-hook
           (lambda ()
             (paredit-mode +1)
+            (aggressive-indent-mode)
             (yas-minor-mode)
+	    (yas-reload-all)
             (my-add-pretty-lambda)))
 
 ;; FIX lisp ident
@@ -125,26 +143,23 @@
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             (paredit-mode +1)
+            (aggressive-indent-mode)
             (eldoc-mode +1)
+            ;; SLIME like keybinding instead of "C-h f"
+            (define-key emacs-lisp-mode-map (kbd "C-c C-d d")
+              (lambda ()
+                (interactive)
+                (describe-symbol
+                 (symbol-at-point))))
+            (define-key emacs-lisp-mode-map (kbd "C-c C-d C-d")
+              (lambda ()
+                (interactive)
+                (describe-symbol
+                 (symbol-at-point))))
             (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'compile-defun)))
 ;;--------------------------------------------------
-;; melpa
 
-(require 'package)
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (proto (if no-ssl "http" "https")))
-  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-  (when (< emacs-major-version 24)
-    ;; For important compatibility libraries like cl-lib
-    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
-(package-initialize)
-
-;;--------------------------------------------------
-
-; https://www.emacswiki.org/emacs/ShowParenMode
+                                        ; https://www.emacswiki.org/emacs/ShowParenMode
 ;; parens match
 (show-paren-mode 1)
 
@@ -189,7 +204,10 @@
 ;;  (define-key erlang-extended-mode-map (kbd "(") nil)
   )
 (add-hook 'erlang-mode-hook #'my-erlang-hook)
-(add-hook 'after-save-hook #'ivy-erlang-complete-reparse)
+(add-hook 'erlang-mode-hook
+          (lambda ()
+            (add-hook 'after-save-hook
+                      #'ivy-erlang-complete-reparse NIL 'make-it-local)))
 
 
 ;; C / C++

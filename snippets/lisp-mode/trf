@@ -3,8 +3,8 @@
 # key: trf
 # --
 (defun ${1:fun-name} (time)
-  (p time 40 40 ${2:1} ${3:0})
-  (aat (+ time #[${4:1} b]) #'$1 it))
-    
-(aat (tempo-sync #[$4 b]) #'$1 it)
+  (p time 40 40 $3 ${2:0})
+  (aat (+ time #[${3:1} b]) #'$1 it))
+
+(aat (tempo-sync #[$3 b]) #'$1 it)
 (defun $1 ())

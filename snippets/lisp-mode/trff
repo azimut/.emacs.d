@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: trff
+# key: trff
+# --
+(defun ${1:fun-name} (time)
+  (p time 40 40 ${2:1} ${3:0})
+  (aat (+ time #[${4:1} b]) #'$1 it))

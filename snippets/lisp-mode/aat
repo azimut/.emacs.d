@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: aat
+# key: aat
+# --
+
+(aat (tempo-sync #[${2:4} b]) #'${1:fun-name} it)

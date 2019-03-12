@@ -177,7 +177,7 @@
 ;; Neotree
 (global-set-key [f8] 'neotree-toggle)
 (setq neo-theme 'arrow)
-(setq neo-hidden-regexp-list '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$"))
+(setq neo-hidden-regexp-list '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$"))
 (put 'erase-buffer 'disabled nil)
 
 ;; Flycheck - Erlang

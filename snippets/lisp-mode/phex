@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: phex
+# key: phex
+# --
+(at (tempo-sync #[(* $2 16)b])
+    #'eval
+    (defpattern ${1:pat-name} (((parse1 (hexbeats "9108"))) ${2:.2})
+    ))
+
+(aat (tempo-sync #[(* $2 16) b]) #'$1 it)
+(defun $1 ())

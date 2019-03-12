@@ -1,0 +1,29 @@
+# -*- mode: snippet -*-
+# name: cepl
+# key: cepl
+# --
+(defvar *bs* NIL)
+(defvar *last-time* (get-internal-real-time))
+
+(defun init ()
+  (unless *bs*
+    (setf *bs* (make-buffer-stream NIL :primitive :points))))
+
+(defun draw ()
+  (let* ((res   (surface-resolution (current-surface)))
+         (now  (get-internal-real-time))
+         (time (* .1 now))
+         (delta (* (- now *last-time*) .001))
+         (delta (if (> delta .16) .00001 delta)))
+    (setf *last-time* now)
+    (setf (resolution (current-viewport)) res)
+    (as-frame
+      (map-g #'${1:some}-pipe *bs*))))
+
+(defun-g $1-frag ((uv :vec2))
+  (v! 1 0 0 0))
+(defpipeline-g $1-pipe (:points)
+  :fragment ($1-frag :vec2))
+
+(define-simple-main-loop play (:on-start #'init)
+  (draw))

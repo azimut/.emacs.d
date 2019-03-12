@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: Mark Karpov
+# name: ssbo
+# key: ssbo
+# --
+(defstruct-g (${1:ssbo-name} :layout :std-430)
+  (samples (:double 512)))

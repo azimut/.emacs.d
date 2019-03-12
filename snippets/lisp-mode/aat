@@ -4,3 +4,4 @@
 # --
 
 (aat (tempo-sync #[${2:4} b]) #'${1:fun-name} it)
+(defun $1 ())

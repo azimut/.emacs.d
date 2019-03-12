@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# contributor: Mark Karpov
+# name: ubo
+# key: ubo
+# --
+(defstruct-g (${1:ubo-name} :layout :std-140)
+  (samples (:double 512)))

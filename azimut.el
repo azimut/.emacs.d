@@ -1,7 +1,7 @@
-; If you used option 4 above and installed your own version of the
-; files and not in the site-lisp/ directory, uncomment this line and
-; replace LOC below with the directory you put the files in
-; (setq load-path (cons "LOC" load-path))
+;; If you used option 4 above and installed your own version of the
+;; files and not in the site-lisp/ directory, uncomment this line and
+;; replace LOC below with the directory you put the files in
+;; (setq load-path (cons "LOC" load-path))
 
 ;;--------------------------------------------------
 ;; melpa
@@ -111,9 +111,13 @@
 ; pretty lambda
 (global-prettify-symbols-mode 1)
 
+
 (add-hook 'lisp-mode-hook
           (lambda ()
             (paredit-mode +1)
+            (projectile-mode +1)
+	    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+	    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
             (aggressive-indent-mode)
             (yas-minor-mode)
 	    (yas-reload-all)
@@ -121,13 +125,13 @@
 
 ;; FIX lisp ident
 (put :default-initargs 'common-lisp-indent-function '(&rest))
-(require 'slime-cl-indent)
-(define-common-lisp-style "asdf"
-  (:inherit "modern")
-  (:indentation
-   (define-package (as defpackage))
-   (define-constant (as defconstant))))
-(custom-set-variables '(common-lisp-style-default "asdf"))
+;; (require 'slime-cl-indent)
+;; (define-common-lisp-style "asdf"
+;;   (:inherit "modern")
+;;   (:indentation
+;;    (define-package  (as defpackage))
+;;    (define-constant (as defconstant))))
+;; (custom-set-variables '(common-lisp-style-default "asdf"))
 ;; (put 'if 'lisp-indent-function nil)
 ;; (put 'when 'lisp-indent-function 1)
 ;; (put 'unless 'lisp-indent-function 1)
@@ -138,30 +142,36 @@
 ;; Common Lisp - Slime
 
 ;; cbaggers/varjo
-(defun slime-vari-describe-symbol (symbol-name)
-  "Describe the symbol at point."
-  (interactive (list (slime-read-symbol-name "Describe symbol: ")))
-  (when (not symbol-name)
-    (error "No symbol given"))
-  (let ((pkg (slime-current-package)))
-    (slime-eval-describe
-     `(vari.cl::vari-describe ,symbol-name nil ,pkg))))
+;; (defun slime-vari-describe-symbol (symbol-name)
+;;   "Describe the symbol at point."
+;;   (interactive (list (slime-read-symbol-name "Describe symbol: ")))
+;;   (when (not symbol-name)
+;;     (error "No symbol given"))
+;;   (let ((pkg (slime-current-package)))
+;;     (slime-eval-describe
+;;      `(vari.cl::vari-describe ,symbol-name nil ,pkg))))
 
-(define-key lisp-mode-map (kbd "C-c C-v C-v") 'slime-vari-describe-symbol)
+;; (define-key lisp-mode-map (kbd "C-c C-v C-v")
+;;   'slime-vari-describe-symbol)
+
+(setq sly-complete-symbol-function 'sly-simple-completions
+      inferior-lisp-program "/usr/bin/sbcl")
 
 ;;; concurrent hints
 ;; https://www.reddit.com/r/lisp/comments/72v6p3/pushing_pixels_with_lisp_episode_18_shadow/
-(defun slime-enable-concurrent-hints ()
-  (interactive)
-  (setq slime-inhibit-pipelining nil))
+;; (defun slime-enable-concurrent-hints ()
+;;   (interactive)
+;;   (setq slime-inhibit-pipelining nil))
 
 ;; paredit on repl
-(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
-;;(add-hook 'sly-mrepl-mode-hook (lambda () (paredit-mode +1)))
+;;(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
+(add-hook 'sly-mode-hook (lambda () (paredit-mode +1)))
 
 ;; sbcl real
-(setq slime-lisp-implementations
-      '((sbcl ("set_rlimits" "sbcl")) ...))
+;; (setq slime-lisp-implementations
+;;       '((sbcl ("set_rlimits" "sbcl"))))
+(setq sly-lisp-implementations
+      '((sbcl ("set_rlimits" "sbcl"))))
 
 ;;--------------------------------------------------
 ;; Emacs
@@ -206,44 +216,85 @@
 (put 'erase-buffer 'disabled nil)
 
 ;; Flycheck - Erlang
-(setq flycheck-check-syntax-automatically
-      '(save idle-change new-line mode-enabled))
+(use-package erlang
+  :ensure t
+  :mode
+  ("\\.erl\\'" . erlang-mode)
+  ("\\.hrl\\'" . erlang-mode)
+  ("\\.xrl\\'" . erlang-mode)
+  :init
+  :config
+  ;; prevent annoying hang-on-compile
+  (defvar inferior-erlang-prompt-timeout t)
+  ;; default node name to emacs@localhost
+  (setq inferior-erlang-machine-options '("-name" "emacs@sabayon"))
+  (setq-local prettify-symbols-alist
+              '(("fun" . 955)
+                ("->"  . 8594)))
+  (setq ivy-erlang-complete-use-default-keys t)
+  (setq flycheck-check-syntax-automatically
+        '(save idle-change new-line mode-enabled)))
 
 (defun my-erlang-hook ()
   "Setup for erlang."
-;;  (require 'wrangler)
+  ;;  (require 'wrangler)
   (ivy-erlang-complete-init)
-  (smartparens-mode)
-  (flycheck-mode)
-;;  (defvar erlang-extended-mode-map)
-  (setq ivy-erlang-complete-use-default-keys t)
   (define-key erlang-mode-map
     (kbd "M-TAB")
     'ivy-erlang-complete)
   (define-key erlang-mode-map
     (kbd "C-c C-d h")
     'ivy-erlang-complete-show-doc-at-point)
-;;  (define-key erlang-extended-mode-map (kbd "M-.") nil)
-;;  (define-key erlang-extended-mode-map (kbd "M-,") nil)
-;;  (define-key erlang-extended-mode-map (kbd "M-?") nil)
-;;  (define-key erlang-extended-mode-map (kbd "(") nil)
+  ;; (defvar erlang-extended-mode-map)
+  ;; (define-key erlang-extended-mode-map (kbd "M-.") nil)
+  ;; (define-key erlang-extended-mode-map (kbd "M-,") nil)
+  ;; (define-key erlang-extended-mode-map (kbd "M-?") nil)
+  ;; (define-key erlang-extended-mode-map (kbd "(") nil)
+  
   )
-(add-hook 'erlang-mode-hook #'my-erlang-hook)
+
+;; Distel - tell distel to default to that node
+;;(setq erl-nodename-cache (intern (concat "emacs" "@" "sabayon")))
+
+(add-hook 'erlang-mode-hook
+          (lambda ()
+            (my-erlang-hook)
+            (smartparens-strict-mode +1)
+            (sp-use-paredit-bindings)
+            (aggressive-indent-mode +1)
+            (define-key erlang-mode-map (kbd "M-p") 'flycheck-previous-error)
+            (define-key erlang-mode-map (kbd "M-n") 'flycheck-next-error)
+            ;; (distel-erlang-mode-hook)
+            ;; (define-key erlang-extended-mode-map (kbd "(") nil)
+            (flycheck-mode +1)))
+
 (add-hook 'erlang-mode-hook
           (lambda ()
             (add-hook 'after-save-hook
-                      #'ivy-erlang-complete-reparse NIL 'make-it-local)))
-;; Elixir
-(add-hook 'elixir-mode-hook
-          (lambda ()
-            (smartparens-mode +1)))
+                      #'ivy-erlang-complete-reparse
+                      nil 'make-it-local)))
 
-(add-to-list 'elixir-mode-hook
-             (defun auto-activate-ruby-end-mode-for-elixir-mode ()
-               (set (make-variable-buffer-local 'ruby-end-expand-keywords-before-re)
-                    "\\(?:^\\|\\s-+\\)\\(?:do\\)")
-               (set (make-variable-buffer-local 'ruby-end-check-statement-modifiers) nil)
-               (ruby-end-mode +1)))
+(defun hide-erlang-shell()
+  (interactive)
+  (other-window 1)
+  (delete-other-windows))
+
+(add-hook 'erlang-shell-mode-hook
+          (lambda ()
+            ;; (distel-erlang-mode-hook)
+            ;; (define-key erlang-extended-mode-map (kbd "(") nil)
+            (smartparens-strict-mode +1)
+            (sp-use-paredit-bindings)
+            (define-key erlang-shell-mode-map (kbd "C-c C-z") 'hide-erlang-shell)))
+
+;; Elixir
+
+;; (add-to-list 'elixir-mode-hook
+;;              (defun auto-activate-ruby-end-mode-for-elixir-mode ()
+;;                (set (make-variable-buffer-local 'ruby-end-expand-keywords-before-re)
+;;                     "\\(?:^\\|\\s-+\\)\\(?:do\\)")
+;;                (set (make-variable-buffer-local 'ruby-end-check-statement-modifiers) nil)
+;;                (ruby-end-mode +1)))
 
 ;; C / C++
 (defun my-cmode-hook ()
@@ -258,8 +309,12 @@
 ;; https://github.com/fsharp/zarchive-fsharpbinding/issues/246
 (add-hook 'compilation-mode-hook
           '(lambda()
-;;             (setq compilation-auto-jump-to-first-error t)
+             ;;(setq compilation-auto-jump-to-first-error t)
              (setq compilation-scroll-output t)))
 
+(global-set-key (kbd "C-x g") 'magit-status)
+(magit-todos-mode)
 
 ;;  https://github.com/jaypei/emacs-neotree/issues/56
+;;(magithub-feature-autoinject t)
+;;(setq magithub-clone-default-directory "/home/sendai/quicklisp/local-projects/")

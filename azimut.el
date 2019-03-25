@@ -75,6 +75,15 @@
 ;; imenu-list
 (global-set-key (kbd "C-'") #'imenu-list-smart-toggle)
 
+;; w3m
+(setq browse-url-browser-function 'browse-url-other)
+(defun browse-url-other (url &rest args)
+  (interactive)
+  (split-window)
+  (balance-windows)
+  (other-window 1)
+  (w3m-browse-url url))
+
 ;; jupyter elpy
 (setenv "IPY_TEST_SIMPLE_PROMPT" "1")
 (setq python-shell-interpreter "jupyter"

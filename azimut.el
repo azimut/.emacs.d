@@ -67,22 +67,43 @@
 (global-set-key (kbd "<C-right>") 'enlarge-window-horizontally)
 
 ;; multiple-cursors
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+(use-package multiple-cursors
+  :ensure t
+  :config
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
 
-;; imenu-list
-(global-set-key (kbd "C-'") #'imenu-list-smart-toggle)
+(use-package imenu-list
+  :ensure t
+  :config
+  (global-set-key (kbd "C-'") #'imenu-list-smart-toggle))
+
+(use-package company
+  :ensure t
+  :config
+  ;; #'company-complete is set per minor mode as needed
+  (define-key company-active-map (kbd "C-n") #'company-select-next)
+  (define-key company-active-map (kbd "C-p") #'company-select-previous)
+  (define-key company-search-map (kbd "C-n") #'company-select-next)
+  (define-key company-search-map (kbd "C-p") #'company-select-previous))
+
 
 ;; w3m
-(setq browse-url-browser-function 'browse-url-other)
-(defun browse-url-other (url &rest args)
-  (interactive)
-  (split-window)
-  (balance-windows)
-  (other-window 1)
-  (w3m-browse-url url))
+(use-package w3m
+  :ensure nil
+  :config
+  (defun browse-url-other (url &rest args)
+    (interactive)
+    (split-window)
+    (balance-windows)
+    (other-window 1)
+    (w3m-browse-url url))
+  (setq browse-url-browser-function #'browse-url-other))
+
+(use-package dockerfile-mode
+  :ensure t)
 
 ;; jupyter elpy
 (setenv "IPY_TEST_SIMPLE_PROMPT" "1")

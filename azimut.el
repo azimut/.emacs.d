@@ -91,10 +91,59 @@
 
 (add-hook 'yaml-mode-hook (lambda () (ansible 1)))
 (add-hook 'python-mode-hook (lambda () (elpy-mode)))
-(add-hook 'go-mode-hook
-      (lambda ()
-        (set (make-local-variable 'company-backends) '(company-go))
-        (company-mode)))
+
+(use-package go-eldoc   :ensure t)
+(use-package gotest    :ensure t)
+(use-package flymake-go :ensure t)
+(use-package go-guru
+  :ensure t
+  :init
+  (add-hook 'go-mode-hook #'go-guru-hl-identifier))
+(use-package go-dlv
+  :ensure t
+  :commands (dlv-current-func dlv)
+  :init
+  (setq go-guru-command "/usr/lib/go/bin/guru"))
+(use-package company-go
+  :ensure t
+  :config
+  (setq company-go-show-annotation t)
+  (define-key go-mode-map (kbd "M-TAB") #'company-complete)
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (setq-local company-backends
+                          '((company-go company-yasnippet))))))
+(use-package go-mode
+  :ensure t
+  :init
+  ;; (use-package go-autocomplete
+  ;;   :ensure t)
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (setq-local tab-width 4)
+              (setq-local prettify-symbols-alist '(("func" .  955)))
+              ;;
+              (flycheck-mode +1)
+              (define-key go-mode-map (kbd "M-p") #'flycheck-previous-error)
+              (define-key go-mode-map (kbd "M-n") #'flycheck-next-error)
+              ;;
+              (go-eldoc-setup)
+              (smartparens-strict-mode +1)
+              (sp-use-paredit-bindings)
+              (company-mode +1)
+              (company-quickhelp-mode +1)
+              (add-hook 'before-save-hook
+                        #'gofmt-before-save
+                        nil :local)))
+  :config
+  ;; (define-key go-mode-map (kbd "C-x f") 'go-test-current-file)
+  ;; (define-key go-mode-map (kbd "C-x t") 'go-test-current-test)
+  ;; (define-key go-mode-map (kbd "C-x p") 'go-test-current-project)
+  ;; (define-key go-mode-map (kbd "C-x b") 'go-test-current-benchmark)
+  (define-key go-mode-map (kbd "M-.")     #'godef-jump)
+  (define-key go-mode-map (kbd "C-c C-k") #'go-run)
+  (define-key go-mode-map (kbd "C-c C-d") #'godoc-at-point))
+
 
 ;;--------------------------------------------------
 ;; Common-lisp

@@ -142,59 +142,81 @@
 ;; Common Lisp - Slime
 
 ;; cbaggers/varjo
-;; (defun slime-vari-describe-symbol (symbol-name)
-;;   "Describe the symbol at point."
-;;   (interactive (list (slime-read-symbol-name "Describe symbol: ")))
-;;   (when (not symbol-name)
-;;     (error "No symbol given"))
-;;   (let ((pkg (slime-current-package)))
-;;     (slime-eval-describe
-;;      `(vari.cl::vari-describe ,symbol-name nil ,pkg))))
+(defun slime-vari-describe-symbol (symbol-name)
+  "Describe the symbol at point."
+  (interactive (list (slime-read-symbol-name "Describe symbol: ")))
+  (when (not symbol-name)
+    (error "No symbol given"))
+  (let ((pkg (slime-current-package)))
+    (slime-eval-describe
+     `(vari.cl::vari-describe ,symbol-name nil ,pkg))))
 
-;; (define-key lisp-mode-map (kbd "C-c C-v C-v")
-;;   'slime-vari-describe-symbol)
-
-(setq sly-complete-symbol-function 'sly-simple-completions
-      inferior-lisp-program "/usr/bin/sbcl")
+(define-key lisp-mode-map (kbd "C-c C-v C-v")
+  'slime-vari-describe-symbol)
 
 ;;; concurrent hints
 ;; https://www.reddit.com/r/lisp/comments/72v6p3/pushing_pixels_with_lisp_episode_18_shadow/
-;; (defun slime-enable-concurrent-hints ()
-;;   (interactive)
-;;   (setq slime-inhibit-pipelining nil))
+(defun slime-enable-concurrent-hints ()
+  (interactive)
+  (setq slime-inhibit-pipelining nil))
 
 ;; paredit on repl
-;;(add-hook 'slime-repl-mode-hook (lambda () (paredit-mode +1)))
-(add-hook 'sly-mode-hook (lambda () (paredit-mode +1)))
+(add-hook 'slime-repl-mode-hook
+          (lambda ()
+            (paredit-mode +1)
+            (define-key slime-repl-mode-map (kbd "C-c C-d C-d")
+              #'slime-describe-symbol)))
+
+;; (setq sly-complete-symbol-function 'sly-simple-completions
+;;       inferior-lisp-program "/usr/bin/sbcl")
+;; (add-hook 'sly-mode-hook (lambda () (paredit-mode +1)))
+;; (setq sly-lisp-implementations
+;;       '((sbcl ("set_rlimits" "sbcl"))))
 
 ;; sbcl real
-;; (setq slime-lisp-implementations
-;;       '((sbcl ("set_rlimits" "sbcl"))))
-(setq sly-lisp-implementations
+(setq slime-lisp-implementations
       '((sbcl ("set_rlimits" "sbcl"))))
+;;--------------------------------------------------
+;; Shell
+(use-package sh-mode
+  :ensure nil
+  :init
+  (add-hook 'sh-mode-hook
+            (lambda ()
+              (aggressive-indent-mode +1)
+              (smartparens-strict-mode +1)
+              (sp-use-paredit-bindings))))
 
 ;;--------------------------------------------------
 ;; Emacs
-(add-hook 'emacs-lisp-mode-hook
-          (lambda ()
-            (paredit-mode +1)
-            (aggressive-indent-mode)
-            (eldoc-mode +1)
-            ;; SLIME like keybinding instead of "C-h f"
-            (define-key emacs-lisp-mode-map (kbd "C-c C-d d")
-              (lambda ()
-                (interactive)
-                (describe-symbol
-                 (symbol-at-point))))
-            (define-key emacs-lisp-mode-map (kbd "C-c C-d C-d")
-              (lambda ()
-                (interactive)
-                (describe-symbol
-                 (symbol-at-point))))
-            (define-key emacs-lisp-mode-map (kbd "C-c C-c") 'compile-defun)))
+(use-package elisp-mode
+  :ensure nil
+  :init
+  ;; Default *scratch* buffer to lexical binding.
+  (add-hook 'lisp-interaction-mode-hook
+            (lambda ()
+              (when (equal (buffer-name) "*scratch*")
+                (setq-local lexical-binding t))))
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda ()
+              (paredit-mode +1)
+              (aggressive-indent-mode +1)
+              (eldoc-mode +1)
+              ;; SLIME like keybinding instead of "C-h f"
+              (define-key emacs-lisp-mode-map (kbd "C-c C-d d")
+                (lambda ()
+                  (interactive)
+                  (describe-symbol
+                   (symbol-at-point))))
+              (define-key emacs-lisp-mode-map (kbd "C-c C-d C-d")
+                (lambda ()
+                  (interactive)
+                  (describe-symbol
+                   (symbol-at-point))))
+              (define-key emacs-lisp-mode-map (kbd "C-c C-c") #'compile-defun))))
 ;;--------------------------------------------------
 
-                                        ; https://www.emacswiki.org/emacs/ShowParenMode
+;; https://www.emacswiki.org/emacs/ShowParenMode
 ;; parens match
 (show-paren-mode 1)
 

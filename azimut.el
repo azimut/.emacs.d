@@ -1,8 +1,3 @@
-;; If you used option 4 above and installed your own version of the
-;; files and not in the site-lisp/ directory, uncomment this line and
-;; replace LOC below with the directory you put the files in
-;; (setq load-path (cons "LOC" load-path))
-
 ;;--------------------------------------------------
 ;; melpa
 

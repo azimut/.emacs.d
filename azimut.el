@@ -386,11 +386,12 @@
 ;; compile-mode
 ;; https://github.com/fsharp/zarchive-fsharpbinding/issues/246
 (add-hook 'compilation-mode-hook
-          '(lambda()
-             ;;(setq compilation-auto-jump-to-first-error t)
-             (setq compilation-scroll-output t)))
+          (lambda ()
+            ;;(setq compilation-auto-jump-to-first-error t)
+            (setq compilation-scroll-output t)))
 
 (global-set-key (kbd "C-x g") 'magit-status)
+
 (magit-todos-mode)
 
 ;;  https://github.com/jaypei/emacs-neotree/issues/56

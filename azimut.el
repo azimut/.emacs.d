@@ -176,21 +176,20 @@
 ; pretty lambda
 (global-prettify-symbols-mode 1)
 
-
 (add-hook 'lisp-mode-hook
           (lambda ()
             (paredit-mode +1)
-            (projectile-mode +1)
-	    (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-	    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-            (aggressive-indent-mode)
-            (yas-minor-mode)
+            ;; (projectile-mode +1)
+	    ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+	    ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+            (aggressive-indent-mode +1)
+            (yas-minor-mode +1)
 	    (yas-reload-all)
             (my-add-pretty-lambda)))
 
 ;; FIX lisp ident
 (put :default-initargs 'common-lisp-indent-function '(&rest))
-;; (require 'slime-cl-indent)
+(require 'cl-indent)
 ;; (define-common-lisp-style "asdf"
 ;;   (:inherit "modern")
 ;;   (:indentation

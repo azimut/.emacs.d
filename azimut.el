@@ -209,13 +209,19 @@
 (setq sh-indentation 4)
 (setq smie-indent-basic 4)
 
-;; Neotree
-(global-set-key [f8] 'neotree-toggle)
-(setq neo-theme 'arrow)
-(setq neo-hidden-regexp-list '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$"))
 (put 'erase-buffer 'disabled nil)
 
-;; Flycheck - Erlang
+(use-package neotree
+  :ensure t
+  :config
+  (global-set-key (kbd "C-0") 'neotree-toggle)
+  (setq neo-theme 'arrow)
+  (setq neo-hidden-regexp-list
+        '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$")))
+
+;;
+;; Erlang
+;;
 (use-package erlang
   :ensure t
   :mode

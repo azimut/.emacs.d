@@ -223,69 +223,54 @@
   ("\\.hrl\\'" . erlang-mode)
   ("\\.xrl\\'" . erlang-mode)
   :init
+  ;;
+  (add-hook 'erlang-mode-hook
+            (lambda ()
+              (smartparens-strict-mode +1)
+              (sp-use-paredit-bindings)
+              (aggressive-indent-mode +1)
+              (define-key erlang-mode-map (kbd "M-p") #'flycheck-previous-error)
+              (define-key erlang-mode-map (kbd "M-n") #'flycheck-next-error)
+              (flycheck-mode +1)
+              ;; pretty needs to happen on init
+              (setq-local prettify-symbols-alist '(("fun" .  955)
+                                                   ("->"  . 8594)))
+              (require 'ivy-erlang-complete)
+              (add-hook 'erlang-mode-hook
+                        (lambda ()
+                          (ivy-erlang-complete-init)
+                          (define-key erlang-mode-map (kbd "M-TAB")
+                            #'ivy-erlang-complete)
+                          (define-key erlang-mode-map (kbd "C-c C-d h")
+                            #'ivy-erlang-complete-show-doc-at-point)))
+              (add-hook 'erlang-mode-hook
+                        (lambda ()
+                          (add-hook 'after-save-hook
+                                    #'ivy-erlang-complete-reparse
+                                    nil :local)))
+              (setq ivy-erlang-complete-use-default-keys t)
+              ))
   :config
   ;; prevent annoying hang-on-compile
   (defvar inferior-erlang-prompt-timeout t)
   ;; default node name to emacs@localhost
   (setq inferior-erlang-machine-options '("-name" "emacs@sabayon"))
-  (setq-local prettify-symbols-alist
-              '(("fun" . 955)
-                ("->"  . 8594)))
-  (setq ivy-erlang-complete-use-default-keys t)
-  (setq flycheck-check-syntax-automatically
-        '(save idle-change new-line mode-enabled)))
-
-(defun my-erlang-hook ()
-  "Setup for erlang."
-  ;;  (require 'wrangler)
-  (ivy-erlang-complete-init)
-  (define-key erlang-mode-map
-    (kbd "M-TAB")
-    'ivy-erlang-complete)
-  (define-key erlang-mode-map
-    (kbd "C-c C-d h")
-    'ivy-erlang-complete-show-doc-at-point)
-  ;; (defvar erlang-extended-mode-map)
-  ;; (define-key erlang-extended-mode-map (kbd "M-.") nil)
-  ;; (define-key erlang-extended-mode-map (kbd "M-,") nil)
-  ;; (define-key erlang-extended-mode-map (kbd "M-?") nil)
-  ;; (define-key erlang-extended-mode-map (kbd "(") nil)
-  
+  (setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
+  (setq flycheck-display-errors-function nil)
+  ;; ivy should run after flycheck...
   )
 
-;; Distel - tell distel to default to that node
-;;(setq erl-nodename-cache (intern (concat "emacs" "@" "sabayon")))
 
-(add-hook 'erlang-mode-hook
-          (lambda ()
-            (my-erlang-hook)
-            (smartparens-strict-mode +1)
-            (sp-use-paredit-bindings)
-            (aggressive-indent-mode +1)
-            (define-key erlang-mode-map (kbd "M-p") 'flycheck-previous-error)
-            (define-key erlang-mode-map (kbd "M-n") 'flycheck-next-error)
-            ;; (distel-erlang-mode-hook)
-            ;; (define-key erlang-extended-mode-map (kbd "(") nil)
-            (flycheck-mode +1)))
-
-(add-hook 'erlang-mode-hook
-          (lambda ()
-            (add-hook 'after-save-hook
-                      #'ivy-erlang-complete-reparse
-                      nil 'make-it-local)))
-
-(defun hide-erlang-shell()
+(defun hide-erlang-shell ()
   (interactive)
   (other-window 1)
   (delete-other-windows))
 
 (add-hook 'erlang-shell-mode-hook
           (lambda ()
-            ;; (distel-erlang-mode-hook)
-            ;; (define-key erlang-extended-mode-map (kbd "(") nil)
             (smartparens-strict-mode +1)
             (sp-use-paredit-bindings)
-            (define-key erlang-shell-mode-map (kbd "C-c C-z") 'hide-erlang-shell)))
+            (define-key erlang-shell-mode-map (kbd "C-c C-z") #'hide-erlang-shell)))
 
 ;; Elixir
 

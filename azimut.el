@@ -84,6 +84,20 @@
   (define-key company-search-map (kbd "C-n") #'company-select-next)
   (define-key company-search-map (kbd "C-p") #'company-select-previous))
 
+(use-package glsl-mode
+  :ensure t
+  :config
+  (add-hook 'glsl-mode-hook
+            (lambda ()
+              (smartparens-strict-mode +1)
+              (sp-use-paredit-bindings)
+              (aggressive-indent-mode +1)))
+  (add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.vs\\'"   . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.fs\\'"   . glsl-mode)))
 
 ;; w3m
 (use-package w3m

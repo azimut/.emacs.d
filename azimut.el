@@ -256,14 +256,11 @@
       '((sbcl ("set_rlimits" "sbcl"))))
 ;;--------------------------------------------------
 ;; Shell
-(use-package sh-mode
-  :ensure nil
-  :init
-  (add-hook 'sh-mode-hook
-            (lambda ()
-              (aggressive-indent-mode +1)
-              (smartparens-strict-mode +1)
-              (sp-use-paredit-bindings))))
+(add-hook 'sh-mode-hook
+          (lambda ()
+            (aggressive-indent-mode +1)
+            (smartparens-strict-mode +1)
+            (sp-use-paredit-bindings)))
 
 ;;--------------------------------------------------
 ;; Emacs

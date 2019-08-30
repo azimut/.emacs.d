@@ -1,6 +1,5 @@
 ;;--------------------------------------------------
 ;; melpa
-
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
@@ -25,11 +24,19 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
-;; powerline
-;; (require 'powerline)
-;; (powerline-default-theme)
-(require 'spaceline-config)
-(spaceline-emacs-theme)
+(require 'dired-x)
+(setq-default dired-omit-files-p t) ; Buffer-local variable
+;; HIDE lisp .fasl files
+(setq dired-omit-files (concat dired-omit-files "\\|*.fasl"))
+
+(use-package spacemacs-theme
+  :ensure t)
+
+(use-package spaceline
+  :ensure t
+  :config
+  (require 'spaceline-config)
+  (spaceline-emacs-theme))
 
 (defun transparency (value)
   "Sets the transparency of the frame window. 0=transparent/100=opaque"
@@ -84,20 +91,52 @@
   (define-key company-search-map (kbd "C-n") #'company-select-next)
   (define-key company-search-map (kbd "C-p") #'company-select-previous))
 
+(use-package aggressive-mode
+  :ensure t)
+
+(use-package lua-mode
+  :ensure t
+  :config
+  (add-hook
+   'lua-mode-hook
+   (lambda ()
+     ;; FIXME: still doesn't work
+     (setenv "LUA_PATH" (concat "/usr/share/awesome/lib/?/init.lua;"
+                                "/usr/share/awesome/lib/?.lua;"
+                                "/usr/share/awesome/lib/?/?.lua;;"))
+     (setq-local prettify-symbols-alist '(("function" .  955)))
+     (define-key lua-mode-map (kbd "C-c C-d") #'lua-search-documentation)
+     (define-key lua-mode-map (kbd "C-c C-k") #'lua-send-buffer)
+     (define-key lua-mode-map (kbd "C-c C-c") #'lua-send-region)
+     (smartparens-strict-mode +1)
+     (sp-use-paredit-bindings)
+     (aggressive-indent-mode +1))))
+
 (use-package glsl-mode
   :ensure t
   :config
   (add-hook 'glsl-mode-hook
             (lambda ()
+              (interactive)
+              (setq-local zeal-at-point-docset '("gl4"))
+              (setq-local helm-dash-docsets '("OpenGL4"))
               (smartparens-strict-mode +1)
               (sp-use-paredit-bindings)
               (aggressive-indent-mode +1)))
-  (add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.vs\\'"   . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.fs\\'"   . glsl-mode)))
+  ;; g3d engine
+  (add-to-list 'auto-mode-alist '("\\.pix\\'"     . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.comp\\'"    . glsl-mode))
+  ;;
+  (add-to-list 'auto-mode-alist '("\\.vert\\'"    . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.frag\\'"    . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.geom\\'"    . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.glsl\\'"    . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.vs\\'"      . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.fs\\'"      . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.hlsl\\'"    . glsl-mode)))
+
+(use-package shader-mode
+  :ensure t)
 
 ;; w3m
 (use-package w3m
@@ -109,7 +148,28 @@
     (balance-windows)
     (other-window 1)
     (w3m-browse-url url))
-  (setq browse-url-browser-function #'browse-url-other))
+  (setq browse-url-browser-function #'browse-url-other)
+  (add-hook 'w3m-mode-hook
+            (lambda ()
+              (local-set-key "\C-n" 'w3m-next-anchor)
+              (local-set-key "\C-p" 'w3m-previous-anchor)
+              (local-set-key '[up] 'previous-line)
+              (local-set-key '[down] 'next-line))))
+
+(use-package csound-mode
+  :ensure t
+  :mode (("\\.csd\\'" . csound-mode)
+  	 ("\\.orc\\'" . csound-mode)
+  	 ("\\.sco\\'" . csound-mode)
+  	 ("\\.udo\\'" . csound-mode))
+  :config
+  (define-key csound-mode-map (kbd "C-c C-d")
+    (lambda ()
+      (interactive)
+      (browse-url (concat ;;"http://www.csounds.com/manual/html/"
+                          "https://csound.com/docs/manual/"
+                          (symbol-name (symbol-at-point))
+                          ".html")))))
 
 (use-package dockerfile-mode
   :ensure t)
@@ -119,11 +179,17 @@
 (setq python-shell-interpreter "jupyter"
       python-shell-interpreter-args "console --simple-prompt")
 
-(add-hook 'yaml-mode-hook (lambda () (ansible 1)))
+(use-package yaml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.mat\\'" . yaml-mode)) ; Unity
+  :init
+  (add-hook 'yaml-mode-hook (lambda () (ansible 1))))
+
 (add-hook 'python-mode-hook (lambda () (elpy-mode)))
 
 (use-package go-eldoc   :ensure t)
-(use-package gotest    :ensure t)
+(use-package gotest     :ensure t)
 (use-package flymake-go :ensure t)
 (use-package go-guru
   :ensure t
@@ -143,6 +209,11 @@
             (lambda ()
               (setq-local company-backends
                           '((company-go company-yasnippet))))))
+(use-package gorepl-mode :ensure t :after go-mode
+  :config (add-hook 'gorepl-mode-hook
+                    (lambda ()
+                      (smartparens-strict-mode +1)
+                      (sp-use-paredit-bindings))))
 (use-package go-mode
   :ensure t
   :init
@@ -189,26 +260,31 @@
 
 ; pretty lambda
 (global-prettify-symbols-mode 1)
-
+(use-package redshank
+  :ensure t)
 (add-hook 'lisp-mode-hook
           (lambda ()
             (paredit-mode +1)
             ;; (projectile-mode +1)
 	    ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 	    ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+            (redshank-mode +1)
             (aggressive-indent-mode +1)
             (yas-minor-mode +1)
-	    (yas-reload-all)
+	    ;;(yas-reload-all)
             (my-add-pretty-lambda)))
 
 ;; FIX lisp ident
 (put :default-initargs 'common-lisp-indent-function '(&rest))
-(require 'cl-indent)
-;; (define-common-lisp-style "asdf"
-;;   (:inherit "modern")
-;;   (:indentation
-;;    (define-package  (as defpackage))
-;;    (define-constant (as defconstant))))
+(put 'defstruct-g 'common-lisp-indent-function '(as defstruct))
+
+;;(require 'slime-cl-indent)
+;;(define-common-lisp-style "asdf"
+;;  (:inherit "modern")
+;;  (:indentation
+;;   (define-package  (as defpackage))
+;;   (define-constant (as defconstant))))
+
 ;; (custom-set-variables '(common-lisp-style-default "asdf"))
 ;; (put 'if 'lisp-indent-function nil)
 ;; (put 'when 'lisp-indent-function 1)
@@ -231,6 +307,8 @@
 
 (define-key lisp-mode-map (kbd "C-c C-v C-v")
   'slime-vari-describe-symbol)
+(define-key lisp-mode-map (kbd "C-c C-a")
+  'redshank-align-forms-as-columns)
 
 ;;; concurrent hints
 ;; https://www.reddit.com/r/lisp/comments/72v6p3/pushing_pixels_with_lisp_episode_18_shadow/
@@ -246,21 +324,26 @@
               #'slime-describe-symbol)))
 
 ;; (setq sly-complete-symbol-function 'sly-simple-completions
+;;       sly-lisp-implementations '((sbcl  ("set_rlimits" "sbcl")))
 ;;       inferior-lisp-program "/usr/bin/sbcl")
 ;; (add-hook 'sly-mode-hook (lambda () (paredit-mode +1)))
-;; (setq sly-lisp-implementations
-;;       '((sbcl ("set_rlimits" "sbcl"))))
 
 ;; sbcl real
 (setq slime-lisp-implementations
-      '((sbcl ("set_rlimits" "sbcl"))))
+      '((sbcl ("sbcl"))))
 ;;--------------------------------------------------
-;; Shell
-(add-hook 'sh-mode-hook
-          (lambda ()
-            (aggressive-indent-mode +1)
-            (smartparens-strict-mode +1)
-            (sp-use-paredit-bindings)))
+;; Shell - bashate
+(use-package flycheck-bashate
+  :ensure t
+  :config
+  (add-hook 'sh-mode-hook
+            (lambda ()
+              (flycheck-mode +1)
+              (define-key sh-mode-map (kbd "M-p") #'flycheck-previous-error)
+              (define-key sh-mode-map (kbd "M-n") #'flycheck-next-error)
+              (aggressive-indent-mode +1)
+              (smartparens-strict-mode +1)
+              (sp-use-paredit-bindings))))
 
 ;;--------------------------------------------------
 ;; Emacs
@@ -278,12 +361,7 @@
               (aggressive-indent-mode +1)
               (eldoc-mode +1)
               ;; SLIME like keybinding instead of "C-h f"
-              (define-key emacs-lisp-mode-map (kbd "C-c C-d d")
-                (lambda ()
-                  (interactive)
-                  (describe-symbol
-                   (symbol-at-point))))
-              (define-key emacs-lisp-mode-map (kbd "C-c C-d C-d")
+              (define-key emacs-lisp-mode-map (kbd "C-c C-d")
                 (lambda ()
                   (interactive)
                   (describe-symbol
@@ -332,27 +410,23 @@
               (smartparens-strict-mode +1)
               (sp-use-paredit-bindings)
               (aggressive-indent-mode +1)
+              (yas-minor-mode +1)
               (define-key erlang-mode-map (kbd "M-p") #'flycheck-previous-error)
               (define-key erlang-mode-map (kbd "M-n") #'flycheck-next-error)
               (flycheck-mode +1)
               ;; pretty needs to happen on init
-              (setq-local prettify-symbols-alist '(("fun" .  955)
-                                                   ("->"  . 8594)))
+              ;;(setq-local prettify-symbols-alist '(("fun" .  955) ("->"  . 8594)))
               (require 'ivy-erlang-complete)
-              (add-hook 'erlang-mode-hook
-                        (lambda ()
-                          (ivy-erlang-complete-init)
-                          (define-key erlang-mode-map (kbd "M-TAB")
-                            #'ivy-erlang-complete)
-                          (define-key erlang-mode-map (kbd "C-c C-d h")
-                            #'ivy-erlang-complete-show-doc-at-point)))
-              (add-hook 'erlang-mode-hook
-                        (lambda ()
-                          (add-hook 'after-save-hook
-                                    #'ivy-erlang-complete-reparse
-                                    nil :local)))
+              (ivy-erlang-complete-init)
+              (define-key erlang-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
+              (define-key erlang-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
+              ;;
+              (add-hook 'after-save-hook #'ivy-erlang-complete-reparse nil :local)
               (setq ivy-erlang-complete-use-default-keys t)
-              ))
+	      (setq erlang-electric-commands '(erlang-electric-comma
+				               erlang-electric-semicolon))
+	      (setq erlang-electric-newline-inhibit-list '(erlang-electric-gt))
+	      (setq erlang-electric-newline-inhibit t)))
   :config
   ;; prevent annoying hang-on-compile
   (defvar inferior-erlang-prompt-timeout t)
@@ -373,6 +447,9 @@
           (lambda ()
             (smartparens-strict-mode +1)
             (sp-use-paredit-bindings)
+            (define-key erlang-shell-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
+            (define-key erlang-shell-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
+            (define-key erlang-shell-mode-map (kbd "TAB") #'ivy-erlang-complete)
             (define-key erlang-shell-mode-map (kbd "C-c C-z") #'hide-erlang-shell)))
 
 ;; Elixir
@@ -387,11 +464,21 @@
 ;; C / C++
 (defun my-cmode-hook ()
   (setq imenu-list-auto-resize t)
-  (setq zeal-at-point-docset "C")
+  (setq-local zeal-at-point-docset '("C" "gl4"))
+  (setq-local helm-dash-docsets '("C" "OpenGL4"))
   ;; (local-set-key (kbd "C-c C-d d")
   ;;                (lambda () (interactive) (manual-entry (current-word))))
-  (ggtags-mode))
+  (ggtags-mode +1))
 (add-hook 'c-mode-hook #'my-cmode-hook)
+
+(use-package cc-mode
+  :ensure nil
+  :init
+  (add-hook #'c++-mode-hook
+            (lambda () (ggtags-mode +1)))
+  :config
+  (setq-local zeal-at-point-docset '("gl4" "cpp"))
+  (setq-local helm-dash-docsets '("OpenGL4" "cpp")))
 
 ;; compile-mode
 ;; https://github.com/fsharp/zarchive-fsharpbinding/issues/246
@@ -402,8 +489,27 @@
 
 (global-set-key (kbd "C-x g") 'magit-status)
 
+(use-package magit-todos
+  :ensure t)
 (magit-todos-mode)
 
 ;;  https://github.com/jaypei/emacs-neotree/issues/56
 ;;(magithub-feature-autoinject t)
 ;;(setq magithub-clone-default-directory "/home/sendai/quicklisp/local-projects/")
+
+;;
+;; Tidal
+;;
+(use-package tidal
+  :ensure t
+  :config
+  (setq tidal-interpreter "/home/sendai/.ghcup/bin/ghci")
+  (setq tidal-boot-script-path "/home/sendai/.cabal/share/x86_64-linux-ghc-8.6.5/tidal-1.0.14/BootTidal.hs"))
+
+(use-package helm-dash
+  :ensure t
+  :config
+  (setq dash-docs-browser-func 'eww))
+
+(setq grep-find-template
+      "find <D> <X> -type f <F> -exec grep <C> --exclude='*.svn-base' -nH --null -e <R> \\{\\} +")

@@ -18,6 +18,8 @@
 (require 'whitespace)
 (global-whitespace-mode 0)
 
+(require 'slime-autoloads)
+
 ;; disable menu-bar
 ;; https://www.emacswiki.org/emacs/MenuBar
 (menu-bar-mode -1)
@@ -28,9 +30,9 @@
 (setq-default dired-omit-files-p t) ; Buffer-local variable
 ;; HIDE lisp .fasl files
 (setq dired-omit-files (concat dired-omit-files "\\|*.fasl"))
-
-(use-package spacemacs-theme
-  :ensure t)
+(setq dired-listing-switches "-lrSh")
+;;(use-package spacemacs-theme
+;;  :ensure t)
 
 (use-package spaceline
   :ensure t
@@ -77,6 +79,11 @@
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
 
+(use-package ace-window
+  :ensure t
+  :config
+  (global-set-key (kbd "M-o") 'ace-window))
+
 (use-package imenu-list
   :ensure t
   :config
@@ -91,7 +98,7 @@
   (define-key company-search-map (kbd "C-n") #'company-select-next)
   (define-key company-search-map (kbd "C-p") #'company-select-previous))
 
-(use-package aggressive-mode
+(use-package aggressive-indent
   :ensure t)
 
 (use-package lua-mode
@@ -124,19 +131,25 @@
               (sp-use-paredit-bindings)
               (aggressive-indent-mode +1)))
   ;; g3d engine
-  (add-to-list 'auto-mode-alist '("\\.pix\\'"     . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.comp\\'"    . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.pix\\'"   . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.comp\\'"  . glsl-mode))
+  ;; Unreal (though is actually hlsl...)
+  (add-to-list 'auto-mode-alist '("\\.usf\\'"   . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.ush\\'"   . glsl-mode))
   ;;
-  (add-to-list 'auto-mode-alist '("\\.vert\\'"    . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.frag\\'"    . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.geom\\'"    . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.glsl\\'"    . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.vs\\'"      . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.fs\\'"      . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.hlsl\\'"    . glsl-mode)))
+  (add-to-list 'auto-mode-alist '("\\.vert\\'"  . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.frag\\'"  . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.geom\\'"  . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.glsl\\'"  . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.vs\\'"    . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.fs\\'"    . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.hlsl\\'"  . glsl-mode))
+  (add-to-list 'auto-mode-alist '("\\.hlsli\\'" . glsl-mode)))
 
 (use-package shader-mode
-  :ensure t)
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.cginc\\'"    . shader-mode)))
 
 ;; w3m
 (use-package w3m
@@ -151,10 +164,12 @@
   (setq browse-url-browser-function #'browse-url-other)
   (add-hook 'w3m-mode-hook
             (lambda ()
-              (local-set-key "\C-n" 'w3m-next-anchor)
-              (local-set-key "\C-p" 'w3m-previous-anchor)
-              (local-set-key '[up] 'previous-line)
-              (local-set-key '[down] 'next-line))))
+              (local-set-key "\C-n"   'w3m-next-anchor)
+              (local-set-key "\C-p"   'w3m-previous-anchor)
+              (local-set-key '[up]    'previous-line)
+              (local-set-key '[down]  'next-line)
+              (local-set-key '[left]  'backward-char)
+              (local-set-key '[right] 'forward-char))))
 
 (use-package csound-mode
   :ensure t
@@ -167,10 +182,12 @@
     (lambda ()
       (interactive)
       (browse-url (concat ;;"http://www.csounds.com/manual/html/"
-                          "https://csound.com/docs/manual/"
-                          (symbol-name (symbol-at-point))
-                          ".html")))))
+                   "https://csound.com/docs/manual/"
+                   (symbol-name (symbol-at-point))
+                   ".html")))))
 
+(use-package yasnippet
+  :ensure t)
 (use-package dockerfile-mode
   :ensure t)
 
@@ -261,31 +278,41 @@
 ; pretty lambda
 (global-prettify-symbols-mode 1)
 (use-package redshank
-  :ensure t)
+             :ensure t)
+;; lisp-mode-hook
+;; sly-editing-mode
 (add-hook 'lisp-mode-hook
           (lambda ()
             (paredit-mode +1)
             ;; (projectile-mode +1)
-	    ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-	    ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+            ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+            ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
             (redshank-mode +1)
             (aggressive-indent-mode +1)
             (yas-minor-mode +1)
-	    ;;(yas-reload-all)
+            ;;(yas-reload-all)
             (my-add-pretty-lambda)))
 
 ;; FIX lisp ident
 (put :default-initargs 'common-lisp-indent-function '(&rest))
 (put 'defstruct-g 'common-lisp-indent-function '(as defstruct))
 
-;;(require 'slime-cl-indent)
-;;(define-common-lisp-style "asdf"
-;;  (:inherit "modern")
-;;  (:indentation
-;;   (define-package  (as defpackage))
-;;   (define-constant (as defconstant))))
+;; (require 'slime-cl-indent)
+;; (define-common-lisp-style "asdf"
+;;   (:inherit "modern")
+;;   (:indentation
+;;    (define-package  (as defpackage))
+;;    (define-constant (as defconstant))))
 
-;; (custom-set-variables '(common-lisp-style-default "asdf"))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(common-lisp-style-default "asdf")
+ '(package-selected-packages
+   (quote
+    (yaml-mode use-package tidal spacemacs-theme spaceline slime shader-mode redshank neotree multiple-cursors magit-todos lua-mode imenu-list helm-dash gotest gorepl-mode go-guru go-eldoc go-dlv glsl-mode flymake-go flycheck-bashate erlang dockerfile-mode csound-mode company-go aggressive-indent))))
 ;; (put 'if 'lisp-indent-function nil)
 ;; (put 'when 'lisp-indent-function 1)
 ;; (put 'unless 'lisp-indent-function 1)
@@ -324,13 +351,14 @@
               #'slime-describe-symbol)))
 
 ;; (setq sly-complete-symbol-function 'sly-simple-completions
-;;       sly-lisp-implementations '((sbcl  ("set_rlimits" "sbcl")))
+;;       sly-lisp-implementations '((sbcl  ("sbcl")))
 ;;       inferior-lisp-program "/usr/bin/sbcl")
 ;; (add-hook 'sly-mode-hook (lambda () (paredit-mode +1)))
 
 ;; sbcl real
-(setq slime-lisp-implementations
-      '((sbcl ("sbcl"))))
+(setq slime-lisp-implementations '((sbcl ("/usr/local/bin/sbcl")))
+      inferior-lisp-program "/usr/local/bin/sbcl"
+      slime-contribs '(slime-fancy))
 ;;--------------------------------------------------
 ;; Shell - bashate
 (use-package flycheck-bashate
@@ -344,6 +372,39 @@
               (aggressive-indent-mode +1)
               (smartparens-strict-mode +1)
               (sp-use-paredit-bindings))))
+
+;; https://nistara.net/post/emacs-send-line-or-region-to-shell/
+(defun sh-send-line-or-region (&optional step)
+  (interactive ())
+  (let ((proc (get-process "shell"))
+        pbuf min max command)
+    (unless proc
+      (let ((currbuff (current-buffer)))
+        (shell)
+        (switch-to-buffer currbuff)
+        (setq proc (get-process "shell"))))
+    (setq pbuff (process-buffer proc))
+    (if (use-region-p)
+        (setq min (region-beginning)
+              max (region-end))
+      (setq min (point-at-bol)
+            max (point-at-eol)))
+    (setq command (concat (buffer-substring min max) "\n"))
+    (with-current-buffer pbuff
+      (goto-char (process-mark proc))
+      (insert command)
+      (move-marker (process-mark proc) (point))
+      (setq comint-scroll-to-bottom-on-output t))
+    (process-send-string  proc command)
+    (display-buffer (process-buffer proc) t)
+    (when step
+      (goto-char max)
+      (next-line))))
+(defun sh-send-line-or-region-and-step ()
+  (interactive)
+  (sh-send-line-or-region t))
+
+(define-key sh-mode-map (kbd "C-c C-c") #'sh-send-line-or-region-and-step)
 
 ;;--------------------------------------------------
 ;; Emacs
@@ -392,7 +453,7 @@
   (global-set-key (kbd "C-0") 'neotree-toggle)
   (setq neo-theme 'arrow)
   (setq neo-hidden-regexp-list
-        '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$")))
+        '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$" "\\.meta$")))
 
 ;;
 ;; Erlang
@@ -470,13 +531,15 @@
   ;;                (lambda () (interactive) (manual-entry (current-word))))
   (ggtags-mode +1))
 (add-hook 'c-mode-hook #'my-cmode-hook)
-
+(use-package ggtags
+  :ensure t)
 (use-package cc-mode
   :ensure nil
   :init
   (add-hook #'c++-mode-hook
             (lambda () (ggtags-mode +1)))
   :config
+  (setq-local imenu-create-index-function #'ggtags-build-imenu-index)
   (setq-local zeal-at-point-docset '("gl4" "cpp"))
   (setq-local helm-dash-docsets '("OpenGL4" "cpp")))
 
@@ -513,3 +576,9 @@
 
 (setq grep-find-template
       "find <D> <X> -type f <F> -exec grep <C> --exclude='*.svn-base' -nH --null -e <R> \\{\\} +")
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

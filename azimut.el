@@ -1,3 +1,6 @@
+;; https://github.com/syl20bnr/spacemacs/issues/12535
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 ;;--------------------------------------------------
 ;; melpa
 (require 'package)
@@ -23,14 +26,14 @@
 ;; disable menu-bar
 ;; https://www.emacswiki.org/emacs/MenuBar
 (menu-bar-mode -1)
-(scroll-bar-mode -1)
+(scroll-bar-mode 1)
 (tool-bar-mode -1)
 
 (require 'dired-x)
 (setq-default dired-omit-files-p t) ; Buffer-local variable
 ;; HIDE lisp .fasl files
 (setq dired-omit-files (concat dired-omit-files "\\|*.fasl"))
-(setq dired-listing-switches "-lrSh")
+(setq dired-listing-switches "-lh")
 ;;(use-package spacemacs-theme
 ;;  :ensure t)
 
@@ -172,11 +175,11 @@
               (local-set-key '[right] 'forward-char))))
 
 (use-package csound-mode
-  :ensure t
+  :ensure nil
   :mode (("\\.csd\\'" . csound-mode)
   	 ("\\.orc\\'" . csound-mode)
   	 ("\\.sco\\'" . csound-mode)
-  	 ("\\.udo\\'" . csound-mode))
+         ("\\.udo\\'" . csound-mode))
   :config
   (define-key csound-mode-map (kbd "C-c C-d")
     (lambda ()
@@ -574,11 +577,20 @@
   :config
   (setq dash-docs-browser-func 'eww))
 
+;;(grep-apply-setting 'grep-command "grep --color -nHirI -e \"\" *")
+(setq grep-find-command
+      (quote
+       ("find . -type f -exec grep --color -nH --null -e  \\{\\} +" . 49)))
+(setq grep-command "grep --color -nHirI -e \"\" *")
 (setq grep-find-template
       "find <D> <X> -type f <F> -exec grep <C> --exclude='*.svn-base' -nH --null -e <R> \\{\\} +")
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;;(setq package-check-signature nil)
+

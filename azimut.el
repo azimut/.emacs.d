@@ -21,8 +21,6 @@
 (require 'whitespace)
 (global-whitespace-mode 0)
 
-(require 'slime-autoloads)
-
 ;; disable menu-bar
 ;; https://www.emacswiki.org/emacs/MenuBar
 (menu-bar-mode -1)
@@ -265,41 +263,39 @@
   (define-key go-mode-map (kbd "C-c C-k") #'go-run)
   (define-key go-mode-map (kbd "C-c C-d") #'godoc-at-point))
 
+;; pretty lambda
+(global-prettify-symbols-mode 1)
 
 ;;--------------------------------------------------
 ;; Common-lisp
 
-(defun my-add-pretty-lambda ()
-  "make some word or string show as pretty Unicode symbols"
-  (setq prettify-symbols-alist
-        '(("lambda" . 955) ;; λ
-          ;;("->" . 8594)    ; →
-          ("=>" . 8658)                 ; ⇒
-          (":->" . 8594)                ;
-          )))
-
-; pretty lambda
-(global-prettify-symbols-mode 1)
 (use-package redshank
-             :ensure t)
+  :ensure t)
+
 ;; lisp-mode-hook
 ;; sly-editing-mode
-(add-hook 'lisp-mode-hook
-          (lambda ()
-            (paredit-mode +1)
-            ;; (projectile-mode +1)
-            ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-            ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-            (redshank-mode +1)
-            (aggressive-indent-mode +1)
-            (yas-minor-mode +1)
-            ;;(yas-reload-all)
-            (my-add-pretty-lambda)))
+;; (add-hook 'lisp-mode-hook
+;;           (lambda ()
+;;             (paredit-mode +1)
+;;             ;; (projectile-mode +1)
+;;             ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+;;             ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+;;             (redshank-mode +1)
+;;             (aggressive-indent-mode +1)
+;;             (yas-minor-mode +1)
+;;             ;;(yas-reload-all)
+;;             (setq prettify-symbols-alist
+;;                   '(("lambda" . 955) ; λ
+;;                     ;;("->"  . 8594) ; →
+;;                     ;;("=>"  . 8658) ; ⇒
+;;                     ;;(":->" . 8594) ;
+;;                     ))))
 
 ;; FIX lisp ident
-(put :default-initargs 'common-lisp-indent-function '(&rest))
-(put 'defstruct-g 'common-lisp-indent-function '(as defstruct))
+;; (put :default-initargs 'common-lisp-indent-function '(&rest))
+;; (put 'defstruct-g 'common-lisp-indent-function '(as defstruct))
 
+;;(require 'slime-autoloads)
 ;; (require 'slime-cl-indent)
 ;; (define-common-lisp-style "asdf"
 ;;   (:inherit "modern")
@@ -307,15 +303,6 @@
 ;;    (define-package  (as defpackage))
 ;;    (define-constant (as defconstant))))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(common-lisp-style-default "asdf")
- '(package-selected-packages
-   (quote
-    (yaml-mode use-package tidal spacemacs-theme spaceline slime shader-mode redshank neotree multiple-cursors magit-todos lua-mode imenu-list helm-dash gotest gorepl-mode go-guru go-eldoc go-dlv glsl-mode flymake-go flycheck-bashate erlang dockerfile-mode csound-mode company-go aggressive-indent))))
 ;; (put 'if 'lisp-indent-function nil)
 ;; (put 'when 'lisp-indent-function 1)
 ;; (put 'unless 'lisp-indent-function 1)
@@ -326,42 +313,50 @@
 ;; Common Lisp - Slime
 
 ;; cbaggers/varjo
-(defun slime-vari-describe-symbol (symbol-name)
-  "Describe the symbol at point."
-  (interactive (list (slime-read-symbol-name "Describe symbol: ")))
-  (when (not symbol-name)
-    (error "No symbol given"))
-  (let ((pkg (slime-current-package)))
-    (slime-eval-describe
-     `(vari.cl::vari-describe ,symbol-name nil ,pkg))))
+;; (defun slime-vari-describe-symbol (symbol-name)
+;;   "Describe the symbol at point."
+;;   (interactive (list (slime-read-symbol-name "Describe symbol: ")))
+;;   (when (not symbol-name)
+;;     (error "No symbol given"))
+;;   (let ((pkg (slime-current-package)))
+;;     (slime-eval-describe
+;;      `(vari.cl::vari-describe ,symbol-name nil ,pkg))))
 
-(define-key lisp-mode-map (kbd "C-c C-v C-v")
-  'slime-vari-describe-symbol)
-(define-key lisp-mode-map (kbd "C-c C-a")
-  'redshank-align-forms-as-columns)
+;; (define-key lisp-mode-map (kbd "C-c C-v C-v")
+;;   'slime-vari-describe-symbol)
+;; (define-key lisp-mode-map (kbd "C-c C-a")
+;;   'redshank-align-forms-as-columns)
 
 ;;; concurrent hints
 ;; https://www.reddit.com/r/lisp/comments/72v6p3/pushing_pixels_with_lisp_episode_18_shadow/
-(defun slime-enable-concurrent-hints ()
+;; (defun slime-enable-concurrent-hints ()
+;;   (interactive)
+;;   (setq slime-inhibit-pipelining nil))
+
+(defun sly-enable-concurrent-hints ()
   (interactive)
-  (setq slime-inhibit-pipelining nil))
+  (setq sly-inhibit-pipelining nil))
 
 ;; paredit on repl
-(add-hook 'slime-repl-mode-hook
-          (lambda ()
-            (paredit-mode +1)
-            (define-key slime-repl-mode-map (kbd "C-c C-d C-d")
-              #'slime-describe-symbol)))
+;; 'slime-repl-mode-hook
+(add-hook
+ 'sly-mrepl-hook
+ (lambda ()
+   (paredit-mode +1)
+   ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
+   ))
 
-;; (setq sly-complete-symbol-function 'sly-simple-completions
-;;       sly-lisp-implementations '((sbcl  ("sbcl")))
-;;       inferior-lisp-program "/usr/bin/sbcl")
-;; (add-hook 'sly-mode-hook (lambda () (paredit-mode +1)))
+(setq ;;sly-complete-symbol-function 'sly-simple-completions
+ sly-lisp-implementations     '((sbcl  ("sbcl")))
+ inferior-lisp-program        "/usr/local/bin/sbcl")
+
+(add-hook 'sly-mode-hook (lambda () (paredit-mode +1)))
 
 ;; sbcl real
-(setq slime-lisp-implementations '((sbcl ("/usr/local/bin/sbcl")))
-      inferior-lisp-program "/usr/local/bin/sbcl"
-      slime-contribs '(slime-fancy))
+;; (setq slime-lisp-implementations '((sbcl ("/usr/local/bin/sbcl")))
+;;       inferior-lisp-program "/usr/local/bin/sbcl"
+;;       slime-contribs '(slime-fancy))
+
 ;;--------------------------------------------------
 ;; Shell - bashate
 (use-package flycheck-bashate
@@ -585,12 +580,35 @@
 (setq grep-find-template
       "find <D> <X> -type f <F> -exec grep <C> --exclude='*.svn-base' -nH --null -e <R> \\{\\} +")
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
 ;;(setq package-check-signature nil)
 
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode +1))
+
+;;--------------------------------------------------
+;; Clojure
+;;--------------------------------------------------
+(use-package cider
+  :ensure t
+  :config
+  (define-key cider-repl-mode-map
+    (kbd "C-c M-o") #'cider-repl-clear-buffer)
+  (add-hook 'cider-repl-mode-hook
+            (lambda ()
+              (paredit-mode +1))))
+
+(use-package clojure-mode
+  :ensure t
+  :bind
+  (("C-c C-d C-h" . cider-clojuredocs)
+   ("C-c ~"       . cider-repl-set-ns))
+  :config
+  (setq cider-repl-display-help-banner nil)
+  (add-hook 'clojure-mode-hook
+            (lambda ()
+              (paredit-mode +1)
+              (aggressive-indent-mode +1))))
+
+;;--------------------------------------------------

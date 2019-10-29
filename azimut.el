@@ -296,7 +296,8 @@
 ;; (put 'defstruct-g 'common-lisp-indent-function '(as defstruct))
 
 ;;(require 'slime-autoloads)
-;; (require 'slime-cl-indent)
+;;(require 'slime-cl-indent)
+;;(require 'sly-cl-indent)
 ;; (define-common-lisp-style "asdf"
 ;;   (:inherit "modern")
 ;;   (:indentation
@@ -333,24 +334,39 @@
 ;;   (interactive)
 ;;   (setq slime-inhibit-pipelining nil))
 
+;; paredit on repl
+;; 'slime-repl-mode-hook
+
+(use-package sly
+  :ensure t
+  :init
+  (setq sly-lisp-implementations     '((sbcl  ("sbcl")))
+        ;;sly-complete-symbol-function 'sly-simple-completions
+        inferior-lisp-program        "/usr/local/bin/sbcl")
+  ;; "modern" style
+  (setq lisp-lambda-list-keyword-alignment t
+        lisp-lambda-list-keyword-parameter-alignment t
+        lisp-lambda-list-keyword-parameter-indentation 0
+        lisp-loop-indent-subclauses nil)
+  :config
+  ;;(setq sly-contribs '(sly-fancy sly-cl-indent))
+  ;;(require 'sly-cl-indent)
+  (add-hook 'sly-mode-hook
+            (lambda ()
+              (paredit-mode +1)
+              ;; Enable sly-cl-indent
+              (setq-local lisp-indent-function 'common-lisp-indent-function))))
+
 (defun sly-enable-concurrent-hints ()
   (interactive)
   (setq sly-inhibit-pipelining nil))
 
-;; paredit on repl
-;; 'slime-repl-mode-hook
 (add-hook
  'sly-mrepl-hook
  (lambda ()
    (paredit-mode +1)
    ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
    ))
-
-(setq ;;sly-complete-symbol-function 'sly-simple-completions
- sly-lisp-implementations     '((sbcl  ("sbcl")))
- inferior-lisp-program        "/usr/local/bin/sbcl")
-
-(add-hook 'sly-mode-hook (lambda () (paredit-mode +1)))
 
 ;; sbcl real
 ;; (setq slime-lisp-implementations '((sbcl ("/usr/local/bin/sbcl")))
@@ -456,6 +472,8 @@
 ;;
 ;; Erlang
 ;;
+(use-package ivy-erlang-complete
+  :ensure t)
 (use-package erlang
   :ensure t
   :mode
@@ -478,10 +496,11 @@
               (require 'ivy-erlang-complete)
               (ivy-erlang-complete-init)
               (define-key erlang-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
-              (define-key erlang-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
+              ;;(define-key erlang-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
               ;;
               (add-hook 'after-save-hook #'ivy-erlang-complete-reparse nil :local)
-              (setq ivy-erlang-complete-use-default-keys t)
+              (setq ivy-erlang-complete-use-default-keys t
+                    ivy-erlang-complete-erlang-root "/usr/lib64/erlang/")
 	      (setq erlang-electric-commands '(erlang-electric-comma
 				               erlang-electric-semicolon))
 	      (setq erlang-electric-newline-inhibit-list '(erlang-electric-gt))
@@ -491,7 +510,8 @@
   (defvar inferior-erlang-prompt-timeout t)
   ;; default node name to emacs@localhost
   (setq inferior-erlang-machine-options '("-name" "emacs@sabayon"))
-  (setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
+  ;;(setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (setq flycheck-display-errors-function nil)
   ;; ivy should run after flycheck...
   )
@@ -587,6 +607,13 @@
   :config
   (which-key-mode +1))
 
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  ;; Set Github Formatted Markdown Mode for README.md
+  :mode (("README\\.md\\'" . gfm-mode))
+  :init (setq markdown-command "/usr/bin/MultiMarkdown.pl"))
+
 ;;--------------------------------------------------
 ;; Clojure
 ;;--------------------------------------------------
@@ -601,10 +628,14 @@
 
 (use-package clojure-mode
   :ensure t
-  :bind
-  (("C-c C-d C-h" . cider-clojuredocs)
-   ("C-c ~"       . cider-repl-set-ns))
+  ;; :bind
+  ;; (("C-c C-d C-h" . cider-clojuredocs)
+  ;;  ("C-c ~"       . cider-repl-set-ns))
   :config
+  (define-key clojure-mode-map
+    (kbd "C-c C-d C-h") #'cider-clojuredocs)
+  (define-key clojure-mode-map
+    (kbd "C-c ~") #'cider-repl-set-ns)
   (setq cider-repl-display-help-banner nil)
   (add-hook 'clojure-mode-hook
             (lambda ()

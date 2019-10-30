@@ -499,8 +499,15 @@
               ;;(define-key erlang-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
               ;;
               (add-hook 'after-save-hook #'ivy-erlang-complete-reparse nil :local)
+              ;;
+              ;;(setq load-path (cons "~/.kerl/builds/22.1/lib/tools-2.11.2/emacs" load-path))
+              (setq ivy-erlang-complete-erlang-root "~/.kerl/builds/22.1/release_22.1")
+              (setq erlang-root-dir "~/.kerl/builds/22.1/release_22.1")
+              (setq exec-path (cons "~/.kerl/builds/22.1/release_22.1/bin" exec-path))
+              ;;
               (setq ivy-erlang-complete-use-default-keys t
-                    ivy-erlang-complete-erlang-root "/usr/lib64/erlang/")
+                    ;;ivy-erlang-complete-erlang-root "/usr/lib64/erlang/"
+                    )
 	      (setq erlang-electric-commands '(erlang-electric-comma
 				               erlang-electric-semicolon))
 	      (setq erlang-electric-newline-inhibit-list '(erlang-electric-gt))

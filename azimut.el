@@ -35,6 +35,12 @@
 ;;(use-package spacemacs-theme
 ;;  :ensure t)
 
+(use-package phi-search
+  :ensure t)
+(require 'phi-search)
+(global-set-key (kbd "C-s") 'phi-search)
+(global-set-key (kbd "C-r") 'phi-search-backward)
+
 (use-package spaceline
   :ensure t
   :config

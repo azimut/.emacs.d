@@ -108,23 +108,50 @@
 (use-package aggressive-indent
   :ensure t)
 
+(use-package string-inflection
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c j") 'string-inflection-toggle)
+  ;; BROKEN, chages whole file
+  ;; (global-set-key (kbd "C-c _") (lambda ()
+  ;;                                 (interactive)
+  ;;                                 (goto-char (1+ (point-min)))
+  ;;                                 (replace-string "_" "-")))
+  )
+
+;;
+;; Lua
+;;
 (use-package lua-mode
   :ensure t
   :config
   (add-hook
    'lua-mode-hook
    (lambda ()
+     (setq-local prettify-symbols-alist '(("function" .  955)))
+     (setq lua-default-application "~/.luarocks/bin/rep.lua")
      ;; FIXME: still doesn't work
      (setenv "LUA_PATH" (concat "/usr/share/awesome/lib/?/init.lua;"
                                 "/usr/share/awesome/lib/?.lua;"
                                 "/usr/share/awesome/lib/?/?.lua;;"))
-     (setq-local prettify-symbols-alist '(("function" .  955)))
+     (setenv "LUA_REPL_RLWRAP" "sure");?
      (define-key lua-mode-map (kbd "C-c C-d") #'lua-search-documentation)
      (define-key lua-mode-map (kbd "C-c C-k") #'lua-send-buffer)
      (define-key lua-mode-map (kbd "C-c C-c") #'lua-send-region)
+     ;;
      (smartparens-strict-mode +1)
      (sp-use-paredit-bindings)
      (aggressive-indent-mode +1))))
+
+(defun azm-renoise-manual ()
+  (interactive)
+  (dired "~/projects/lua/xrnx/Documentation/")
+  (dired-hide-details-mode)
+  (rename-buffer "*renoise-manual*"))
+
+;;
+;; GLSL
+;;
 
 (use-package glsl-mode
   :ensure t
@@ -212,32 +239,34 @@
 
 (add-hook 'python-mode-hook (lambda () (elpy-mode)))
 
+
+;;
+;; Go/Golang
+;;
+
 (use-package go-eldoc   :ensure t)
 (use-package gotest     :ensure t)
 (use-package flymake-go :ensure t)
-(use-package go-guru
-  :ensure t
+(use-package go-guru    :ensure t
   :init
   (add-hook 'go-mode-hook #'go-guru-hl-identifier))
-(use-package go-dlv
-  :ensure t
+(use-package go-dlv     :ensure t
   :commands (dlv-current-func dlv)
   :init
-  (setq go-guru-command "/usr/lib/go/bin/guru"))
-(use-package company-go
-  :ensure t
-  :config
-  (setq company-go-show-annotation t)
-  (define-key go-mode-map (kbd "M-TAB") #'company-complete)
-  (add-hook 'go-mode-hook
-            (lambda ()
-              (setq-local company-backends
-                          '((company-go company-yasnippet))))))
+  ;;(setq go-guru-command "/usr/lib/go/bin/guru")
+  )
+(use-package auto-complete   :ensure t)
+(use-package go-autocomplete :ensure t)
 (use-package gorepl-mode :ensure t :after go-mode
-  :config (add-hook 'gorepl-mode-hook
-                    (lambda ()
-                      (smartparens-strict-mode +1)
-                      (sp-use-paredit-bindings))))
+  :config
+  (add-hook
+   'gorepl-mode-hook
+   (lambda ()
+     (add-to-list 'ac-modes 'gorepl-mode)
+     (add-hook 'gorepl-mode-hook
+               #'(lambda () (add-to-list 'ac-sources 'ac-source-go)))
+     (smartparens-strict-mode +1)
+     (sp-use-paredit-bindings))))
 (use-package go-mode
   :ensure t
   :init
@@ -246,20 +275,22 @@
   (add-hook 'go-mode-hook
             (lambda ()
               (setq-local tab-width 4)
-              (setq-local prettify-symbols-alist '(("func" .  955)))
+              (setq-local prettify-symbols-alist '(("func" . 955)
+                                                   ("<-"   . ?←)))
               ;;
               (flycheck-mode +1)
               (define-key go-mode-map (kbd "M-p") #'flycheck-previous-error)
               (define-key go-mode-map (kbd "M-n") #'flycheck-next-error)
               ;;
+              (require 'go-autocomplete)
+              (require 'auto-complete-config)
+              (ac-config-default)
+              ;;
               (go-eldoc-setup)
               (smartparens-strict-mode +1)
               (sp-use-paredit-bindings)
-              (company-mode +1)
-              (company-quickhelp-mode +1)
-              (add-hook 'before-save-hook
-                        #'gofmt-before-save
-                        nil :local)))
+              (setq gofmt-command "goimports")
+              (add-hook 'before-save-hook #'gofmt-before-save)))
   :config
   ;; (define-key go-mode-map (kbd "C-x f") 'go-test-current-file)
   ;; (define-key go-mode-map (kbd "C-x t") 'go-test-current-test)
@@ -347,7 +378,7 @@
   :ensure t
   :init
   (setq sly-lisp-implementations     '((sbcl  ("sbcl")))
-        ;;sly-complete-symbol-function 'sly-simple-completions
+        sly-complete-symbol-function 'sly-flex-completions
         inferior-lisp-program        "/usr/local/bin/sbcl")
   ;; "modern" style
   (setq lisp-lambda-list-keyword-alignment t
@@ -360,6 +391,8 @@
   (add-hook 'sly-mode-hook
             (lambda ()
               (paredit-mode +1)
+              (yas-minor-mode +1)
+              (aggressive-indent-mode +1)
               ;; Enable sly-cl-indent
               (setq-local lisp-indent-function 'common-lisp-indent-function))))
 
@@ -494,11 +527,33 @@
               (sp-use-paredit-bindings)
               (aggressive-indent-mode +1)
               (yas-minor-mode +1)
+              ;;
               (define-key erlang-mode-map (kbd "M-p") #'flycheck-previous-error)
               (define-key erlang-mode-map (kbd "M-n") #'flycheck-next-error)
               (flycheck-mode +1)
               ;; pretty needs to happen on init
               ;;(setq-local prettify-symbols-alist '(("fun" .  955) ("->"  . 8594)))
+              (setq
+               flycheck-erlang-executable "~/.kerl/builds/22.1/release_22.1/bin/erlc"
+               flycheck-erlang-include-path (append
+                                             (file-expand-wildcards
+                                              (concat
+                                               (flycheck-rebar3-project-root)
+                                               "_build/*/lib/*/include"))
+                                             (file-expand-wildcards
+                                              (concat
+                                               (flycheck-rebar3-project-root)
+                                               "_checkouts/*/include")))
+               flycheck-erlang-library-path (append
+                                             (file-expand-wildcards
+                                              (concat
+                                               (flycheck-rebar3-project-root)
+                                               "_build/*/lib/*/ebin"))
+                                             (file-expand-wildcards
+                                              (concat
+                                               (flycheck-rebar3-project-root)
+                                               "_checkouts/*/ebin"))))
+              ;;
               (require 'ivy-erlang-complete)
               (ivy-erlang-complete-init)
               (define-key erlang-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
@@ -510,6 +565,7 @@
               (setq ivy-erlang-complete-erlang-root "~/.kerl/builds/22.1/release_22.1")
               (setq erlang-root-dir "~/.kerl/builds/22.1/release_22.1")
               (setq exec-path (cons "~/.kerl/builds/22.1/release_22.1/bin" exec-path))
+              (setq-local ivy-erlang-complete-enable-autosave nil)
               ;;
               (setq ivy-erlang-complete-use-default-keys t
                     ;;ivy-erlang-complete-erlang-root "/usr/lib64/erlang/"
@@ -517,12 +573,39 @@
 	      (setq erlang-electric-commands '(erlang-electric-comma
 				               erlang-electric-semicolon))
 	      (setq erlang-electric-newline-inhibit-list '(erlang-electric-gt))
-	      (setq erlang-electric-newline-inhibit t)))
+	      (setq erlang-electric-newline-inhibit t)
+              ;; https://github.com/massemanet/dotfiles.nixos/
+              (unless (null buffer-file-name)
+                (make-local-variable 'compile-command)
+                (setq compile-command
+                      (cond ((file-exists-p "../rebar.config")
+                             "cd .. && rebar3 compile")
+                            ((file-exists-p "Makefile")
+                             "make -k")
+                            ((file-exists-p "../Makefile")
+                             "make -kC..")
+                            (t (concat
+                                "erlc "
+                                (if (file-exists-p "../ebin") "-o ../ebin " "")
+                                (if (file-exists-p "../include") "-I ../include " "")
+                                "+debug_info -W "
+                                buffer-file-name)))))))
   :config
   ;; prevent annoying hang-on-compile
   (defvar inferior-erlang-prompt-timeout t)
   ;; default node name to emacs@localhost
-  (setq inferior-erlang-machine-options '("-name" "emacs@sabayon"))
+  ;; NOTE: Prefer to use C-u M-x erlang-shell to use a glob (*) for the deps
+  (setq inferior-erlang-machine-options
+        (list "-name" "emacs@sabayon"
+              "-pa"
+              "../ebin")
+        ;; (file-expand-wildcards
+        ;;  (concat
+        ;;   (flycheck-rebar3-project-root)
+        ;;   "_build/*/lib/*/ebin"))
+        ;;"../_build/default/lib/*/ebin"
+        )
+
   ;;(setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (setq flycheck-display-errors-function nil)
@@ -535,14 +618,29 @@
   (other-window 1)
   (delete-other-windows))
 
-(add-hook 'erlang-shell-mode-hook
-          (lambda ()
-            (smartparens-strict-mode +1)
-            (sp-use-paredit-bindings)
-            (define-key erlang-shell-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
-            (define-key erlang-shell-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
-            (define-key erlang-shell-mode-map (kbd "TAB") #'ivy-erlang-complete)
-            (define-key erlang-shell-mode-map (kbd "C-c C-z") #'hide-erlang-shell)))
+(add-hook
+ 'erlang-shell-mode-hook
+ (lambda ()
+   (smartparens-strict-mode +1)
+   (sp-use-paredit-bindings)
+   ;; Bindings set from erlang-mode
+   (define-key erlang-shell-mode-map (kbd "M-.")
+     #'ivy-erlang-complete-find-definition)
+   (define-key erlang-shell-mode-map (kbd "M-,")
+     #'xref-pop-marker-stack)
+   ;;
+   (setq-local ivy-erlang-complete-enable-autosave nil)
+   ;;
+   ;;(ivy-erlang-complete-autosetup-project-root)
+   (setq-local ivy-erlang-complete--eldocs (make-hash-table :test 'equal))
+   ;;(ivy-erlang-complete-reparse)
+   (set (make-local-variable 'eldoc-documentation-function)
+        'ivy-erlang-complete-eldoc)
+   ;; Other bindings..
+   ;;(define-key erlang-shell-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
+   (define-key erlang-shell-mode-map (kbd "M-TAB")     #'ivy-erlang-complete)
+   (define-key erlang-shell-mode-map (kbd "TAB")       #'ivy-erlang-complete)
+   (define-key erlang-shell-mode-map (kbd "C-c C-z")   #'hide-erlang-shell)))
 
 ;; Elixir
 
@@ -625,7 +723,10 @@
   :commands (markdown-mode gfm-mode)
   ;; Set Github Formatted Markdown Mode for README.md
   :mode (("README\\.md\\'" . gfm-mode))
-  :init (setq markdown-command "/usr/bin/MultiMarkdown.pl"))
+  :init
+  ;;(setq markdown-command "/usr/bin/MultiMarkdown.pl")
+  (setq markdown-command
+        "pandoc -f markdown -t html -s --mathjax --highlight-style=pygments"))
 
 ;;--------------------------------------------------
 ;; Clojure

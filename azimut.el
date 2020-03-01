@@ -1,6 +1,8 @@
 ;; https://github.com/syl20bnr/spacemacs/issues/12535
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
+(set-cursor-color "#FFC0CB")
+
 ;;--------------------------------------------------
 ;; melpa
 (require 'package)
@@ -34,6 +36,9 @@
 (setq dired-listing-switches "-lh")
 ;;(use-package spacemacs-theme
 ;;  :ensure t)
+
+(use-package smartparens
+  :ensure t)
 
 (use-package phi-search
   :ensure t)
@@ -257,27 +262,41 @@
   )
 (use-package auto-complete   :ensure t)
 (use-package go-autocomplete :ensure t)
+;;(use-package company-go :ensure t)
 (use-package gorepl-mode :ensure t :after go-mode
   :config
   (add-hook
    'gorepl-mode-hook
    (lambda ()
      (add-to-list 'ac-modes 'gorepl-mode)
-     (add-hook 'gorepl-mode-hook
-               #'(lambda () (add-to-list 'ac-sources 'ac-source-go)))
+     (add-hook 'gorepl-mode-hook #'(lambda () (add-to-list 'ac-sources 'ac-source-go)))
      (smartparens-strict-mode +1)
      (sp-use-paredit-bindings))))
+;; (custom-set-faces
+;;  '(company-preview
+;;    ((t (:foreground "darkgray" :underline t))))
+;;  '(company-preview-common
+;;    ((t (:inherit company-preview))))
+;;  '(company-tooltip
+;;    ((t (:background "lightgray" :foreground "black"))))
+;;  '(company-tooltip-selection
+;;    ((t (:background "steelblue" :foreground "white"))))
+;;  '(company-tooltip-common
+;;    ((((type x)) (:inherit company-tooltip :weight bold))
+;;     (t (:inherit company-tooltip))))
+;;  '(company-tooltip-common-selection
+;;    ((((type x)) (:inherit company-tooltip-selection :weight bold))
+;;     (t (:inherit company-tooltip-selection)))))
 (use-package go-mode
   :ensure t
   :init
-  ;; (use-package go-autocomplete
-  ;;   :ensure t)
   (add-hook 'go-mode-hook
             (lambda ()
               (setq-local tab-width 4)
               (setq-local prettify-symbols-alist '(("func" . 955)
                                                    ("<-"   . ?←)))
               ;;
+              (yas-minor-mode +1)
               (flycheck-mode +1)
               (define-key go-mode-map (kbd "M-p") #'flycheck-previous-error)
               (define-key go-mode-map (kbd "M-n") #'flycheck-next-error)
@@ -286,12 +305,19 @@
               (require 'auto-complete-config)
               (ac-config-default)
               ;;
+              ;; (set (make-local-variable 'company-backends) '(company-go))
+              ;; (company-mode)
+              ;;
               (go-eldoc-setup)
               (smartparens-strict-mode +1)
               (sp-use-paredit-bindings)
               (setq gofmt-command "goimports")
               (add-hook 'before-save-hook #'gofmt-before-save)))
   :config
+  ;; (setq company-tooltip-limit 20)                      ; bigger popup window
+  ;; (setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
+  ;; (setq company-echo-delay 0)                          ; remove annoying blinking
+  ;; (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
   ;; (define-key go-mode-map (kbd "C-x f") 'go-test-current-file)
   ;; (define-key go-mode-map (kbd "C-x t") 'go-test-current-test)
   ;; (define-key go-mode-map (kbd "C-x p") 'go-test-current-project)
@@ -302,7 +328,11 @@
 
 ;; pretty lambda
 (global-prettify-symbols-mode 1)
-
+;; (ac-set-trigger-key "<?\\M-\\t>")
+;; (ac-set-trigger-key "TAB")
+;; (ac-set-trigger-key "<tab>")
+;; (define-key ac-completing-map (kbd "C-n") 'ac-next)
+;; (define-key ac-completing-map (kbd "C-p") 'ac-previous)
 ;;--------------------------------------------------
 ;; Common-lisp
 
@@ -414,17 +444,19 @@
 
 ;;--------------------------------------------------
 ;; Shell - bashate
-(use-package flycheck-bashate
-  :ensure t
-  :config
-  (add-hook 'sh-mode-hook
-            (lambda ()
-              (flycheck-mode +1)
-              (define-key sh-mode-map (kbd "M-p") #'flycheck-previous-error)
-              (define-key sh-mode-map (kbd "M-n") #'flycheck-next-error)
-              (aggressive-indent-mode +1)
-              (smartparens-strict-mode +1)
-              (sp-use-paredit-bindings))))
+;; (use-package flycheck-bashate
+;;   :ensure t
+;;   :config)
+(add-hook 'sh-mode-hook
+          (lambda ()
+            (flycheck-mode +1)
+            (define-key sh-mode-map (kbd "M-p") #'flycheck-previous-error)
+            (define-key sh-mode-map (kbd "M-n") #'flycheck-next-error)
+            (aggressive-indent-mode +1)
+            (smartparens-strict-mode +1)
+            (sp-use-paredit-bindings)))
+(setq flycheck-disabled-checkers '(sh-posix-bash))
+(setq-default flycheck-shellcheck-excluded-warnings '("SC2086"))
 
 ;; https://nistara.net/post/emacs-send-line-or-region-to-shell/
 (defun sh-send-line-or-region (&optional step)
@@ -757,3 +789,25 @@
               (aggressive-indent-mode +1))))
 
 ;;--------------------------------------------------
+
+(use-package dimmer
+  :ensure t
+  :config (dimmer-mode +1))
+
+;; This is an Emacs package that creates graphviz directed graphs from
+;; the headings of an org file
+(use-package org-mind-map
+  :init
+  (require 'ox-org)
+  :ensure t
+  ;; Uncomment the below if 'ensure-system-packages` is installed
+  ;;:ensure-system-package (gvgen . graphviz)
+  :config
+  (setq org-mind-map-engine "dot")       ; Default. Directed Graph
+  ;; (setq org-mind-map-engine "neato")  ; Undirected Spring Graph
+  ;; (setq org-mind-map-engine "twopi")  ; Radial Layout
+  ;; (setq org-mind-map-engine "fdp")    ; Undirected Spring Force-Directed
+  ;; (setq org-mind-map-engine "sfdp")   ; Multiscale version of fdp for the layout of large graphs
+  ;; (setq org-mind-map-engine "twopi")  ; Radial layouts
+  ;; (setq org-mind-map-engine "circo")  ; Circular Layout
+  )

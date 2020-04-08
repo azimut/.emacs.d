@@ -211,7 +211,7 @@
               (local-set-key '[right] 'forward-char))))
 
 (use-package csound-mode
-  :ensure nil
+  :ensure t
   :mode (("\\.csd\\'" . csound-mode)
   	 ("\\.orc\\'" . csound-mode)
   	 ("\\.sco\\'" . csound-mode)
@@ -225,8 +225,20 @@
                    (symbol-name (symbol-at-point))
                    ".html")))))
 
-(use-package yasnippet
+(use-package yasnippet-snippets
   :ensure t)
+(use-package yasnippet
+  :ensure t
+  :after yasnippet-snippets
+  :diminish yas-minor-mode
+  :config
+  (yas-global-mode +1)
+  (setq-default yas-prompt-functions
+                '(yas-ido-prompt yas-dropdown-prompt))
+  (add-hook 'snippet-mode-hook
+            (lambda ()
+              (set (make-local-variable require-final-newline) nil))))
+
 (use-package dockerfile-mode
   :ensure t)
 
@@ -545,12 +557,23 @@
 ;;
 (use-package ivy-erlang-complete
   :ensure t)
+
 (use-package erlang
-  :ensure t
-  :mode
-  ("\\.erl\\'" . erlang-mode)
-  ("\\.hrl\\'" . erlang-mode)
-  ("\\.xrl\\'" . erlang-mode)
+  :load-path ("~/.kerl/builds/22.1/release_22.1/lib/tools-3.2.1/emacs")
+  :hook (after-save . ivy-erlang-complete-reparse)
+  :mode (("\\.erl\\'"             . erlang-mode)
+         ("\\.hrl\\'"             . erlang-mode)
+         ("\\.xrl\\'"             . erlang-mode)
+         ("rebar\\.config$"       . erlang-mode)
+         ("relx\\.config$"        . erlang-mode)
+         ("sys\\.config\\.src$"   . erlang-mode)
+         ("sys\\.config$"         . erlang-mode)
+         ("\\.config\\.src?$"     . erlang-mode)
+         ("\\.config\\.script?$"  . erlang-mode)
+         ("\\.hrl?$"              . erlang-mode)
+         ("\\.app?$"              . erlang-mode)
+         ("\\.app.src?$"          . erlang-mode)
+         ("\\Emakefile"           . erlang-mode))
   :init
   ;;
   (add-hook 'erlang-mode-hook
@@ -558,7 +581,7 @@
               (smartparens-strict-mode +1)
               (sp-use-paredit-bindings)
               (aggressive-indent-mode +1)
-              (yas-minor-mode +1)
+              ;;(yas-minor-mode +1)
               ;;
               (define-key erlang-mode-map (kbd "M-p") #'flycheck-previous-error)
               (define-key erlang-mode-map (kbd "M-n") #'flycheck-next-error)
@@ -587,11 +610,9 @@
                                                "_checkouts/*/ebin"))))
               ;;
               (require 'ivy-erlang-complete)
-              (ivy-erlang-complete-init)
               (define-key erlang-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
               ;;(define-key erlang-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
               ;;
-              (add-hook 'after-save-hook #'ivy-erlang-complete-reparse nil :local)
               ;;
               ;;(setq load-path (cons "~/.kerl/builds/22.1/lib/tools-2.11.2/emacs" load-path))
               (setq ivy-erlang-complete-erlang-root "~/.kerl/builds/22.1/release_22.1")
@@ -621,22 +642,29 @@
                                 (if (file-exists-p "../ebin") "-o ../ebin " "")
                                 (if (file-exists-p "../include") "-I ../include " "")
                                 "+debug_info -W "
-                                buffer-file-name)))))))
+                                buffer-file-name))))))
+            (ivy-erlang-complete-init))
   :config
   ;; prevent annoying hang-on-compile
   (defvar inferior-erlang-prompt-timeout t)
-  ;; default node name to emacs@localhost
+  ;; rebar3 in emacs from:
+  ;; https://gist.github.com/maruks/ee19934306bc219bd969ae25aa909f1f
+  (setq inferior-erlang-machine "rebar3")
+  (setq inferior-erlang-machine-options '("shell"))
+  (setq inferior-erlang-shell-type nil)
   ;; NOTE: Prefer to use C-u M-x erlang-shell to use a glob (*) for the deps
-  (setq inferior-erlang-machine-options
-        (list "-name" "emacs@sabayon"
-              "-pa"
-              "../ebin")
-        ;; (file-expand-wildcards
-        ;;  (concat
-        ;;   (flycheck-rebar3-project-root)
-        ;;   "_build/*/lib/*/ebin"))
-        ;;"../_build/default/lib/*/ebin"
-        )
+  ;; default node name to emacs@localhost
+  ;; (setq inferior-erlang-machine-options
+  ;;       (list "-name" "emacs@sabayon"
+  ;;             "-pa"
+  ;;             "../ebin"
+  ;;             ;; (file-expand-wildcards
+  ;;             ;;  (concat
+  ;;             ;;   (flycheck-rebar3-project-root)
+  ;;             ;;   "_build/*/lib/*/ebin"))
+  ;;             "../_build/default/lib/*/ebin"
+  ;;             "../../../_build/default/lib/*/ebin")
+  ;;       )
 
   ;;(setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
@@ -670,6 +698,7 @@
         'ivy-erlang-complete-eldoc)
    ;; Other bindings..
    ;;(define-key erlang-shell-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
+   (define-key erlang-shell-mode-map (kbd "C-c C-d")   #'erlang-man-function-no-prompt)
    (define-key erlang-shell-mode-map (kbd "M-TAB")     #'ivy-erlang-complete)
    (define-key erlang-shell-mode-map (kbd "TAB")       #'ivy-erlang-complete)
    (define-key erlang-shell-mode-map (kbd "C-c C-z")   #'hide-erlang-shell)))
@@ -713,9 +742,11 @@
 
 (global-set-key (kbd "C-x g") 'magit-status)
 
-(use-package magit-todos
-  :ensure t)
-(magit-todos-mode)
+(use-package magit-todos :ensure t)
+(magit-todos-mode +1)
+
+(use-package gitignore-templates :ensure t)
+(use-package gitignore-mode :ensure t)
 
 ;;  https://github.com/jaypei/emacs-neotree/issues/56
 ;;(magithub-feature-autoinject t)
@@ -791,8 +822,10 @@
 ;;--------------------------------------------------
 
 (use-package dimmer
-  :ensure t
-  :config (dimmer-mode +1))
+  :ensure t)
+
+(require 'dimmer)
+(dimmer-mode +1)
 
 ;; This is an Emacs package that creates graphviz directed graphs from
 ;; the headings of an org file
@@ -811,3 +844,6 @@
   ;; (setq org-mind-map-engine "twopi")  ; Radial layouts
   ;; (setq org-mind-map-engine "circo")  ; Circular Layout
   )
+
+
+;;-------------------------------------------------

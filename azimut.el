@@ -580,7 +580,6 @@
               (smartparens-strict-mode +1)
               (sp-use-paredit-bindings)
               (aggressive-indent-mode +1)
-              ;;(yas-minor-mode +1)
               ;;
               (define-key erlang-mode-map (kbd "M-p") #'flycheck-previous-error)
               (define-key erlang-mode-map (kbd "M-n") #'flycheck-next-error)
@@ -610,6 +609,7 @@
               ;;
               (require 'ivy-erlang-complete)
               (define-key erlang-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
+              (define-key erlang-mode-map (kbd "C-c C-w C-c") #'ivy-erlang-complete-find-references)
               ;;(define-key erlang-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
               ;;
               ;;

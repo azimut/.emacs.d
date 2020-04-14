@@ -821,11 +821,10 @@
 
 ;;--------------------------------------------------
 
-(use-package dimmer
-  :ensure t)
-
-(require 'dimmer)
-(dimmer-mode +1)
+;; (use-package dimmer
+;;   :ensure t)
+;; (require 'dimmer)
+;; (dimmer-mode +1)
 
 ;; This is an Emacs package that creates graphviz directed graphs from
 ;; the headings of an org file

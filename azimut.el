@@ -419,7 +419,10 @@
 (use-package sly
   :ensure t
   :init
-  (setq sly-lisp-implementations     '((sbcl  ("sbcl")))
+  ;; (setq slime-lisp-implementations '((sbcl ("/usr/local/bin/sbcl")))
+  ;;       inferior-lisp-program "/usr/local/bin/sbcl"
+  ;;       slime-contribs '(slime-fancy))
+  (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl")))
         sly-complete-symbol-function 'sly-flex-completions
         inferior-lisp-program        "/usr/local/bin/sbcl")
   ;; "modern" style
@@ -430,6 +433,7 @@
   :config
   ;;(setq sly-contribs '(sly-fancy sly-cl-indent))
   ;;(require 'sly-cl-indent)
+  ;; sly-mode-hook
   (add-hook 'sly-mode-hook
             (lambda ()
               (paredit-mode +1)
@@ -448,11 +452,6 @@
    (paredit-mode +1)
    ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
    ))
-
-;; sbcl real
-;; (setq slime-lisp-implementations '((sbcl ("/usr/local/bin/sbcl")))
-;;       inferior-lisp-program "/usr/local/bin/sbcl"
-;;       slime-contribs '(slime-fancy))
 
 ;;--------------------------------------------------
 ;; Shell - bashate

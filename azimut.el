@@ -748,6 +748,8 @@
 (use-package gitignore-templates :ensure t)
 (use-package gitignore-mode :ensure t)
 
+(use-package git-timemachine  :ensure t)
+
 ;;  https://github.com/jaypei/emacs-neotree/issues/56
 ;;(magithub-feature-autoinject t)
 ;;(setq magithub-clone-default-directory "/home/sendai/quicklisp/local-projects/")

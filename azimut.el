@@ -1,5 +1,7 @@
 ;; https://github.com/syl20bnr/spacemacs/issues/12535
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+;; other WORKAROUND:
+;;(setq package-check-signature nil)
 
 (set-cursor-color "#FFC0CB")
 
@@ -34,8 +36,6 @@
 ;; HIDE lisp .fasl files
 (setq dired-omit-files (concat dired-omit-files "\\|*.fasl"))
 (setq dired-listing-switches "-lh")
-;;(use-package spacemacs-theme
-;;  :ensure t)
 
 (use-package smartparens
   :ensure t)
@@ -144,27 +144,19 @@
               (local-set-key '[left]  'backward-char)
               (local-set-key '[right] 'forward-char))))
 
-(use-package yasnippet-snippets
-  :ensure t)
+(use-package yasnippet-snippets :ensure t)
 (use-package yasnippet
   :ensure t
   :after yasnippet-snippets
   :diminish yas-minor-mode
-  :config
-  (yas-global-mode +1)
+  :config (yas-global-mode +1)
   (setq-default yas-prompt-functions
                 '(yas-ido-prompt yas-dropdown-prompt))
   (add-hook 'snippet-mode-hook
             (lambda ()
               (set (make-local-variable require-final-newline) nil))))
 
-(use-package dockerfile-mode
-  :ensure t)
-
-;; jupyter elpy
-(setenv "IPY_TEST_SIMPLE_PROMPT" "1")
-(setq python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt")
+(use-package dockerfile-mode :ensure t)
 
 (use-package yaml-mode
   :ensure t
@@ -173,10 +165,6 @@
   :init
   (add-hook 'yaml-mode-hook (lambda () (ansible 1))))
 
-(add-hook 'python-mode-hook (lambda () (elpy-mode)))
-
-
-
 ;; pretty lambda
 (global-prettify-symbols-mode 1)
 ;; (ac-set-trigger-key "<?\\M-\\t>")
@@ -184,7 +172,6 @@
 ;; (ac-set-trigger-key "<tab>")
 ;; (define-key ac-completing-map (kbd "C-n") 'ac-next)
 ;; (define-key ac-completing-map (kbd "C-p") 'ac-previous)
-
 
 ;;--------------------------------------------------
 
@@ -213,26 +200,8 @@
   (setq neo-hidden-regexp-list
         '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$" "\\.meta$")))
 
-;; C / C++
-(defun my-cmode-hook ()
-  (setq imenu-list-auto-resize t)
-  (setq-local zeal-at-point-docset '("C" "gl4"))
-  (setq-local helm-dash-docsets '("C" "OpenGL4"))
-  ;; (local-set-key (kbd "C-c C-d d")
-  ;;                (lambda () (interactive) (manual-entry (current-word))))
-  (ggtags-mode +1))
-(add-hook 'c-mode-hook #'my-cmode-hook)
 (use-package ggtags
   :ensure t)
-(use-package cc-mode
-  :ensure nil
-  :init
-  (add-hook #'c++-mode-hook
-            (lambda () (ggtags-mode +1)))
-  :config
-  (setq-local imenu-create-index-function #'ggtags-build-imenu-index)
-  (setq-local zeal-at-point-docset '("gl4" "cpp"))
-  (setq-local helm-dash-docsets '("OpenGL4" "cpp")))
 
 ;; compile-mode
 ;; https://github.com/fsharp/zarchive-fsharpbinding/issues/246
@@ -241,24 +210,21 @@
             ;;(setq compilation-auto-jump-to-first-error t)
             (setq compilation-scroll-output t)))
 
-(global-set-key (kbd "C-x g") 'magit-status)
+(use-package magit
+  :ensure t
+  :config (global-set-key (kbd "C-x g") 'magit-status))
 
-(use-package magit-todos :ensure t)
-(magit-todos-mode +1)
+(use-package magit-todos
+  :ensure t
+  :config (magit-todos-mode +1))
 
 (use-package gitignore-templates :ensure t)
-(use-package gitignore-mode :ensure t)
-
-(use-package git-timemachine  :ensure t)
-
-;;  https://github.com/jaypei/emacs-neotree/issues/56
-;;(magithub-feature-autoinject t)
-;;(setq magithub-clone-default-directory "/home/sendai/quicklisp/local-projects/")
+(use-package gitignore-mode      :ensure t)
+(use-package git-timemachine     :ensure t)
 
 (use-package helm-dash
   :ensure t
-  :config
-  (setq dash-docs-browser-func 'eww))
+  :config (setq dash-docs-browser-func 'eww))
 
 ;;(grep-apply-setting 'grep-command "grep --color -nHirI -e \"\" *")
 (setq grep-find-command
@@ -268,7 +234,6 @@
 (setq grep-find-template
       "find <D> <X> -type f <F> -exec grep <C> --exclude='*.svn-base' -nH --null -e <R> \\{\\} +")
 
-;;(setq package-check-signature nil)
 
 (use-package which-key
   :ensure t
@@ -284,14 +249,6 @@
   ;;(setq markdown-command "/usr/bin/MultiMarkdown.pl")
   (setq markdown-command
         "pandoc -f markdown -t html -s --mathjax --highlight-style=pygments"))
-
-
-;;--------------------------------------------------
-
-;; (use-package dimmer
-;;   :ensure t)
-;; (require 'dimmer)
-;; (dimmer-mode +1)
 
 ;; This is an Emacs package that creates graphviz directed graphs from
 ;; the headings of an org file
@@ -322,4 +279,5 @@
 ;; (load-file "~/.emacs.d/lang/lua.el")
 ;; (load-file "~/.emacs.d/lang/glsl.el")
 ;; (load-file "~/.emacs.d/lang/livecoding.el")
+;; (load-file "~/.emacs.d/lang/cpp.el")
 

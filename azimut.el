@@ -124,72 +124,6 @@
   ;;                                 (replace-string "_" "-")))
   )
 
-;;
-;; Lua
-;;
-(use-package lua-mode
-  :ensure t
-  :config
-  (add-hook
-   'lua-mode-hook
-   (lambda ()
-     (setq-local prettify-symbols-alist '(("function" .  955)))
-     (setq lua-default-application "~/.luarocks/bin/rep.lua")
-     ;; FIXME: still doesn't work
-     (setenv "LUA_PATH" (concat "/usr/share/awesome/lib/?/init.lua;"
-                                "/usr/share/awesome/lib/?.lua;"
-                                "/usr/share/awesome/lib/?/?.lua;;"))
-     (setenv "LUA_REPL_RLWRAP" "sure");?
-     (define-key lua-mode-map (kbd "C-c C-d") #'lua-search-documentation)
-     (define-key lua-mode-map (kbd "C-c C-k") #'lua-send-buffer)
-     (define-key lua-mode-map (kbd "C-c C-c") #'lua-send-region)
-     ;;
-     (smartparens-strict-mode +1)
-     (sp-use-paredit-bindings)
-     (aggressive-indent-mode +1))))
-
-(defun azm-renoise-manual ()
-  (interactive)
-  (dired "~/projects/lua/xrnx/Documentation/")
-  (dired-hide-details-mode)
-  (rename-buffer "*renoise-manual*"))
-
-;;
-;; GLSL
-;;
-
-(use-package glsl-mode
-  :ensure t
-  :config
-  (add-hook 'glsl-mode-hook
-            (lambda ()
-              (interactive)
-              (setq-local zeal-at-point-docset '("gl4"))
-              (setq-local helm-dash-docsets '("OpenGL4"))
-              (smartparens-strict-mode +1)
-              (sp-use-paredit-bindings)
-              (aggressive-indent-mode +1)))
-  ;; g3d engine
-  (add-to-list 'auto-mode-alist '("\\.pix\\'"   . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.comp\\'"  . glsl-mode))
-  ;; Unreal (though is actually hlsl...)
-  (add-to-list 'auto-mode-alist '("\\.usf\\'"   . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.ush\\'"   . glsl-mode))
-  ;;
-  (add-to-list 'auto-mode-alist '("\\.vert\\'"  . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.frag\\'"  . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.geom\\'"  . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.glsl\\'"  . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.vs\\'"    . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.fs\\'"    . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.hlsl\\'"  . glsl-mode))
-  (add-to-list 'auto-mode-alist '("\\.hlsli\\'" . glsl-mode)))
-
-(use-package shader-mode
-  :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.cginc\\'"    . shader-mode)))
-
 ;; w3m
 (use-package w3m
   :ensure nil
@@ -209,21 +143,6 @@
               (local-set-key '[down]  'next-line)
               (local-set-key '[left]  'backward-char)
               (local-set-key '[right] 'forward-char))))
-
-(use-package csound-mode
-  :ensure t
-  :mode (("\\.csd\\'" . csound-mode)
-  	 ("\\.orc\\'" . csound-mode)
-  	 ("\\.sco\\'" . csound-mode)
-         ("\\.udo\\'" . csound-mode))
-  :config
-  (define-key csound-mode-map (kbd "C-c C-d")
-    (lambda ()
-      (interactive)
-      (browse-url (concat ;;"http://www.csounds.com/manual/html/"
-                   "https://csound.com/docs/manual/"
-                   (symbol-name (symbol-at-point))
-                   ".html")))))
 
 (use-package yasnippet-snippets
   :ensure t)
@@ -257,86 +176,6 @@
 (add-hook 'python-mode-hook (lambda () (elpy-mode)))
 
 
-;;
-;; Go/Golang
-;;
-
-(use-package go-eldoc   :ensure t)
-(use-package gotest     :ensure t)
-(use-package flymake-go :ensure t)
-(use-package go-guru    :ensure t
-  :init
-  (add-hook 'go-mode-hook #'go-guru-hl-identifier))
-(use-package go-dlv     :ensure t
-  :commands (dlv-current-func dlv)
-  :init
-  ;;(setq go-guru-command "/usr/lib/go/bin/guru")
-  )
-(use-package auto-complete   :ensure t)
-(use-package go-autocomplete :ensure t)
-;;(use-package company-go :ensure t)
-(use-package gorepl-mode :ensure t :after go-mode
-  :config
-  (add-hook
-   'gorepl-mode-hook
-   (lambda ()
-     (add-to-list 'ac-modes 'gorepl-mode)
-     (add-hook 'gorepl-mode-hook #'(lambda () (add-to-list 'ac-sources 'ac-source-go)))
-     (smartparens-strict-mode +1)
-     (sp-use-paredit-bindings))))
-;; (custom-set-faces
-;;  '(company-preview
-;;    ((t (:foreground "darkgray" :underline t))))
-;;  '(company-preview-common
-;;    ((t (:inherit company-preview))))
-;;  '(company-tooltip
-;;    ((t (:background "lightgray" :foreground "black"))))
-;;  '(company-tooltip-selection
-;;    ((t (:background "steelblue" :foreground "white"))))
-;;  '(company-tooltip-common
-;;    ((((type x)) (:inherit company-tooltip :weight bold))
-;;     (t (:inherit company-tooltip))))
-;;  '(company-tooltip-common-selection
-;;    ((((type x)) (:inherit company-tooltip-selection :weight bold))
-;;     (t (:inherit company-tooltip-selection)))))
-(use-package go-mode
-  :ensure t
-  :init
-  (add-hook 'go-mode-hook
-            (lambda ()
-              (setq-local tab-width 4)
-              (setq-local prettify-symbols-alist '(("func" . 955)
-                                                   ("<-"   . ?←)))
-              ;;
-              (yas-minor-mode +1)
-              (flycheck-mode +1)
-              (define-key go-mode-map (kbd "M-p") #'flycheck-previous-error)
-              (define-key go-mode-map (kbd "M-n") #'flycheck-next-error)
-              ;;
-              (require 'go-autocomplete)
-              (require 'auto-complete-config)
-              (ac-config-default)
-              ;;
-              ;; (set (make-local-variable 'company-backends) '(company-go))
-              ;; (company-mode)
-              ;;
-              (go-eldoc-setup)
-              (smartparens-strict-mode +1)
-              (sp-use-paredit-bindings)
-              (setq gofmt-command "goimports")
-              (add-hook 'before-save-hook #'gofmt-before-save)))
-  :config
-  ;; (setq company-tooltip-limit 20)                      ; bigger popup window
-  ;; (setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
-  ;; (setq company-echo-delay 0)                          ; remove annoying blinking
-  ;; (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
-  ;; (define-key go-mode-map (kbd "C-x f") 'go-test-current-file)
-  ;; (define-key go-mode-map (kbd "C-x t") 'go-test-current-test)
-  ;; (define-key go-mode-map (kbd "C-x p") 'go-test-current-project)
-  ;; (define-key go-mode-map (kbd "C-x b") 'go-test-current-benchmark)
-  (define-key go-mode-map (kbd "M-.")     #'godef-jump)
-  (define-key go-mode-map (kbd "C-c C-k") #'go-run)
-  (define-key go-mode-map (kbd "C-c C-d") #'godoc-at-point))
 
 ;; pretty lambda
 (global-prettify-symbols-mode 1)
@@ -345,185 +184,8 @@
 ;; (ac-set-trigger-key "<tab>")
 ;; (define-key ac-completing-map (kbd "C-n") 'ac-next)
 ;; (define-key ac-completing-map (kbd "C-p") 'ac-previous)
-;;--------------------------------------------------
-;; Common-lisp
 
-(use-package redshank
-  :ensure t)
 
-;; lisp-mode-hook
-;; sly-editing-mode
-;; (add-hook 'lisp-mode-hook
-;;           (lambda ()
-;;             (paredit-mode +1)
-;;             ;; (projectile-mode +1)
-;;             ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-;;             ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-;;             (redshank-mode +1)
-;;             (aggressive-indent-mode +1)
-;;             (yas-minor-mode +1)
-;;             ;;(yas-reload-all)
-;;             (setq prettify-symbols-alist
-;;                   '(("lambda" . 955) ; λ
-;;                     ;;("->"  . 8594) ; →
-;;                     ;;("=>"  . 8658) ; ⇒
-;;                     ;;(":->" . 8594) ;
-;;                     ))))
-
-;; FIX lisp ident
-;; (put :default-initargs 'common-lisp-indent-function '(&rest))
-;; (put 'defstruct-g 'common-lisp-indent-function '(as defstruct))
-
-;;(require 'slime-autoloads)
-;;(require 'slime-cl-indent)
-;;(require 'sly-cl-indent)
-;; (define-common-lisp-style "asdf"
-;;   (:inherit "modern")
-;;   (:indentation
-;;    (define-package  (as defpackage))
-;;    (define-constant (as defconstant))))
-
-;; (put 'if 'lisp-indent-function nil)
-;; (put 'when 'lisp-indent-function 1)
-;; (put 'unless 'lisp-indent-function 1)
-;; (put 'do 'lisp-indent-function 2)
-;; (put 'do* 'lisp-indent-function 2)
-
-;;--------------------------------------------------
-;; Common Lisp - Slime
-
-;; cbaggers/varjo
-;; (defun slime-vari-describe-symbol (symbol-name)
-;;   "Describe the symbol at point."
-;;   (interactive (list (slime-read-symbol-name "Describe symbol: ")))
-;;   (when (not symbol-name)
-;;     (error "No symbol given"))
-;;   (let ((pkg (slime-current-package)))
-;;     (slime-eval-describe
-;;      `(vari.cl::vari-describe ,symbol-name nil ,pkg))))
-
-;; (define-key lisp-mode-map (kbd "C-c C-v C-v")
-;;   'slime-vari-describe-symbol)
-;; (define-key lisp-mode-map (kbd "C-c C-a")
-;;   'redshank-align-forms-as-columns)
-
-;;; concurrent hints
-;; https://www.reddit.com/r/lisp/comments/72v6p3/pushing_pixels_with_lisp_episode_18_shadow/
-;; (defun slime-enable-concurrent-hints ()
-;;   (interactive)
-;;   (setq slime-inhibit-pipelining nil))
-
-;; paredit on repl
-;; 'slime-repl-mode-hook
-
-(use-package sly
-  :ensure t
-  :init
-  ;; (setq slime-lisp-implementations '((sbcl ("/usr/local/bin/sbcl")))
-  ;;       inferior-lisp-program "/usr/local/bin/sbcl"
-  ;;       slime-contribs '(slime-fancy))
-  (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl")))
-        sly-complete-symbol-function 'sly-flex-completions
-        inferior-lisp-program        "/usr/local/bin/sbcl")
-  ;; "modern" style
-  (setq lisp-lambda-list-keyword-alignment t
-        lisp-lambda-list-keyword-parameter-alignment t
-        lisp-lambda-list-keyword-parameter-indentation 0
-        lisp-loop-indent-subclauses nil)
-  :config
-  ;;(setq sly-contribs '(sly-fancy sly-cl-indent))
-  ;;(require 'sly-cl-indent)
-  ;; sly-mode-hook
-  (add-hook 'sly-mode-hook
-            (lambda ()
-              (paredit-mode +1)
-              (yas-minor-mode +1)
-              (aggressive-indent-mode +1)
-              ;; Enable sly-cl-indent
-              (setq-local lisp-indent-function 'common-lisp-indent-function))))
-
-(defun sly-enable-concurrent-hints ()
-  (interactive)
-  (setq sly-inhibit-pipelining nil))
-
-(add-hook
- 'sly-mrepl-hook
- (lambda ()
-   (paredit-mode +1)
-   ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
-   ))
-
-;;--------------------------------------------------
-;; Shell - bashate
-;; (use-package flycheck-bashate
-;;   :ensure t
-;;   :config)
-(add-hook 'sh-mode-hook
-          (lambda ()
-            (flycheck-mode +1)
-            (define-key sh-mode-map (kbd "M-p") #'flycheck-previous-error)
-            (define-key sh-mode-map (kbd "M-n") #'flycheck-next-error)
-            (aggressive-indent-mode +1)
-            (smartparens-strict-mode +1)
-            (sp-use-paredit-bindings)))
-(setq flycheck-disabled-checkers '(sh-posix-bash))
-(setq-default flycheck-shellcheck-excluded-warnings '("SC2086"))
-
-;; https://nistara.net/post/emacs-send-line-or-region-to-shell/
-(defun sh-send-line-or-region (&optional step)
-  (interactive ())
-  (let ((proc (get-process "shell"))
-        pbuf min max command)
-    (unless proc
-      (let ((currbuff (current-buffer)))
-        (shell)
-        (switch-to-buffer currbuff)
-        (setq proc (get-process "shell"))))
-    (setq pbuff (process-buffer proc))
-    (if (use-region-p)
-        (setq min (region-beginning)
-              max (region-end))
-      (setq min (point-at-bol)
-            max (point-at-eol)))
-    (setq command (concat (buffer-substring min max) "\n"))
-    (with-current-buffer pbuff
-      (goto-char (process-mark proc))
-      (insert command)
-      (move-marker (process-mark proc) (point))
-      (setq comint-scroll-to-bottom-on-output t))
-    (process-send-string  proc command)
-    (display-buffer (process-buffer proc) t)
-    (when step
-      (goto-char max)
-      (next-line))))
-(defun sh-send-line-or-region-and-step ()
-  (interactive)
-  (sh-send-line-or-region t))
-
-(define-key sh-mode-map (kbd "C-c C-c") #'sh-send-line-or-region-and-step)
-
-;;--------------------------------------------------
-;; Emacs
-(use-package elisp-mode
-  :ensure nil
-  :init
-  ;; Default *scratch* buffer to lexical binding.
-  (add-hook 'lisp-interaction-mode-hook
-            (lambda ()
-              (when (equal (buffer-name) "*scratch*")
-                (setq-local lexical-binding t))))
-  (add-hook 'emacs-lisp-mode-hook
-            (lambda ()
-              (paredit-mode +1)
-              (aggressive-indent-mode +1)
-              (eldoc-mode +1)
-              ;; SLIME like keybinding instead of "C-h f"
-              (define-key emacs-lisp-mode-map (kbd "C-c C-d")
-                (lambda ()
-                  (interactive)
-                  (describe-symbol
-                   (symbol-at-point))))
-              (define-key emacs-lisp-mode-map (kbd "C-c C-c") #'compile-defun))))
 ;;--------------------------------------------------
 
 ;; https://www.emacswiki.org/emacs/ShowParenMode
@@ -550,166 +212,6 @@
   (setq neo-theme 'arrow)
   (setq neo-hidden-regexp-list
         '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$" "\\.meta$")))
-
-;;
-;; Erlang
-;;
-(use-package ivy-erlang-complete
-  :ensure t)
-
-(use-package erlang
-  :load-path ("~/.kerl/builds/22.1/release_22.1/lib/tools-3.2.1/emacs")
-  :hook (after-save . ivy-erlang-complete-reparse)
-  :mode (("\\.erl\\'"             . erlang-mode)
-         ("\\.hrl\\'"             . erlang-mode)
-         ("\\.xrl\\'"             . erlang-mode)
-         ("rebar\\.config$"       . erlang-mode)
-         ("relx\\.config$"        . erlang-mode)
-         ("sys\\.config\\.src$"   . erlang-mode)
-         ("sys\\.config$"         . erlang-mode)
-         ("\\.config\\.src?$"     . erlang-mode)
-         ("\\.config\\.script?$"  . erlang-mode)
-         ("\\.hrl?$"              . erlang-mode)
-         ("\\.app?$"              . erlang-mode)
-         ("\\.app.src?$"          . erlang-mode)
-         ("\\Emakefile"           . erlang-mode))
-  :init
-  ;;
-  (add-hook 'erlang-mode-hook
-            (lambda ()
-              (smartparens-strict-mode +1)
-              (sp-use-paredit-bindings)
-              (aggressive-indent-mode +1)
-              ;;
-              (define-key erlang-mode-map (kbd "M-p") #'flycheck-previous-error)
-              (define-key erlang-mode-map (kbd "M-n") #'flycheck-next-error)
-              (flycheck-mode +1)
-              ;; pretty needs to happen on init
-              ;;(setq-local prettify-symbols-alist '(("fun" .  955) ("->"  . 8594)))
-              (setq
-               flycheck-erlang-executable "~/.kerl/builds/22.1/release_22.1/bin/erlc"
-               flycheck-erlang-include-path (append
-                                             (file-expand-wildcards
-                                              (concat
-                                               (flycheck-rebar3-project-root)
-                                               "_build/*/lib/*/include"))
-                                             (file-expand-wildcards
-                                              (concat
-                                               (flycheck-rebar3-project-root)
-                                               "_checkouts/*/include")))
-               flycheck-erlang-library-path (append
-                                             (file-expand-wildcards
-                                              (concat
-                                               (flycheck-rebar3-project-root)
-                                               "_build/*/lib/*/ebin"))
-                                             (file-expand-wildcards
-                                              (concat
-                                               (flycheck-rebar3-project-root)
-                                               "_checkouts/*/ebin"))))
-              ;;
-              (require 'ivy-erlang-complete)
-              (define-key erlang-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
-              (define-key erlang-mode-map (kbd "C-c C-w C-c") #'ivy-erlang-complete-find-references)
-              ;;(define-key erlang-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
-              ;;
-              ;;
-              ;;(setq load-path (cons "~/.kerl/builds/22.1/lib/tools-2.11.2/emacs" load-path))
-              (setq ivy-erlang-complete-erlang-root "~/.kerl/builds/22.1/release_22.1")
-              (setq erlang-root-dir "~/.kerl/builds/22.1/release_22.1")
-              (setq exec-path (cons "~/.kerl/builds/22.1/release_22.1/bin" exec-path))
-              (setq-local ivy-erlang-complete-enable-autosave nil)
-              ;;
-              (setq ivy-erlang-complete-use-default-keys t
-                    ;;ivy-erlang-complete-erlang-root "/usr/lib64/erlang/"
-                    )
-	      (setq erlang-electric-commands '(erlang-electric-comma
-				               erlang-electric-semicolon))
-	      (setq erlang-electric-newline-inhibit-list '(erlang-electric-gt))
-	      (setq erlang-electric-newline-inhibit t)
-              ;; https://github.com/massemanet/dotfiles.nixos/
-              (unless (null buffer-file-name)
-                (make-local-variable 'compile-command)
-                (setq compile-command
-                      (cond ((file-exists-p "../rebar.config")
-                             "cd .. && rebar3 compile")
-                            ((file-exists-p "Makefile")
-                             "make -k")
-                            ((file-exists-p "../Makefile")
-                             "make -kC..")
-                            (t (concat
-                                "erlc "
-                                (if (file-exists-p "../ebin") "-o ../ebin " "")
-                                (if (file-exists-p "../include") "-I ../include " "")
-                                "+debug_info -W "
-                                buffer-file-name))))))
-            (ivy-erlang-complete-init))
-  :config
-  ;; prevent annoying hang-on-compile
-  (defvar inferior-erlang-prompt-timeout t)
-  ;; rebar3 in emacs from:
-  ;; https://gist.github.com/maruks/ee19934306bc219bd969ae25aa909f1f
-  (setq inferior-erlang-machine "rebar3")
-  (setq inferior-erlang-machine-options '("shell"))
-  (setq inferior-erlang-shell-type nil)
-  ;; NOTE: Prefer to use C-u M-x erlang-shell to use a glob (*) for the deps
-  ;; default node name to emacs@localhost
-  ;; (setq inferior-erlang-machine-options
-  ;;       (list "-name" "emacs@sabayon"
-  ;;             "-pa"
-  ;;             "../ebin"
-  ;;             ;; (file-expand-wildcards
-  ;;             ;;  (concat
-  ;;             ;;   (flycheck-rebar3-project-root)
-  ;;             ;;   "_build/*/lib/*/ebin"))
-  ;;             "../_build/default/lib/*/ebin"
-  ;;             "../../../_build/default/lib/*/ebin")
-  ;;       )
-
-  ;;(setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (setq flycheck-display-errors-function nil)
-  ;; ivy should run after flycheck...
-  )
-
-
-(defun hide-erlang-shell ()
-  (interactive)
-  (other-window 1)
-  (delete-other-windows))
-
-(add-hook
- 'erlang-shell-mode-hook
- (lambda ()
-   (smartparens-strict-mode +1)
-   (sp-use-paredit-bindings)
-   ;; Bindings set from erlang-mode
-   (define-key erlang-shell-mode-map (kbd "M-.")
-     #'ivy-erlang-complete-find-definition)
-   (define-key erlang-shell-mode-map (kbd "M-,")
-     #'xref-pop-marker-stack)
-   ;;
-   (setq-local ivy-erlang-complete-enable-autosave nil)
-   ;;
-   ;;(ivy-erlang-complete-autosetup-project-root)
-   (setq-local ivy-erlang-complete--eldocs (make-hash-table :test 'equal))
-   ;;(ivy-erlang-complete-reparse)
-   (set (make-local-variable 'eldoc-documentation-function)
-        'ivy-erlang-complete-eldoc)
-   ;; Other bindings..
-   ;;(define-key erlang-shell-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
-   (define-key erlang-shell-mode-map (kbd "C-c C-d")   #'erlang-man-function-no-prompt)
-   (define-key erlang-shell-mode-map (kbd "M-TAB")     #'ivy-erlang-complete)
-   (define-key erlang-shell-mode-map (kbd "TAB")       #'ivy-erlang-complete)
-   (define-key erlang-shell-mode-map (kbd "C-c C-z")   #'hide-erlang-shell)))
-
-;; Elixir
-
-;; (add-to-list 'elixir-mode-hook
-;;              (defun auto-activate-ruby-end-mode-for-elixir-mode ()
-;;                (set (make-variable-buffer-local 'ruby-end-expand-keywords-before-re)
-;;                     "\\(?:^\\|\\s-+\\)\\(?:do\\)")
-;;                (set (make-variable-buffer-local 'ruby-end-check-statement-modifiers) nil)
-;;                (ruby-end-mode +1)))
 
 ;; C / C++
 (defun my-cmode-hook ()
@@ -753,15 +255,6 @@
 ;;(magithub-feature-autoinject t)
 ;;(setq magithub-clone-default-directory "/home/sendai/quicklisp/local-projects/")
 
-;;
-;; Tidal
-;;
-(use-package tidal
-  :ensure t
-  :config
-  (setq tidal-interpreter "/home/sendai/.ghcup/bin/ghci")
-  (setq tidal-boot-script-path "/home/sendai/.cabal/share/x86_64-linux-ghc-8.6.5/tidal-1.0.14/BootTidal.hs"))
-
 (use-package helm-dash
   :ensure t
   :config
@@ -792,33 +285,6 @@
   (setq markdown-command
         "pandoc -f markdown -t html -s --mathjax --highlight-style=pygments"))
 
-;;--------------------------------------------------
-;; Clojure
-;;--------------------------------------------------
-(use-package cider
-  :ensure t
-  :config
-  (define-key cider-repl-mode-map
-    (kbd "C-c M-o") #'cider-repl-clear-buffer)
-  (add-hook 'cider-repl-mode-hook
-            (lambda ()
-              (paredit-mode +1))))
-
-(use-package clojure-mode
-  :ensure t
-  ;; :bind
-  ;; (("C-c C-d C-h" . cider-clojuredocs)
-  ;;  ("C-c ~"       . cider-repl-set-ns))
-  :config
-  (define-key clojure-mode-map
-    (kbd "C-c C-d C-h") #'cider-clojuredocs)
-  (define-key clojure-mode-map
-    (kbd "C-c ~") #'cider-repl-set-ns)
-  (setq cider-repl-display-help-banner nil)
-  (add-hook 'clojure-mode-hook
-            (lambda ()
-              (paredit-mode +1)
-              (aggressive-indent-mode +1))))
 
 ;;--------------------------------------------------
 
@@ -845,5 +311,15 @@
   ;; (setq org-mind-map-engine "circo")  ; Circular Layout
   )
 
-
 ;;-------------------------------------------------
+(load-file "~/.emacs.d/lang/shell.el")
+(load-file "~/.emacs.d/lang/elisp.el")
+(load-file "~/.emacs.d/lang/erlang.el")
+(load-file "~/.emacs.d/lang/lisp.el")
+;; (load-file "~/.emacs.d/lang/clojure.el")
+;; (load-file "~/.emacs.d/lang/go.el")
+;; (load-file "~/.emacs.d/lang/elixir.el")
+;; (load-file "~/.emacs.d/lang/lua.el")
+;; (load-file "~/.emacs.d/lang/glsl.el")
+;; (load-file "~/.emacs.d/lang/livecoding.el")
+

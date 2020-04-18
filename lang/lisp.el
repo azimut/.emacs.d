@@ -67,36 +67,34 @@
 ;; 'slime-repl-mode-hook
 
 (use-package sly
-  :ensure t
+  :ensure
   :init
   ;; (setq slime-lisp-implementations '((sbcl ("/usr/local/bin/sbcl")))
   ;;       inferior-lisp-program "/usr/local/bin/sbcl"
   ;;       slime-contribs '(slime-fancy))
   (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl")))
-        sly-complete-symbol-function 'sly-flex-completions
+        sly-complete-symbol-function 'sly-simple-completions
         inferior-lisp-program        "/usr/local/bin/sbcl")
   ;; "modern" style
-  (setq lisp-lambda-list-keyword-alignment t
-        lisp-lambda-list-keyword-parameter-alignment t
-        lisp-lambda-list-keyword-parameter-indentation 0
-        lisp-loop-indent-subclauses nil)
   :config
   ;;(setq sly-contribs '(sly-fancy sly-cl-indent))
   ;;(require 'sly-cl-indent)
   ;; sly-mode-hook
-  (add-hook 'sly-mode-hook
-            (lambda ()
-              ;;(display-line-numbers-mode +1)
-              (paredit-mode +1)
-              (yas-minor-mode +1)
-              (aggressive-indent-mode +1)
-              ;; Enable sly-cl-indent
-              ;;(setq-local display-line-numbers t)
-              (setq-local lisp-indent-function 'common-lisp-indent-function))))
-
-(defun sly-enable-concurrent-hints ()
-  (interactive)
-  (setq sly-inhibit-pipelining nil))
+  (setq sly-inhibit-pipelining nil)
+  (add-hook 'sly--completion-display-mode-hook
+            (lambda () (setq-local show-trailing-whitespace nil)))
+  (add-hook
+   'sly-mode-hook
+   (lambda ()
+     (setq-local lisp-indent-function 'common-lisp-indent-function)
+     (setq lisp-lambda-list-keyword-alignment             t
+           lisp-lambda-list-keyword-parameter-alignment   t
+           lisp-lambda-list-keyword-parameter-indentation 0
+           lisp-loop-indent-forms-like-keywords           t
+           lisp-loop-indent-subclauses                    nil)
+     (paredit-mode +1)
+     (yas-minor-mode +1)
+     (aggressive-indent-mode +1))))
 
 (add-hook
  'sly-mrepl-hook

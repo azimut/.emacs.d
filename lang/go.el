@@ -1,7 +1,3 @@
-;;
-;; Go/Golang
-;;
-
 (use-package go-eldoc   :ensure t)
 (use-package gotest     :ensure t)
 (use-package flymake-go :ensure t)
@@ -10,7 +6,7 @@
   (add-hook 'go-mode-hook #'go-guru-hl-identifier))
 (use-package go-dlv     :ensure t
   :commands (dlv-current-func dlv)
-  :init
+  ;;:init
   ;;(setq go-guru-command "/usr/lib/go/bin/guru")
   )
 (use-package auto-complete   :ensure t)

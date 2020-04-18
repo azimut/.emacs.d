@@ -5,57 +5,33 @@
 
 (set-cursor-color "#FFC0CB")
 
-;;--------------------------------------------------
-;; melpa
-(require 'package)
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (proto (if no-ssl "http" "https")))
-  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
-  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-  (when (< emacs-major-version 24)
-    ;; For important compatibility libraries like cl-lib
-    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
-(package-initialize)
-
-;;--------------------------------------------------
-
-;; I do NOT want white spaces to be highlighted
-(require 'whitespace)
-(global-whitespace-mode 0)
-
 ;; disable menu-bar
 ;; https://www.emacswiki.org/emacs/MenuBar
-(menu-bar-mode -1)
+(menu-bar-mode 1)
 (scroll-bar-mode 1)
 (tool-bar-mode -1)
 
-(require 'dired-x)
-(setq-default dired-omit-files-p t) ; Buffer-local variable
-;; HIDE lisp .fasl files
-(setq dired-omit-files (concat dired-omit-files "\\|*.fasl"))
-(setq dired-listing-switches "-lh")
+;; https://www.emacswiki.org/emacs/ShowParenMode
+;; parens match
+(show-paren-mode 1)
 
-(use-package smartparens
-  :ensure t)
+;; Fuck tilde!
+(setq make-backup-files nil)
 
-(use-package phi-search
-  :ensure t)
-(require 'phi-search)
-(global-set-key (kbd "C-s") 'phi-search)
-(global-set-key (kbd "C-r") 'phi-search-backward)
+;; I want spaces for indentation
+(setq-default indent-tabs-mode nil)
 
-(use-package spaceline
-  :ensure t
-  :config
-  (require 'spaceline-config)
-  (spaceline-emacs-theme))
+(put 'erase-buffer 'disabled nil)
 
-(defun transparency (value)
-  "Sets the transparency of the frame window. 0=transparent/100=opaque"
-  (interactive "nTransparency Value 0 - 100 opaque:")
-  (set-frame-parameter (selected-frame) 'alpha value))
+;;(grep-apply-setting 'grep-command "grep --color -nHirI -e \"\" *")
+(setq grep-find-command
+      (quote
+       ("find . -type f -exec grep --color -nH --null -e  \\{\\} +" . 49)))
+(setq grep-command "grep --color -nHirI -e \"\" *")
+(setq grep-find-template
+      "find <D> <X> -type f <F> -exec grep <C> --exclude='*.svn-base' -nH --null -e <R> \\{\\} +")
+
+;;--------------------------------------------------
 
 ;; Emacs Tutorial 9 - Switching windows in a smart way!
 ;; https://www.youtube.com/watch?v=dppr_js-U0s&t=474s
@@ -76,13 +52,60 @@
 ;; kill this
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 
+;; pretty lambda
+(global-prettify-symbols-mode 1)
+
 ;; window resize
 (global-set-key (kbd "<C-up>") 'shrink-window)
 (global-set-key (kbd "<C-down>") 'enlarge-window)
 (global-set-key (kbd "<C-left>") 'shrink-window-horizontally)
 (global-set-key (kbd "<C-right>") 'enlarge-window-horizontally)
 
-;; multiple-cursors
+;;--------------------------------------------------
+
+;; NOTE: need a compositor
+(defun transparency (value)
+  "Sets the transparency of the frame window. 0=transparent/100=opaque"
+  (interactive "nTransparency Value 0 - 100 opaque:")
+  (set-frame-parameter (selected-frame) 'alpha value))
+
+;;--------------------------------------------------
+;; melpa
+(require 'package)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https")))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
+(package-initialize)
+
+;;--------------------------------------------------
+
+;; I do NOT want white spaces to be highlighted
+(require 'whitespace)
+(global-whitespace-mode 0)
+
+(setq dired-listing-switches "-lh")
+(require 'dired-x)
+(setq-default dired-omit-files-p t) ; Buffer-local variable
+(setq dired-omit-files (concat dired-omit-files "\\|*.fasl"))
+
+(use-package smartparens :ensure t)
+(use-package phi-search
+  :ensure t
+  :config (require 'phi-search)
+  (global-set-key (kbd "C-s") 'phi-search)
+  (global-set-key (kbd "C-r") 'phi-search-backward))
+
+(use-package spaceline
+  :ensure t
+  :config (require 'spaceline-config)
+  (spaceline-emacs-theme))
+
 (use-package multiple-cursors
   :ensure t
   :config
@@ -116,13 +139,7 @@
 (use-package string-inflection
   :ensure t
   :config
-  (global-set-key (kbd "C-c j") 'string-inflection-toggle)
-  ;; BROKEN, chages whole file
-  ;; (global-set-key (kbd "C-c _") (lambda ()
-  ;;                                 (interactive)
-  ;;                                 (goto-char (1+ (point-min)))
-  ;;                                 (replace-string "_" "-")))
-  )
+  (global-set-key (kbd "C-c j") 'string-inflection-toggle))
 
 ;; w3m
 (use-package w3m
@@ -165,33 +182,6 @@
   :init
   (add-hook 'yaml-mode-hook (lambda () (ansible 1))))
 
-;; pretty lambda
-(global-prettify-symbols-mode 1)
-;; (ac-set-trigger-key "<?\\M-\\t>")
-;; (ac-set-trigger-key "TAB")
-;; (ac-set-trigger-key "<tab>")
-;; (define-key ac-completing-map (kbd "C-n") 'ac-next)
-;; (define-key ac-completing-map (kbd "C-p") 'ac-previous)
-
-;;--------------------------------------------------
-
-;; https://www.emacswiki.org/emacs/ShowParenMode
-;; parens match
-(show-paren-mode 1)
-
-;; Fuck tilde!
-(setq make-backup-files nil)
-
-;; I want spaces for indentation
-(setq-default indent-tabs-mode nil)
-
-;; https://emacs.stackexchange.com/questions/24719/set-indentation-for-shell-script-function
-(setq sh-basic-offset 4)
-(setq sh-indentation 4)
-(setq smie-indent-basic 4)
-
-(put 'erase-buffer 'disabled nil)
-
 (use-package neotree
   :ensure t
   :config
@@ -225,15 +215,6 @@
 (use-package helm-dash
   :ensure t
   :config (setq dash-docs-browser-func 'eww))
-
-;;(grep-apply-setting 'grep-command "grep --color -nHirI -e \"\" *")
-(setq grep-find-command
-      (quote
-       ("find . -type f -exec grep --color -nH --null -e  \\{\\} +" . 49)))
-(setq grep-command "grep --color -nHirI -e \"\" *")
-(setq grep-find-template
-      "find <D> <X> -type f <F> -exec grep <C> --exclude='*.svn-base' -nH --null -e <R> \\{\\} +")
-
 
 (use-package which-key
   :ensure t

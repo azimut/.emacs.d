@@ -2,6 +2,15 @@
 ;; (use-package flycheck-bashate
 ;;   :ensure t
 ;;   :config)
+
+;; https://emacs.stackexchange.com/questions/24719/set-indentation-for-shell-script-function
+(setq sh-basic-offset 4)
+(setq sh-indentation 4)
+(setq smie-indent-basic 4)
+
+(setq flycheck-disabled-checkers '(sh-posix-bash))
+(setq-default flycheck-shellcheck-excluded-warnings '("SC2086"))
+
 (add-hook 'sh-mode-hook
           (lambda ()
             (flycheck-mode +1)
@@ -10,8 +19,6 @@
             (aggressive-indent-mode +1)
             (smartparens-strict-mode +1)
             (sp-use-paredit-bindings)))
-(setq flycheck-disabled-checkers '(sh-posix-bash))
-(setq-default flycheck-shellcheck-excluded-warnings '("SC2086"))
 
 ;; https://nistara.net/post/emacs-send-line-or-region-to-shell/
 (defun sh-send-line-or-region (&optional step)

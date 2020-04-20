@@ -24,21 +24,6 @@
 ;; (put :default-initargs 'common-lisp-indent-function '(&rest))
 ;; (put 'defstruct-g 'common-lisp-indent-function '(as defstruct))
 
-;;(require 'slime-autoloads)
-;;(require 'slime-cl-indent)
-;;(require 'sly-cl-indent)
-;; (define-common-lisp-style "asdf"
-;;   (:inherit "modern")
-;;   (:indentation
-;;    (define-package  (as defpackage))
-;;    (define-constant (as defconstant))))
-
-;; (put 'if 'lisp-indent-function nil)
-;; (put 'when 'lisp-indent-function 1)
-;; (put 'unless 'lisp-indent-function 1)
-;; (put 'do 'lisp-indent-function 2)
-;; (put 'do* 'lisp-indent-function 2)
-
 ;;--------------------------------------------------
 ;; Common Lisp - Slime
 
@@ -57,15 +42,6 @@
 ;; (define-key lisp-mode-map (kbd "C-c C-a")
 ;;   'redshank-align-forms-as-columns)
 
-;;; concurrent hints
-;; https://www.reddit.com/r/lisp/comments/72v6p3/pushing_pixels_with_lisp_episode_18_shadow/
-;; (defun slime-enable-concurrent-hints ()
-;;   (interactive)
-;;   (setq slime-inhibit-pipelining nil))
-
-;; paredit on repl
-;; 'slime-repl-mode-hook
-
 (use-package sly
   :ensure
   :init
@@ -74,13 +50,14 @@
   ;;       slime-contribs '(slime-fancy))
   (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl")))
         sly-complete-symbol-function 'sly-simple-completions
-        inferior-lisp-program        "/usr/local/bin/sbcl")
+        inferior-lisp-program        "/usr/local/bin/sbcl"
+        sly-contribs                 '(sly-fancy sly-macrostep)
+        sly-inhibit-pipelining       nil
+        sly-load-failed-fasl         'always
+        sly-description-autofocus    t)
   ;; "modern" style
   :config
-  ;;(setq sly-contribs '(sly-fancy sly-cl-indent))
-  ;;(require 'sly-cl-indent)
-  ;; sly-mode-hook
-  (setq sly-inhibit-pipelining nil)
+  (sly-setup)
   (add-hook 'sly--completion-display-mode-hook
             (lambda () (setq-local show-trailing-whitespace nil)))
   (add-hook
@@ -94,7 +71,8 @@
            lisp-loop-indent-subclauses                    nil)
      (paredit-mode +1)
      (yas-minor-mode +1)
-     (aggressive-indent-mode +1))))
+     (aggressive-indent-mode +1)
+     )))
 
 (add-hook
  'sly-mrepl-hook

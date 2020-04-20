@@ -1,8 +1,18 @@
+;;
+
+(add-hook
+ 'after-init-hook
+ (lambda () (load-theme 'kaolin-galaxy t)))
+
+(add-hook
+ 'Buffer-menu-mode-hook
+ (lambda () (setq-local show-trailing-whitespace nil)))
 ;; https://github.com/syl20bnr/spacemacs/issues/12535
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 ;; other WORKAROUND:
 ;;(setq package-check-signature nil)
 
+(fset 'yes-or-no-p 'y-or-n-p)
 (set-cursor-color "#FFC0CB")
 
 ;; disable menu-bar
@@ -220,6 +230,9 @@
   :config
   (which-key-mode +1))
 
+(use-package systemd
+  :ensure t)
+
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")
 (load-file "~/.emacs.d/lang/elisp.el")
@@ -228,6 +241,7 @@
 ;; (load-file "~/.emacs.d/lang/clojure.el")
 (load-file "~/.emacs.d/lang/go.el")
 (load-file "~/.emacs.d/lang/markup.el")
+(load-file "~/.emacs.d/lang/javascript.el")
 ;; (load-file "~/.emacs.d/lang/elixir.el")
 ;; (load-file "~/.emacs.d/lang/lua.el")
 ;; (load-file "~/.emacs.d/lang/glsl.el")

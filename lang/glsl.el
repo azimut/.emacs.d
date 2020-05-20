@@ -28,5 +28,4 @@
 
 (use-package shader-mode
   :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.cginc\\'"    . shader-mode)))
+  :mode (("\\.cginc\\'" . shader-mode)))

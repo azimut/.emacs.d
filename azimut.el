@@ -191,8 +191,7 @@
 
 (use-package yaml-mode
   :ensure t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.mat\\'" . yaml-mode)) ; Unity
+  :mode (("\\.mat\\'" . yaml-mode)); Unity
   :init
   (add-hook 'yaml-mode-hook (lambda () (ansible 1))))
 

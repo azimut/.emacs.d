@@ -7,6 +7,11 @@
 (add-hook
  'Buffer-menu-mode-hook
  (lambda () (setq-local show-trailing-whitespace nil)))
+
+(add-hook
+ 'shell-mode-hook
+ (lambda () (setq-local show-trailing-whitespace nil)))
+
 ;; https://github.com/syl20bnr/spacemacs/issues/12535
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 ;; other WORKAROUND:
@@ -230,8 +235,9 @@
   :config
   (which-key-mode +1))
 
-(use-package systemd
-  :ensure t)
+(use-package systemd :ensure t)
+(use-package vterm   :ensure t)
+(use-package ag      :ensure t)
 
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")
@@ -244,7 +250,7 @@
 (load-file "~/.emacs.d/lang/javascript.el")
 ;; (load-file "~/.emacs.d/lang/elixir.el")
 ;; (load-file "~/.emacs.d/lang/lua.el")
-;; (load-file "~/.emacs.d/lang/glsl.el")
+(load-file "~/.emacs.d/lang/glsl.el")
 ;; (load-file "~/.emacs.d/lang/livecoding.el")
 ;; (load-file "~/.emacs.d/lang/cpp.el")
 

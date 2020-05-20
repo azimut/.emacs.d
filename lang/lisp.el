@@ -69,6 +69,10 @@
            lisp-lambda-list-keyword-parameter-indentation 0
            lisp-loop-indent-forms-like-keywords           t
            lisp-loop-indent-subclauses                    nil)
+     (setq redshank-align-slot-forms-list
+           '("defclass" "define-condition"
+             "define-subject"
+             "define-shader-subject" "define-shader-entity" "define-shader-pass"))
      (paredit-mode +1)
      (yas-minor-mode +1)
      (aggressive-indent-mode +1)

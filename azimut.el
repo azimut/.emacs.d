@@ -236,7 +236,10 @@
 
 (use-package systemd :ensure t)
 (use-package vterm   :ensure t)
-(use-package ag      :ensure t)
+(use-package ag
+  :ensure t
+  :config
+  (setq ag-highlight-search t))
 
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")

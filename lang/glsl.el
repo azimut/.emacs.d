@@ -1,7 +1,3 @@
-;;
-;; GLSL
-;;
-
 (use-package glsl-mode
   :ensure t
   :mode (("\\.pix\\'"   . glsl-mode)

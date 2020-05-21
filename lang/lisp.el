@@ -82,5 +82,6 @@
  'sly-mrepl-hook
  (lambda ()
    (paredit-mode +1)
+   (setq-local show-trailing-whitespace nil)
    ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
    ))

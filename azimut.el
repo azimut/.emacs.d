@@ -234,6 +234,7 @@
   :config
   (which-key-mode +1))
 
+(use-package lice    :ensure t)
 (use-package systemd :ensure t)
 (use-package vterm   :ensure t)
 (use-package ag

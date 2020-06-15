@@ -46,6 +46,11 @@
 (setq grep-find-template
       "find <D> <X> -type f <F> -exec grep <C> --exclude='*.svn-base' -nH --null -e <R> \\{\\} +")
 
+;; https://stackoverflow.com/questions/40060220/how-to-prevent-emacs-from-scrolling-with-the-mouse-past-the-end-of-the-buffer
+;; Avoids SOME mouse scrolling after file ended, to mid screen last line
+(setq scroll-conservatively 101)
+(setq next-line-add-newlines nil)
+
 ;;--------------------------------------------------
 
 ;; Emacs Tutorial 9 - Switching windows in a smart way!
@@ -227,7 +232,11 @@
 
 (use-package helm-dash
   :ensure t
-  :config (setq dash-docs-browser-func 'eww))
+  :config
+  (setq dash-docs-browser-func 'eww)
+  (add-hook
+   'eww-mode-hook
+   (lambda () (setq-local show-trailing-whitespace nil))))
 
 (use-package which-key
   :ensure t
@@ -247,13 +256,13 @@
 (load-file "~/.emacs.d/lang/elisp.el")
 (load-file "~/.emacs.d/lang/erlang.el")
 (load-file "~/.emacs.d/lang/lisp.el")
-;; (load-file "~/.emacs.d/lang/clojure.el")
+(load-file "~/.emacs.d/lang/clojure.el")
 (load-file "~/.emacs.d/lang/go.el")
 (load-file "~/.emacs.d/lang/markup.el")
 (load-file "~/.emacs.d/lang/javascript.el")
 ;; (load-file "~/.emacs.d/lang/elixir.el")
 ;; (load-file "~/.emacs.d/lang/lua.el")
 (load-file "~/.emacs.d/lang/glsl.el")
-;; (load-file "~/.emacs.d/lang/livecoding.el")
+(load-file "~/.emacs.d/lang/livecoding.el")
 ;; (load-file "~/.emacs.d/lang/cpp.el")
 

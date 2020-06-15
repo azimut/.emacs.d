@@ -48,7 +48,10 @@
   ;; (setq slime-lisp-implementations '((sbcl ("/usr/local/bin/sbcl")))
   ;;       inferior-lisp-program "/usr/local/bin/sbcl"
   ;;       slime-contribs '(slime-fancy))
-  (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl")))
+  (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl"
+                                               ;;"--dynamic-space-size"
+                                               ;;"1024"
+                                               )))
         sly-complete-symbol-function 'sly-simple-completions
         inferior-lisp-program        "/usr/local/bin/sbcl"
         sly-contribs                 '(sly-fancy sly-macrostep)
@@ -82,6 +85,7 @@
  'sly-mrepl-hook
  (lambda ()
    (paredit-mode +1)
+   (aggressive-indent-mode -1)
    (setq-local show-trailing-whitespace nil)
    ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
    ))

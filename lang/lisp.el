@@ -1,5 +1,4 @@
-(use-package redshank
-  :ensure t)
+(use-package redshank)
 
 ;; lisp-mode-hook
 ;; sly-editing-mode

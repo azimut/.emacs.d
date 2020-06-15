@@ -1,5 +1,4 @@
 (use-package markdown-mode
-  :ensure t
   :commands (markdown-mode gfm-mode)
   ;; Set Github Formatted Markdown Mode for README.md
   :mode (("README\\.md\\'" . gfm-mode))
@@ -13,7 +12,6 @@
 (use-package org-mind-map
   :init
   (require 'ox-org)
-  :ensure t
   ;; Uncomment the below if 'ensure-system-packages` is installed
   ;;:ensure-system-package (gvgen . graphviz)
   :config

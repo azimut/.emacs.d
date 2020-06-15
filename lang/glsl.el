@@ -1,5 +1,4 @@
 (use-package glsl-mode
-  :ensure t
   :mode (("\\.pix\\'"   . glsl-mode)
          ("\\.comp\\'"  . glsl-mode)
          ("\\.usf\\'"   . glsl-mode)
@@ -23,5 +22,4 @@
               (aggressive-indent-mode +1))))
 
 (use-package shader-mode
-  :ensure t
   :mode (("\\.cginc\\'" . shader-mode)))

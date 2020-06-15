@@ -2,13 +2,11 @@
 ;; Tidal
 ;;
 (use-package tidal
-  :ensure t
   :config
   (setq tidal-interpreter "/home/sendai/.ghcup/bin/ghci")
   (setq tidal-boot-script-path "/home/sendai/.cabal/share/x86_64-linux-ghc-8.6.5/tidal-1.0.14/BootTidal.hs"))
 
 (use-package csound-mode
-  :ensure t
   :mode (("\\.csd\\'" . csound-mode)
   	 ("\\.orc\\'" . csound-mode)
   	 ("\\.sco\\'" . csound-mode)

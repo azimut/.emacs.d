@@ -113,21 +113,19 @@
 (require 'dired-x)
 (setq-default dired-omit-files-p t) ; Buffer-local variable
 (setq dired-omit-files (concat dired-omit-files "\\|*.fasl"))
+(setq use-package-always-ensure t)
 
-(use-package smartparens :ensure t)
+(use-package smartparens)
 (use-package phi-search
-  :ensure t
   :config (require 'phi-search)
   (global-set-key (kbd "C-s") 'phi-search)
   (global-set-key (kbd "C-r") 'phi-search-backward))
 
 (use-package spaceline
-  :ensure t
   :config (require 'spaceline-config)
   (spaceline-emacs-theme))
 
 (use-package multiple-cursors
-  :ensure t
   :config
   (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -135,17 +133,14 @@
   (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
 
 (use-package ace-window
-  :ensure t
   :config
   (global-set-key (kbd "M-o") 'ace-window))
 
 (use-package imenu-list
-  :ensure t
   :config
   (global-set-key (kbd "C-'") #'imenu-list-smart-toggle))
 
 (use-package company
-  :ensure t
   :config
   ;; #'company-complete is set per minor mode as needed
   (define-key company-active-map (kbd "C-n") #'company-select-next)
@@ -153,11 +148,9 @@
   (define-key company-search-map (kbd "C-n") #'company-select-next)
   (define-key company-search-map (kbd "C-p") #'company-select-previous))
 
-(use-package aggressive-indent
-  :ensure t)
+(use-package aggressive-indent)
 
 (use-package string-inflection
-  :ensure t
   :config
   (global-set-key (kbd "C-c j") 'string-inflection-toggle))
 
@@ -180,9 +173,8 @@
               (local-set-key '[left]  'backward-char)
               (local-set-key '[right] 'forward-char))))
 
-(use-package yasnippet-snippets :ensure t)
+(use-package yasnippet-snippets)
 (use-package yasnippet
-  :ensure t
   :after yasnippet-snippets
   :diminish yas-minor-mode
   :config (yas-global-mode +1)
@@ -192,24 +184,21 @@
             (lambda ()
               (set (make-local-variable require-final-newline) nil))))
 
-(use-package dockerfile-mode :ensure t)
+(use-package dockerfile-mode)
 
 (use-package yaml-mode
-  :ensure t
   :mode (("\\.mat\\'" . yaml-mode)); Unity
   :init
   (add-hook 'yaml-mode-hook (lambda () (ansible 1))))
 
 (use-package neotree
-  :ensure t
   :config
   (global-set-key (kbd "C-0") 'neotree-toggle)
   (setq neo-theme 'arrow)
   (setq neo-hidden-regexp-list
         '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$" "\\.meta$")))
 
-(use-package ggtags
-  :ensure t)
+(use-package ggtags)
 
 ;; compile-mode
 ;; https://github.com/fsharp/zarchive-fsharpbinding/issues/246
@@ -219,19 +208,16 @@
             (setq compilation-scroll-output t)))
 
 (use-package magit
-  :ensure t
   :config (global-set-key (kbd "C-x g") 'magit-status))
 
 (use-package magit-todos
-  :ensure t
   :config (magit-todos-mode +1))
 
-(use-package gitignore-templates :ensure t)
-(use-package gitignore-mode      :ensure t)
-(use-package git-timemachine     :ensure t)
+(use-package gitignore-templates)
+(use-package gitignore-mode)
+(use-package git-timemachine)
 
 (use-package helm-dash
-  :ensure t
   :config
   (setq dash-docs-browser-func 'eww)
   (add-hook
@@ -239,15 +225,13 @@
    (lambda () (setq-local show-trailing-whitespace nil))))
 
 (use-package which-key
-  :ensure t
   :config
   (which-key-mode +1))
 
-(use-package lice    :ensure t)
-(use-package systemd :ensure t)
-(use-package vterm   :ensure t)
+(use-package lice)
+(use-package systemd)
+(use-package vterm)
 (use-package ag
-  :ensure t
   :config
   (setq ag-highlight-search t))
 

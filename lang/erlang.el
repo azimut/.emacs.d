@@ -7,8 +7,7 @@
   (other-window 1)
   (delete-other-windows))
 
-(use-package ivy-erlang-complete
-  :ensure t)
+(use-package ivy-erlang-complete)
 
 (use-package erlang
   :load-path ("~/.kerl/builds/22.1/release_22.1/lib/tools-3.2.1/emacs")

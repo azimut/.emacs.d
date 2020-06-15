@@ -2,7 +2,6 @@
 ;; Lua
 ;;
 (use-package lua-mode
-  :ensure t
   :config
   (add-hook
    'lua-mode-hook

@@ -1,18 +1,18 @@
-(use-package go-eldoc   :ensure t)
-(use-package gotest     :ensure t)
-(use-package flymake-go :ensure t)
-(use-package go-guru    :ensure t
+(use-package go-eldoc)
+(use-package gotest)
+(use-package flymake-go)
+(use-package go-guru
   :init
   (add-hook 'go-mode-hook #'go-guru-hl-identifier))
-(use-package go-dlv     :ensure t
+(use-package go-dlv
   :commands (dlv-current-func dlv)
   ;;:init
   ;;(setq go-guru-command "/usr/lib/go/bin/guru")
   )
-(use-package auto-complete   :ensure t)
-(use-package go-autocomplete :ensure t)
+(use-package auto-complete)
+(use-package go-autocomplete)
 ;;(use-package company-go :ensure t)
-(use-package gorepl-mode :ensure t :after go-mode
+(use-package gorepl-mode :after go-mode
   :config
   (add-hook
    'gorepl-mode-hook
@@ -37,7 +37,6 @@
 ;;    ((((type x)) (:inherit company-tooltip-selection :weight bold))
 ;;     (t (:inherit company-tooltip-selection)))))
 (use-package go-mode
-  :ensure t
   :init
   (add-hook 'go-mode-hook
             (lambda ()

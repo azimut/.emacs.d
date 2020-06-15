@@ -1,2 +1,1 @@
-(use-package typescript-mode
-  :ensure t)
+(use-package typescript-mode)

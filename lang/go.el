@@ -60,6 +60,7 @@
               (smartparens-strict-mode +1)
               (sp-use-paredit-bindings)
               (setq gofmt-command "goimports")
+              (setq godoc-reuse-buffer t)
               (add-hook 'before-save-hook #'gofmt-before-save)))
   :config
   ;; (setq company-tooltip-limit 20)                      ; bigger popup window

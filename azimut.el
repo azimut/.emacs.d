@@ -233,8 +233,8 @@
 (use-package vterm)
 (use-package ag
   :config
-  (setq ag-highlight-search t))
-
+  (setq ag-highlight-search t)
+  (setq ag-reuse-window     t))
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")
 (load-file "~/.emacs.d/lang/elisp.el")

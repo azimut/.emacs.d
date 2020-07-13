@@ -2,6 +2,7 @@
 ;; Lua
 ;;
 (use-package lua-mode
+  :mode (("\\.nse\\'" . lua-mode))
   :config
   (add-hook
    'lua-mode-hook

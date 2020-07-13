@@ -1,3 +1,4 @@
+(use-package ob-go)
 (use-package go-eldoc)
 (use-package gotest)
 (use-package flymake-go)

@@ -12,6 +12,10 @@
  'shell-mode-hook
  (lambda () (setq-local show-trailing-whitespace nil)))
 
+(add-hook
+ 'vterm-mode-hook
+ (lambda () (setq-local show-trailing-whitespace nil)))
+
 ;; https://github.com/syl20bnr/spacemacs/issues/12535
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 ;; other WORKAROUND:
@@ -245,7 +249,7 @@
 (load-file "~/.emacs.d/lang/markup.el")
 (load-file "~/.emacs.d/lang/javascript.el")
 ;; (load-file "~/.emacs.d/lang/elixir.el")
-;; (load-file "~/.emacs.d/lang/lua.el")
+(load-file "~/.emacs.d/lang/lua.el")
 (load-file "~/.emacs.d/lang/glsl.el")
 (load-file "~/.emacs.d/lang/livecoding.el")
 ;; (load-file "~/.emacs.d/lang/cpp.el")

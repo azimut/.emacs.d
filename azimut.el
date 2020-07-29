@@ -142,11 +142,19 @@
 
 (use-package imenu-list
   :config
-  (global-set-key (kbd "C-'") #'imenu-list-smart-toggle))
+  (global-set-key (kbd "C-'") #'imenu-list-smart-toggle)
+  (setq imenu-list-auto-resize t))
 
 (use-package company
   :config
-  ;; #'company-complete is set per minor mode as needed
+  (setq company-show-numbers t
+        company-minimum-prefix-length 3
+        company-tooltip-limit 30
+        company-idle-delay 0.1)
+  (setq company-auto-complete t)
+  ;;(setq company-tooltip-align-annotations t)
+  (define-key company-active-map (kbd "M-n") nil)
+  (define-key company-active-map (kbd "M-p") nil)
   (define-key company-active-map (kbd "C-n") #'company-select-next)
   (define-key company-active-map (kbd "C-p") #'company-select-previous)
   (define-key company-search-map (kbd "C-n") #'company-select-next)
@@ -182,8 +190,14 @@
   :after yasnippet-snippets
   :diminish yas-minor-mode
   :config (yas-global-mode +1)
-  (setq-default yas-prompt-functions
-                '(yas-ido-prompt yas-dropdown-prompt))
+  (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
+  (define-key yas-minor-mode-map (kbd "<tab>") nil)
+  (define-key yas-minor-mode-map (kbd "TAB") nil)
+  ;; Bind `SPC' to `yas-expand' when snippet expansion available (it
+  ;; will still call `self-insert-command' otherwise).
+  (define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
+  ;; Bind `C-c y' to `yas-expand' ONLY.
+  (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
   (add-hook 'snippet-mode-hook
             (lambda ()
               (set (make-local-variable require-final-newline) nil))))
@@ -221,6 +235,8 @@
 (use-package gitignore-mode)
 (use-package git-timemachine)
 
+
+(use-package dash)
 (use-package helm-dash
   :config
   (setq dash-docs-browser-func 'eww)
@@ -252,5 +268,5 @@
 (load-file "~/.emacs.d/lang/lua.el")
 (load-file "~/.emacs.d/lang/glsl.el")
 (load-file "~/.emacs.d/lang/livecoding.el")
-;; (load-file "~/.emacs.d/lang/cpp.el")
+(load-file "~/.emacs.d/lang/cpp.el")
 

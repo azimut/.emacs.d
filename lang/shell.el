@@ -17,7 +17,7 @@
             (define-key sh-mode-map (kbd "M-p") #'flycheck-previous-error)
             (define-key sh-mode-map (kbd "M-n") #'flycheck-next-error)
             (aggressive-indent-mode +1)
-            (smartparens-strict-mode +1)
+            (electric-pair-mode +1)
             (sp-use-paredit-bindings)))
 
 ;; https://nistara.net/post/emacs-send-line-or-region-to-shell/

@@ -1,3 +1,19 @@
+(use-package irony
+  :config
+  ;;(add-hook #'irony-mode-hook #'company-arduino-turn-on)
+  (add-hook #'irony-mode-hook #'irony-cdb-autosetup-compile-options))
+
+(use-package irony-eldoc)
+
+
+;; (use-package company-irony
+;;   :config (add-to-list 'company-backends 'company-irony))
+;; (use-package company-c-headers
+;;   :config (add-to-list 'company-backends 'company-c-headers))
+;; (use-package google-c-style
+;;   :hook (c-mode-common . google-set-c-style))
+
+
 (use-package company-arduino)
 (use-package auto-minor-mode)
 (use-package arduino-cli-mode

@@ -147,11 +147,12 @@
 
 (use-package company
   :config
-  (setq company-show-numbers t
+  (setq company-show-numbers          t
         company-minimum-prefix-length 3
-        company-tooltip-limit 30
-        company-idle-delay 0.1)
+        company-tooltip-limit         30
+        company-idle-delay            0)
   (setq company-auto-complete t)
+
   ;;(setq company-tooltip-align-annotations t)
   (define-key company-active-map (kbd "M-n") nil)
   (define-key company-active-map (kbd "M-p") nil)
@@ -192,10 +193,11 @@
   :config (yas-global-mode +1)
   (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
   (define-key yas-minor-mode-map (kbd "<tab>") nil)
-  (define-key yas-minor-mode-map (kbd "TAB") nil)
+  (define-key yas-minor-mode-map (kbd "TAB")   nil)
   ;; Bind `SPC' to `yas-expand' when snippet expansion available (it
   ;; will still call `self-insert-command' otherwise).
-  (define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
+  (define-key yas-minor-mode-map (kbd "M-SPC") yas-maybe-expand
+    )
   ;; Bind `C-c y' to `yas-expand' ONLY.
   (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
   (add-hook 'snippet-mode-hook
@@ -255,6 +257,15 @@
   :config
   (setq ag-highlight-search t)
   (setq ag-reuse-window     t))
+
+;; https://stackoverflow.com/questions/25521897/how-to-never-expand-yasnippets-in-comments-and-strings
+(defun yas-no-expand-in-comment/string ()
+  (setq yas-buffer-local-condition
+        '(if (nth 8 (syntax-ppss)) ;; non-nil if in a string or comment
+             '(require-snippet-condition . force-in-comment)
+           t)))
+;;(add-hook 'prog-mode-hook 'yas-no-expand-in-comment/string)
+
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")
 (load-file "~/.emacs.d/lang/elisp.el")
@@ -268,5 +279,6 @@
 (load-file "~/.emacs.d/lang/lua.el")
 (load-file "~/.emacs.d/lang/glsl.el")
 (load-file "~/.emacs.d/lang/livecoding.el")
-(load-file "~/.emacs.d/lang/cpp.el")
-
+(load-file "~/.emacs.d/lang/c.el")
+(load-file "~/.emacs.d/lang/haskell.el")
+(load-file "~/.emacs.d/lang/chuck.el")

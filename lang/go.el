@@ -1,8 +1,13 @@
 ;; OS:
 ;; GO111MODULE=on go get -v golang.org/x/tools/gopls@latest
-;; go get -u -v github.com/godoctor/godoctor
-;; go get -u -v golang.org/x/tools/cmd/guru
-
+;; go get -u github.com/motemen/gore/cmd/gore
+;; go get -u github.com/stamblerre/gocode
+;; go get -u golang.org/x/tools/cmd/godoc
+;; go get -u golang.org/x/tools/cmd/goimports
+;; go get -u golang.org/x/tools/cmd/gorename
+;; go get -u golang.org/x/tools/cmd/guru
+;; go get -u github.com/cweill/gotests/...
+;; go get -u github.com/fatih/gomodifytags
 (use-package go-mode
   :config
   (define-key go-mode-map (kbd "M-p") #'flycheck-previous-error)
@@ -16,9 +21,7 @@
   :init
   (add-hook 'go-mode-hook #'go-guru-hl-identifier))
 
-(use-package company-go)
 (use-package flycheck-golangci-lint)
-
 (defun gofly-setup ()
   (setq flycheck-disabled-checkers '(go-gofmt
                                      go-golint
@@ -32,14 +35,16 @@
 (add-hook 'go-mode-hook 'gofly-setup t)
 
 (defun go-config ()
-  (company-mode +1)
   (smartparens-strict-mode +1)
   (sp-use-paredit-bindings)
   (setq-local prettify-symbols-alist '(("func" . 955)
                                        ("<-"   . ?←)))
   (setq-local tab-width 4)
+  (setq-local company-auto-complete-chars nil);; has to be something better
   (setq-local lsp-diagnostics-provider :none)
-  (set (make-local-variable 'company-backends) '(company-capf)))
+  (setq company-go-show-annotation t)
+  (set (make-local-variable 'company-backends) '(company-capf))
+  (company-mode +1))
 (add-hook 'go-mode-hook #'go-config)
 
 (add-hook 'go-mode-hook #'lsp-deferred)

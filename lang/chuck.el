@@ -1,3 +1,4 @@
+;; Not in MELPA
 (load-file "/usr/share/emacs/site-lisp/chuck.el")
 
 (defvar chuck-electric-pairs '((?\< . ?\>))

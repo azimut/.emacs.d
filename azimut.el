@@ -273,6 +273,7 @@
 (load-file "~/.emacs.d/lang/lisp.el")
 (load-file "~/.emacs.d/lang/clojure.el")
 (load-file "~/.emacs.d/lang/go.el")
+(load-file "~/.emacs.d/lang/rust.el")
 (load-file "~/.emacs.d/lang/markup.el")
 (load-file "~/.emacs.d/lang/javascript.el")
 ;; (load-file "~/.emacs.d/lang/elixir.el")

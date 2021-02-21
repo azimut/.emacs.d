@@ -3,9 +3,13 @@
 ;;
 (use-package lua-mode
   :mode (("\\.nse\\'" . lua-mode))
+  :bind (:map lua-mode-map
+              ("C-c C-d" . lua-search-documentation)
+              ("C-c C-k" . lua-send-buffer)
+              ("C-c C-c" . lua-send-region))
   :config
   (add-hook
-   'lua-mode-hook
+   #'lua-mode-hook
    (lambda ()
      (setq-local prettify-symbols-alist '(("function" .  955)))
      (setq lua-default-application "~/.luarocks/bin/rep.lua")
@@ -14,9 +18,6 @@
                                 "/usr/share/awesome/lib/?.lua;"
                                 "/usr/share/awesome/lib/?/?.lua;;"))
      (setenv "LUA_REPL_RLWRAP" "sure");?
-     (define-key lua-mode-map (kbd "C-c C-d") #'lua-search-documentation)
-     (define-key lua-mode-map (kbd "C-c C-k") #'lua-send-buffer)
-     (define-key lua-mode-map (kbd "C-c C-c") #'lua-send-region)
      ;;
      (smartparens-strict-mode +1)
      (sp-use-paredit-bindings)

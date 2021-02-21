@@ -2,13 +2,6 @@
 ;; Clojure
 ;;--------------------------------------------------
 
-(use-package cider
-  :config
-  (define-key cider-repl-mode-map
-    (kbd "C-c M-o") #'cider-repl-clear-buffer)
-  (add-hook 'cider-repl-mode-hook
-            (lambda () (electric-pair-mode +1))))
-
 (use-package clojure-mode
   ;; :bind
   ;; (("C-c C-d C-h" . cider-clojuredocs)
@@ -23,4 +16,14 @@
   (add-hook 'clojure-mode-hook
             (lambda ()
               (paredit-mode +1)
-              (aggressive-indent-mode +1))))
+              (aggressive-indent-mode +1)
+              (flycheck-mode +1))))
+
+(use-package flycheck-clj-kondo)
+(use-package cider
+  :config
+  (define-key cider-repl-mode-map
+    (kbd "C-c M-o") #'cider-repl-clear-buffer)
+  (add-hook 'cider-repl-mode-hook
+            (lambda () (electric-pair-mode +1))))
+

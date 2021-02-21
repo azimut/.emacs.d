@@ -1,0 +1,11 @@
+# name: html tag
+# key: trigger-key
+# keybinding : keybinding
+# expand-env : ()
+# contributor : 
+# expand-env : ()
+# key: tag
+# --
+<$1>
+  $0
+</$1>

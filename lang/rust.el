@@ -1,8 +1,5 @@
 ;; OS: install "rls"
 
-(use-package toml-mode)
-(use-package lsp-mode)
-
 (defun rust-config ()
   (rust-enable-format-on-save)
   (smartparens-strict-mode +1)
@@ -11,6 +8,7 @@
   ;; Default: (32 41 46)
   (setq-local company-auto-complete-chars nil))
 
+(use-package toml-mode)
 (use-package rust-mode
   :hook (rust-mode . lsp)
   :init

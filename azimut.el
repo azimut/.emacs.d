@@ -153,7 +153,7 @@
         company-idle-delay            0)
   (setq company-auto-complete t)
 
-  ;;(setq company-tooltip-align-annotations t)
+  ;;(setq company-tooltip-align-annotations nil)
   (define-key company-active-map (kbd "M-n") nil)
   (define-key company-active-map (kbd "M-p") nil)
   (define-key company-active-map (kbd "C-n") #'company-select-next)
@@ -239,6 +239,7 @@
 
 
 (use-package dash)
+
 (use-package helm-dash
   :config
   (setq dash-docs-browser-func 'eww)
@@ -257,6 +258,8 @@
   :config
   (setq ag-highlight-search t)
   (setq ag-reuse-window     t))
+
+(use-package lsp-mode)
 
 ;; https://stackoverflow.com/questions/25521897/how-to-never-expand-yasnippets-in-comments-and-strings
 (defun yas-no-expand-in-comment/string ()

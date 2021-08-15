@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: print-object
+# key: print-object
+# --
+
+(defmethod print-object ((obj ${1:class}) stream)
+  (print-unreadable-object (obj stream :type T :identity T)
+    (format stream "~a" $0)))

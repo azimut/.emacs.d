@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: ri
+# key: ri
+# --
+
+(defmethod reinitialize-instance :${2:after} ((obj ${1:class}) &key)
+  $0)
+

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: ii
+# key: ii
+# --
+
+(defmethod initialize-instance :${2:after} ((obj ${1:class}) &key)
+  $0)
+

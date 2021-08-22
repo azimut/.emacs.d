@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: make-instance
-# key: make-instance
+# name: mi
+# key: mi
 # --
 
 (defun make-${1:-class} (&rest args &key ${2:-somevalue} &allow-other-keys)

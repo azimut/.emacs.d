@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: print-object
-# key: print-object
+# name: po
+# key: po
 # --
 
 (defmethod print-object ((obj ${1:class}) stream)

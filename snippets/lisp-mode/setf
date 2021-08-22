@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: setf
+# key: setf
+# --
+
+(defmethod (setf ${1:name}) :${2:after} (new-value (obj ${3:class}))
+  $0)

@@ -5,4 +5,3 @@
 
 (defun make-${1:-class} (&rest args &key ${2:-somevalue} &allow-other-keys)
   (apply #'make-instance '$1 :$2 $2 args))
-

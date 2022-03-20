@@ -25,7 +25,7 @@
          ("\\.app?$"              . erlang-mode)
          ("\\.app.src?$"          . erlang-mode)
          ("\\Emakefile"           . erlang-mode))
-  :init
+  :config
   ;;
   (add-hook 'erlang-mode-hook
             (lambda ()
@@ -95,7 +95,6 @@
                                 "+debug_info -W "
                                 buffer-file-name))))))
             (ivy-erlang-complete-init))
-  :config
   ;; prevent annoying hang-on-compile
   (defvar inferior-erlang-prompt-timeout t)
   ;; rebar3 in emacs from:

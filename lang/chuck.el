@@ -15,5 +15,5 @@
             (lambda ()
               (setq-local prettify-symbols-alist '(("=>" . 8658)))
               (aggressive-indent-mode +1)
-              (electric-pair-mode +1)
+              (electric-pair-local-mode +1)
               (chuck-add-electric-pairs))))

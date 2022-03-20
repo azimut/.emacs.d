@@ -12,7 +12,7 @@
   (define-key clojure-mode-map (kbd "C-x C-e") #'cider-eval-last-sexp)
   (define-key clojure-mode-map (kbd "C-c C-c") #'cider-eval-defun-at-point)
   (setq cider-repl-display-help-banner nil)
-  (add-hook 'eldoc-documentation-functions #'cider-eldoc nil t)
+  ;;(add-hook 'eldoc-documentation-functions #'cider-eldoc nil t)
   (add-hook 'clojure-mode-hook
             (lambda ()
               (paredit-mode +1)
@@ -25,5 +25,5 @@
   (define-key cider-repl-mode-map
     (kbd "C-c M-o") #'cider-repl-clear-buffer)
   (add-hook 'cider-repl-mode-hook
-            (lambda () (electric-pair-mode +1))))
+            (lambda () (electric-pair-local-mode +1))))
 

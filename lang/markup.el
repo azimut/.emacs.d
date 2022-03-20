@@ -109,3 +109,4 @@
   ;; (setq org-mind-map-engine "circo")  ; Circular Layout
   )
 (setq org-image-actual-width nil)
+(use-package org-modern)

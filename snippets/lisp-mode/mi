@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: mi
+# name: make-instance
 # key: mi
 # --
 
-(defun make-${1:-class} (&rest args &key ${2:-somevalue} &allow-other-keys)
-  (apply #'make-instance '$1 :$2 $2 args))
+(defun make-${1:class} (&rest args)
+  (apply #'make-instance '$1 args))

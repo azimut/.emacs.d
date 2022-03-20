@@ -1,8 +1,5 @@
 ;;
-
-(add-hook
- 'after-init-hook
- (lambda () (load-theme 'kaolin-galaxy t)))
+;;(add-hook 'after-init-hook (lambda () (load-theme 'kaolin-galaxy t)))
 
 (add-hook
  'Buffer-menu-mode-hook
@@ -167,6 +164,7 @@
   :config
   (global-set-key (kbd "C-c j") 'string-inflection-toggle))
 
+(setq browse-url-firefox-program "/snap/bin/firefox")
 (use-package w3m
   :ensure nil
   :config
@@ -228,10 +226,17 @@
             (setq compilation-scroll-output t)))
 
 (use-package magit
-  :config (global-set-key (kbd "C-x g") 'magit-status))
+  :config
+  (setq magit-git-executable "/usr/bin/git")
+  (global-set-key (kbd "C-x g") 'magit-status))
 
 (use-package magit-todos
   :config (magit-todos-mode +1))
+
+(use-package forge
+  :config
+  (setq auth-sources '("~/.authinfo.gpg"))
+  (setq forge-topic-list-limit '(100 . 0)))
 
 (use-package gitignore-templates)
 (use-package gitignore-mode)
@@ -245,7 +250,9 @@
   (setq dash-docs-browser-func 'eww)
   (add-hook
    'eww-mode-hook
-   (lambda () (setq-local show-trailing-whitespace nil))))
+   (lambda ()
+     (setq dash-docs-enable-debugging nil)
+     (setq-local show-trailing-whitespace nil))))
 
 (use-package which-key
   :config
@@ -268,11 +275,10 @@
              '(require-snippet-condition . force-in-comment)
            t)))
 ;;(add-hook 'prog-mode-hook 'yas-no-expand-in-comment/string)
-
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")
 (load-file "~/.emacs.d/lang/elisp.el")
-(load-file "~/.emacs.d/lang/erlang.el")
+;;(load-file "~/.emacs.d/lang/erlang.el")
 (load-file "~/.emacs.d/lang/lisp.el")
 (load-file "~/.emacs.d/lang/clojure.el")
 (load-file "~/.emacs.d/lang/go.el")
@@ -282,7 +288,12 @@
 ;; (load-file "~/.emacs.d/lang/elixir.el")
 (load-file "~/.emacs.d/lang/lua.el")
 (load-file "~/.emacs.d/lang/glsl.el")
-(load-file "~/.emacs.d/lang/livecoding.el")
+;;(load-file "~/.emacs.d/lang/livecoding.el")
 (load-file "~/.emacs.d/lang/c.el")
 (load-file "~/.emacs.d/lang/haskell.el")
-(load-file "~/.emacs.d/lang/chuck.el")
+;;(load-file "~/.emacs.d/lang/chuck.el")
+(load-file "~/.emacs.d/lang/ocaml.el")
+
+
+;; NOSY comments
+(set-face-foreground 'font-lock-comment-face "orange")

@@ -1,4 +1,5 @@
 (use-package redshank)
+(use-package rainbow-delimiters)
 
 ;; lisp-mode-hook
 ;; sly-editing-mode
@@ -22,19 +23,20 @@
 ;; FIX lisp ident
 ;; (put :default-initargs 'common-lisp-indent-function '(&rest))
 ;; (put 'defstruct-g 'common-lisp-indent-function '(as defstruct))
-
+(put 'mapping 'common-lisp-indent-function '(as let))
+(put 'collect 'common-lisp-indent-function '(as progn))
 ;;--------------------------------------------------
 ;; Common Lisp - Slime
 
 ;; cbaggers/varjo
-;; (defun slime-vari-describe-symbol (symbol-name)
-;;   "Describe the symbol at point."
-;;   (interactive (list (slime-read-symbol-name "Describe symbol: ")))
-;;   (when (not symbol-name)
-;;     (error "No symbol given"))
-;;   (let ((pkg (slime-current-package)))
-;;     (slime-eval-describe
-;;      `(vari.cl::vari-describe ,symbol-name nil ,pkg))))
+(defun sly-vari-describe-symbol (symbol-name)
+  "Describe the symbol at point."
+  (interactive (list (sly-read-symbol-name "Describe symbol: ")))
+  (when (not symbol-name)
+    (error "No symbol given"))
+  (let ((pkg (sly-current-package)))
+    (sly-eval-describe
+     `(vari.cl::vari-describe ,symbol-name nil ,pkg))))
 
 ;; (define-key lisp-mode-map (kbd "C-c C-v C-v")
 ;;   'slime-vari-describe-symbol)
@@ -51,7 +53,7 @@
                                                ;;"--dynamic-space-size"
                                                ;;"1024"
                                                )))
-        sly-complete-symbol-function 'sly-simple-completions
+        sly-complete-symbol-function 'sly-flex-completions;;'sly-simple-completions
         inferior-lisp-program        "/usr/local/bin/sbcl"
         sly-contribs                 '(sly-fancy sly-macrostep)
         sly-inhibit-pipelining       nil
@@ -78,6 +80,8 @@
      (paredit-mode +1)
      (yas-minor-mode +1)
      (aggressive-indent-mode +1)
+     (rainbow-delimiters-mode +1)
+     (display-fill-column-indicator-mode +1)
      )))
 
 (add-hook

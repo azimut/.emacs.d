@@ -106,9 +106,9 @@
 
 ;;--------------------------------------------------
 
-;; I do NOT want white spaces to be highlighted
 (require 'whitespace)
-(global-whitespace-mode 0)
+(global-whitespace-mode 1)
+(setq whitespace-style '(face tabs empty))
 
 (setq dired-listing-switches "-lh")
 (require 'dired-x)

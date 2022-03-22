@@ -35,6 +35,7 @@
   (flycheck-add-next-checker 'go-test  '(warning . golangci-lint) t))
 
 (defun go-config ()
+  (setq-local whitespace-style '(face empty))
   (smartparens-strict-mode +1)
   (sp-use-paredit-bindings)
   (setq-local prettify-symbols-alist '(("func" . 955) ("<-"   . ?←)))

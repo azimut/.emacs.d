@@ -3,6 +3,9 @@
 ;;   :ensure t
 ;;   :config)
 
+;; go install mvdan.cc/sh/v3/cmd/shfmt@latest
+(use-package shfmt)
+
 ;; https://emacs.stackexchange.com/questions/24719/set-indentation-for-shell-script-function
 (setq sh-basic-offset 4)
 (setq sh-indentation 4)
@@ -14,9 +17,10 @@
 (add-hook 'sh-mode-hook
           (lambda ()
             (flycheck-mode +1)
+            (setq-local tab-width 4)
+            (shfmt-on-save-mode)
             (define-key sh-mode-map (kbd "M-p") #'flycheck-previous-error)
             (define-key sh-mode-map (kbd "M-n") #'flycheck-next-error)
-            (aggressive-indent-mode +1)
             (electric-pair-local-mode +1)
             (sp-use-paredit-bindings)))
 

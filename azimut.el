@@ -108,7 +108,7 @@
 
 (require 'whitespace)
 (global-whitespace-mode 1)
-(setq whitespace-style '(face tabs empty))
+(setq whitespace-style '(face empty))
 
 (setq dired-listing-switches "-lh")
 (require 'dired-x)
@@ -267,6 +267,11 @@
   (setq ag-reuse-window     t))
 
 (use-package lsp-mode)
+
+(use-package makefile-mode
+  :ensure nil
+  :config
+  (setq-local whitespace-style '(face tabs empty)))
 
 ;; https://stackoverflow.com/questions/25521897/how-to-never-expand-yasnippets-in-comments-and-strings
 (defun yas-no-expand-in-comment/string ()

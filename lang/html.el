@@ -7,9 +7,24 @@
 (use-package impatient-mode)
 (use-package company-web)
 
+(defun +web/indent-or-yas-or-emmet-expand ()
+  "Do-what-I-mean on TAB.
+Invokes `indent-for-tab-command' if at or before text bol, `yas-expand' if on a
+snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
+`yas-minor-mode' is enabled or not."
+  (interactive)
+  (call-interactively
+   (cond ((or (<= (current-column) (current-indentation))
+              (not (eolp))
+              (not (or (memq (char-after) (list ?\n ?\s ?\t))
+                       (eobp))))
+          #'indent-for-tab-command)
+         (#'emmet-expand-yas))))
+
+;; https://github.com/smihica/emmet-mode#html-abbreviations
 (use-package emmet-mode
   :bind (:map emmet-mode-keymap
-              ("<tab>" . emmet-expand-yas)
+              ("<tab>" . +web/indent-or-yas-or-emmet-expand)
               ("<C-return>" . nil)
               ("C-j" . newline)))
 

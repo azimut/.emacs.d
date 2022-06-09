@@ -19,7 +19,6 @@
 ;;(setq package-check-signature nil)
 
 (fset 'yes-or-no-p 'y-or-n-p)
-(set-cursor-color "#FFC0CB")
 
 ;; disable menu-bar
 ;; https://www.emacswiki.org/emacs/MenuBar
@@ -298,7 +297,10 @@
 (load-file "~/.emacs.d/lang/haskell.el")
 ;;(load-file "~/.emacs.d/lang/chuck.el")
 (load-file "~/.emacs.d/lang/ocaml.el")
+(load-file "~/.emacs.d/lang/html.el")
 
 
 ;; NOSY comments
 (set-face-foreground 'font-lock-comment-face "orange")
+;; (set-cursor-color "#FFC0CB")
+(set-cursor-color "#FF00FF")

@@ -1,3 +1,4 @@
+;; lsp-install-server >> html-ls
 ;; https://github.com/doomemacs/doomemacs/blob/develop/modules/lang/web/
 ;; https://github.com/syl20bnr/spacemacs/tree/develop/layers/%2Blang/html
 ;;
@@ -5,7 +6,7 @@
 ;; format-all    : tidy/stylelint(css) http://www.html-tidy.org/
 
 (use-package impatient-mode)
-(use-package company-web)
+;;(use-package company-web)
 
 (defun +web/indent-or-yas-or-emmet-expand ()
   "Do-what-I-mean on TAB.
@@ -35,14 +36,23 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
 (defun web-config ()
   (smartparens-mode +1)
   (sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3))
-  (company-mode +1)
-  (set (make-local-variable 'company-backends) '(company-css company-web-html))
+  ;; (company-mode +1)
+  ;; (set (make-local-variable 'company-backends) '(company-css company-web-html))
   (emmet-mode +1))
 
 ;; https://web-mode.org/
 (use-package web-mode
   :mode "\\.[px]?html?\\'"
+  :bind (:map web-mode-map ("C-M-t" . web-mode-element-transpose))
   :config
+  (setq lsp-html-format-enable nil) ; BUG?: hangs up <style> editing for 2 seconds
+  (setq web-mode-enable-css-colorization nil) ;; LSP already has colors
   (setq web-mode-enable-html-entities-fontification t
         web-mode-auto-close-style 1)
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset    2
+        web-mode-code-indent-offset   2
+        web-mode-block-padding        2
+        web-mode-comment-style        2
+        web-mode-enable-current-element-highlight t)
   (add-hook #'web-mode-hook #'web-config))

@@ -35,10 +35,10 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
 
 (defun web-config ()
   (smartparens-mode +1)
-  (sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3))
   ;; (company-mode +1)
   ;; (set (make-local-variable 'company-backends) '(company-css company-web-html))
   (setq-local company-insertion-on-trigger t)
+  (setq-local lsp-eldoc-enable-hover nil) ;; Too busy
   (setq-local company-insertion-triggers '(?\  ?\)))
   (emmet-mode +1))
 
@@ -58,8 +58,9 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
          ("C-M-t" . web-mode-element-transpose)
          ("C-c C-d" . lsp-describe-thing-at-point))
   :config
+  (sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3))
+  (sp-local-pair 'web-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j")))
   (setq lsp-html-format-enable nil) ; BUG?: hangs up <style> editing for 2 seconds
-  (setq-local lsp-eldoc-enable-hover nil)     ;; Too busy
   (setq web-mode-enable-css-colorization nil) ;; LSP already has colors
   (setq web-mode-enable-current-element-highlight nil) ;; LSP already has it
   (setq web-mode-enable-html-entities-fontification t
@@ -70,5 +71,3 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
         web-mode-block-padding        2
         web-mode-comment-style        2)
   (add-hook #'web-mode-hook #'web-config))
-
-(sp-local-pair 'web-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j")))

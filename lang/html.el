@@ -51,14 +51,14 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
          ("C-c C-d" . lsp-describe-thing-at-point))
   :config
   (setq lsp-html-format-enable nil) ; BUG?: hangs up <style> editing for 2 seconds
-  (setq lsp-eldoc-enable-hover nil) ;; Too busy
+  (setq-local lsp-eldoc-enable-hover nil) ;; Too busy
   (setq web-mode-enable-css-colorization nil) ;; LSP already has colors
+  (setq web-mode-enable-current-element-highlight nil);; LSP already has it
   (setq web-mode-enable-html-entities-fontification t
         web-mode-auto-close-style 1)
   (setq web-mode-markup-indent-offset 2
         web-mode-css-indent-offset    2
         web-mode-code-indent-offset   2
         web-mode-block-padding        2
-        web-mode-comment-style        2
-        web-mode-enable-current-element-highlight t)
+        web-mode-comment-style        2)
   (add-hook #'web-mode-hook #'web-config))

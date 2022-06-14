@@ -43,9 +43,13 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
 ;; https://web-mode.org/
 (use-package web-mode
   :mode "\\.[px]?html?\\'"
-  :bind (:map web-mode-map ("C-M-t" . web-mode-element-transpose))
+  :bind (:map
+         web-mode-map
+         ("C-M-t" . web-mode-element-transpose)
+         ("C-c C-d" . lsp-describe-thing-at-point))
   :config
   (setq lsp-html-format-enable nil) ; BUG?: hangs up <style> editing for 2 seconds
+  (setq lsp-eldoc-enable-hover nil) ;; Too busy
   (setq web-mode-enable-css-colorization nil) ;; LSP already has colors
   (setq web-mode-enable-html-entities-fontification t
         web-mode-auto-close-style 1)

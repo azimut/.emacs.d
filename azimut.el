@@ -143,10 +143,12 @@
 
 (use-package company
   :config
-  (setq company-show-numbers          t
-        company-minimum-prefix-length 3
-        company-tooltip-limit         30
-        company-idle-delay            0)
+  (setq company-show-numbers              nil
+        company-minimum-prefix-length     2
+        company-tooltip-limit             30
+        company-tooltip-align-annotations t
+        company-idle-delay                0.2
+        company-begin-commands '(self-insert-command))
   (setq company-auto-complete t)
 
   ;;(setq company-tooltip-align-annotations nil)
@@ -240,7 +242,6 @@
 (use-package gitignore-mode)
 (use-package git-timemachine)
 
-
 (use-package dash)
 
 (use-package helm-dash
@@ -269,7 +270,21 @@
 (use-package makefile-mode
   :ensure nil
   :config
-  (setq-local whitespace-style '(face tabs empty)))
+  (add-hook
+   'makefile-mode
+   (lambda () (setq-local whitespace-style '(face tabs empty)))))
+
+(use-package lorem-ipsum)
+
+(use-package evil-numbers
+  ;; (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
+  ;; (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
+  ;; (global-set-key (kbd "C-c C-+") 'evil-numbers/inc-at-pt-incremental)
+  ;; (global-set-key (kbd "C-c C--") 'evil-numbers/dec-at-pt-incremental)
+  :bind (("C-c +" . evil-numbers/inc-at-pt)
+         ("C-c -" . evil-numbers/dec-at-pt)
+         ("C-c C-+" . evil-numbers/inc-at-pt-incremental)
+         ("C-c C--" . evil-numbers/dec-at-pt-incremental)))
 
 ;; https://stackoverflow.com/questions/25521897/how-to-never-expand-yasnippets-in-comments-and-strings
 (defun yas-no-expand-in-comment/string ()

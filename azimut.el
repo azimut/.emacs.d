@@ -126,28 +126,29 @@
   (spaceline-emacs-theme))
 
 (use-package multiple-cursors
-  :config
-  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->"         . mc/mark-next-like-this)
+         ("C-<"         . mc/mark-previous-like-this)
+         ("C-c C-<"     . mc/mark-all-like-this)))
 
 (use-package ace-window
-  :config
-  (global-set-key (kbd "M-o") 'ace-window))
+  :bind ("M-o" . ace-window))
 
 (use-package imenu-list
+  :bind ("C-'" . imenu-list-smart-toggle)
   :config
-  (global-set-key (kbd "C-'") #'imenu-list-smart-toggle)
   (setq imenu-list-auto-resize t))
 
 (use-package company
+  :bind (:map
+         company-active-map
+         ("<tab>" . company-complete-selection))
   :config
   (setq company-show-numbers              nil
         company-minimum-prefix-length     2
         company-tooltip-limit             30
         company-tooltip-align-annotations t
-        company-idle-delay                0.2
+        company-idle-delay                0.1
         company-begin-commands '(self-insert-command))
   (setq company-auto-complete t)
 
@@ -162,8 +163,7 @@
 (use-package aggressive-indent)
 
 (use-package string-inflection
-  :config
-  (global-set-key (kbd "C-c j") 'string-inflection-toggle))
+  :bind ("C-c j" . string-inflection-toggle))
 
 (setq browse-url-firefox-program "/snap/bin/firefox")
 (use-package w3m
@@ -210,8 +210,8 @@
   (add-hook 'yaml-mode-hook (lambda () (ansible 1))))
 
 (use-package neotree
+  :bind ("C-0" . neotree-toggle)
   :config
-  (global-set-key (kbd "C-0") 'neotree-toggle)
   (setq neo-theme 'arrow)
   (setq neo-hidden-regexp-list
         '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$" "\\.meta$")))
@@ -226,9 +226,9 @@
             (setq compilation-scroll-output t)))
 
 (use-package magit
+  :bind ("C-x g" . magit-status)
   :config
-  (setq magit-git-executable "/usr/bin/git")
-  (global-set-key (kbd "C-x g") 'magit-status))
+  (setq magit-git-executable "/usr/bin/git"))
 
 (use-package magit-todos
   :config (magit-todos-mode +1))
@@ -292,6 +292,14 @@
         '(if (nth 8 (syntax-ppss)) ;; non-nil if in a string or comment
              '(require-snippet-condition . force-in-comment)
            t)))
+
+(use-package projectile
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :config
+  (setq projectile-completion-system 'ivy
+        projectile-sort-order 'recently-active))
+
 ;;(add-hook 'prog-mode-hook 'yas-no-expand-in-comment/string)
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")

@@ -6,7 +6,6 @@
 ;; format-all    : tidy/stylelint(css) http://www.html-tidy.org/
 
 (use-package impatient-mode)
-;;(use-package company-web)
 
 (defun +web/indent-or-yas-or-emmet-expand ()
   "Do-what-I-mean on TAB.
@@ -35,8 +34,6 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
 
 (defun web-config ()
   (smartparens-mode +1)
-  ;; (company-mode +1)
-  ;; (set (make-local-variable 'company-backends) '(company-css company-web-html))
   (setq-local lsp-disabled-clients '(eslint))
   (setq-local company-insertion-on-trigger nil)
   (setq-local lsp-eldoc-enable-hover nil) ;; Too busy

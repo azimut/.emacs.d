@@ -37,7 +37,8 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   (smartparens-mode +1)
   ;; (company-mode +1)
   ;; (set (make-local-variable 'company-backends) '(company-css company-web-html))
-  (setq-local company-insertion-on-trigger t)
+  (setq-local lsp-disabled-clients '(eslint))
+  (setq-local company-insertion-on-trigger nil)
   (setq-local lsp-eldoc-enable-hover nil) ;; Too busy
   (setq-local company-insertion-triggers '(?\  ?\)))
   (emmet-mode +1))

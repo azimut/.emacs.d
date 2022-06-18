@@ -265,14 +265,15 @@
   (setq ag-highlight-search t)
   (setq ag-reuse-window     t))
 
-(use-package lsp-mode)
+(use-package flycheck)
+(use-package lsp-mode
+  :bind (("M-n" . flycheck-next-error)
+         ("M-p" . flycheck-previous-error)
+         ("M-e" . flycheck-list-errors)))
 
-(use-package makefile-mode
-  :ensure nil
-  :config
-  (add-hook
-   'makefile-mode
-   (lambda () (setq-local whitespace-style '(face tabs empty)))))
+(add-hook
+ 'makefile-mode
+ (lambda () (setq-local whitespace-style '(face tabs empty))))
 
 (use-package lorem-ipsum)
 
@@ -293,6 +294,9 @@
              '(require-snippet-condition . force-in-comment)
            t)))
 
+(use-package vertico
+  :init (vertico-mode +1))
+
 (use-package projectile
   :bind-keymap
   ("C-c p" . projectile-command-map)
@@ -310,7 +314,6 @@
 (load-file "~/.emacs.d/lang/go.el")
 (load-file "~/.emacs.d/lang/rust.el")
 (load-file "~/.emacs.d/lang/markup.el")
-(load-file "~/.emacs.d/lang/javascript.el")
 ;; (load-file "~/.emacs.d/lang/elixir.el")
 (load-file "~/.emacs.d/lang/lua.el")
 (load-file "~/.emacs.d/lang/glsl.el")
@@ -319,8 +322,9 @@
 (load-file "~/.emacs.d/lang/haskell.el")
 ;;(load-file "~/.emacs.d/lang/chuck.el")
 (load-file "~/.emacs.d/lang/ocaml.el")
-(load-file "~/.emacs.d/lang/html.el")
 
+(load-file "~/.emacs.d/lang/html.el")
+(load-file "~/.emacs.d/lang/javascript.el")
 
 ;; NOSY comments
 (set-face-foreground 'font-lock-comment-face "orange")

@@ -1,3 +1,16 @@
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
 ;;
 ;;(add-hook 'after-init-hook (lambda () (load-theme 'kaolin-galaxy t)))
 
@@ -202,13 +215,6 @@
             (lambda ()
               (set (make-local-variable require-final-newline) nil))))
 
-(use-package dockerfile-mode)
-
-(use-package yaml-mode
-  :mode (("\\.mat\\'" . yaml-mode)); Unity
-  :init
-  (add-hook 'yaml-mode-hook (lambda () (ansible 1))))
-
 (use-package neotree
   :bind ("C-0" . neotree-toggle)
   :config
@@ -266,6 +272,9 @@
   (setq ag-reuse-window     t))
 
 (use-package flycheck)
+(use-package flycheck-inline
+  :init (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
+
 (use-package lsp-mode
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error)

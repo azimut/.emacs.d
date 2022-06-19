@@ -22,12 +22,12 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
        (eq web-mode-auto-close-style 3)))
 
 (defun web-config ()
-  ;;(setq-local lsp-disabled-clients       '((web-mode . eslint) (web-tsx-mode . nil)))
   (setq-local lsp-eldoc-enable-hover       nil) ;; Too busy
   (setq-local company-insertion-on-trigger nil)
   (setq-local company-insertion-triggers '(?\  ?\))))
 
 (defun tsx-config ()
+  (setq-local lsp-eldoc-enable-hover       t)
   (setq-local company-insertion-on-trigger nil)
   (setq-local company-insertion-triggers '(?\  ?\))))
 

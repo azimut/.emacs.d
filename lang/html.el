@@ -1,4 +1,5 @@
 ;; lsp-install-server >> html-ls
+;; npm install -g prettier
 
 (use-package impatient-mode)
 
@@ -16,23 +17,19 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
           #'indent-for-tab-command)
          (#'emmet-expand-yas))))
 
-(use-package emmet-mode
-  :bind (:map emmet-mode-keymap
-              ("<tab>" . +web/indent-or-yas-or-emmet-expand)
-              ("<C-return>" . nil)
-              ("C-j" . newline)))
-
 (defun +web-is-auto-close-style-3 (_id action _context)
   (and (eq action 'insert)
        (eq web-mode-auto-close-style 3)))
 
 (defun web-config ()
-  (setq-local lsp-disabled-clients '(eslint))
-  (setq-local lsp-eldoc-enable-hover nil) ;; Too busy
+  ;;(setq-local lsp-disabled-clients       '((web-mode . eslint) (web-tsx-mode . nil)))
+  (setq-local lsp-eldoc-enable-hover       nil) ;; Too busy
   (setq-local company-insertion-on-trigger nil)
-  (setq-local company-insertion-triggers '(?\  ?\)))
-  (smartparens-mode +1)
-  (emmet-mode +1))
+  (setq-local company-insertion-triggers '(?\  ?\))))
+
+(defun tsx-config ()
+  (setq-local company-insertion-on-trigger nil)
+  (setq-local company-insertion-triggers '(?\  ?\))))
 
 (defun radian-enter-and-indent-sexp (&rest _ignored)
   "Insert an extra newline after point, and reindent.
@@ -43,13 +40,23 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   (indent-according-to-mode))
 
 (use-package web-mode
-  :mode "\\.[px]?html?\\'"
+  :mode (("\\.[px]?html?\\'" . web-mode)
+         ("\\.tsx\\'" . web-tsx-mode)
+         ("\\.jsx\\'" . web-tsx-mode))
+  :hook (web-tsx-mode . tsx-config)
+  :hook (web-mode . lsp)
+  :hook (web-mode . smartparens-mode)
+  :hook (web-mode . web-config)
   :bind (:map
          web-mode-map
+         ("<tab>" . +web/indent-or-yas-or-emmet-expand)
          ("C-M-t" . web-mode-element-transpose)
          ("C-c C-d" . lsp-describe-thing-at-point))
   :custom
+  (lsp-disabled-clients '((web-mode . eslint) (web-tsx-mode . nil)))
   (lsp-html-format-enable                      nil "BUG?: hangs up <style> editing for 2 seconds")
+  (web-mode-enable-auto-quoting                nil "let smartparens handle this")
+  (web-mode-enable-auto-pairing                t   "let smartparens handle this")
   (web-mode-block-padding                      2)
   (web-mode-code-indent-offset                 2)
   (web-mode-css-indent-offset                  2)
@@ -60,7 +67,16 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   (web-mode-enable-current-element-highlight   nil "LSP already has it")
   (web-mode-enable-html-entities-fontification t)
   :init
-  (add-hook #'web-mode-hook #'web-config)
+  (define-derived-mode web-tsx-mode web-mode "tsx")
   :config
   (sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3))
   (sp-local-pair 'web-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j"))))
+
+(use-package prettier
+  :hook ((web-mode web-tsx-mode css-mode) . prettier-mode))
+
+(use-package emmet-mode
+  :hook (web-mode web-tsx-mode)
+  :bind (:map emmet-mode-keymap
+              ("<C-return>" . nil)
+              ("C-j" . newline)))

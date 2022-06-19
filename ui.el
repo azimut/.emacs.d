@@ -1,4 +1,3 @@
-;;(add-hook 'after-init-hook (lambda () (load-theme 'kaolin-galaxy t)))
 ;; NOTE: need a compositor
 (defun transparency (value)
   "Sets the transparency of the frame window. 0=transparent/100=opaque"
@@ -14,13 +13,16 @@
 (add-hook 'help-mode-hook #'disable-trailing-highlight)
 (add-hook 'eww-mode-hook #'disable-trailing-highlight)
 
-;; disable menu-bar
 ;; https://www.emacswiki.org/emacs/MenuBar
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
 (fset 'yes-or-no-p 'y-or-n-p)
+
+(require 'whitespace)
+(global-whitespace-mode 1)
+(setq whitespace-style '(face empty))
 
 (use-package neotree
   :bind ("C-0" . neotree-toggle)
@@ -45,10 +47,6 @@
 
 (use-package mlscroll
   :init (mlscroll-mode +1))
-
-;; (use-package spaceline
-;;   :config (require 'spaceline-config)
-;;   (spaceline-emacs-theme))
 
 (set-face-foreground 'font-lock-comment-face "orange")
 (set-cursor-color "#FF00FF")

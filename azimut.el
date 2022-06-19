@@ -87,10 +87,6 @@
 
 ;;--------------------------------------------------
 
-(require 'whitespace)
-(global-whitespace-mode 1)
-(setq whitespace-style '(face empty))
-
 (setq dired-listing-switches "-lh")
 (require 'dired-x)
 (setq-default dired-omit-files-p t) ; Buffer-local variable
@@ -181,6 +177,15 @@
             (lambda ()
               (set (make-local-variable require-final-newline) nil))))
 
+;; https://stackoverflow.com/questions/25521897/how-to-never-expand-yasnippets-in-comments-and-strings
+(defun yas-no-expand-in-comment/string ()
+  (setq yas-buffer-local-condition
+        '(if (nth 8 (syntax-ppss)) ;; non-nil if in a string or comment
+             '(require-snippet-condition . force-in-comment)
+           t)))
+;;(add-hook 'prog-mode-hook 'yas-no-expand-in-comment/string)
+
+
 (use-package ggtags)
 
 ;; compile-mode
@@ -190,23 +195,6 @@
             ;;(setq compilation-auto-jump-to-first-error t)
             (setq compilation-scroll-output t)))
 
-(use-package magit
-  :bind ("C-x g" . magit-status)
-  :config
-  (setq magit-git-executable "/usr/bin/git"))
-
-(use-package magit-todos
-  :config (magit-todos-mode +1))
-
-(use-package forge
-  :config
-  (setq auth-sources '("~/.authinfo.gpg"))
-  (setq forge-topic-list-limit '(100 . 0)))
-
-(use-package gitignore-templates)
-(use-package gitignore-mode)
-(use-package git-timemachine)
-
 (use-package dash)
 
 (use-package helm-dash
@@ -214,7 +202,6 @@
   (setq dash-docs-browser-func 'eww)
   (setq dash-docs-enable-debugging nil))
 
-(use-package lice)
 (use-package systemd)
 (use-package vterm)
 (use-package ag
@@ -250,12 +237,6 @@
          ("C-c C-+" . evil-numbers/inc-at-pt-incremental)
          ("C-c C--" . evil-numbers/dec-at-pt-incremental)))
 
-;; https://stackoverflow.com/questions/25521897/how-to-never-expand-yasnippets-in-comments-and-strings
-(defun yas-no-expand-in-comment/string ()
-  (setq yas-buffer-local-condition
-        '(if (nth 8 (syntax-ppss)) ;; non-nil if in a string or comment
-             '(require-snippet-condition . force-in-comment)
-           t)))
 
 (use-package projectile
   :bind-keymap
@@ -264,7 +245,7 @@
   (setq projectile-completion-system 'ivy
         projectile-sort-order 'recently-active))
 
-;;(add-hook 'prog-mode-hook 'yas-no-expand-in-comment/string)
+
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")
 (load-file "~/.emacs.d/lang/elisp.el")
@@ -287,3 +268,4 @@
 (load-file "~/.emacs.d/lang/javascript.el")
 
 (load-file "~/.emacs.d/ui.el")
+(load-file "~/.emacs.d/scm.el")

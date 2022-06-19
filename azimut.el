@@ -11,33 +11,10 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;;
-;;(add-hook 'after-init-hook (lambda () (load-theme 'kaolin-galaxy t)))
-
-(add-hook
- 'Buffer-menu-mode-hook
- (lambda () (setq-local show-trailing-whitespace nil)))
-
-(add-hook
- 'shell-mode-hook
- (lambda () (setq-local show-trailing-whitespace nil)))
-
-(add-hook
- 'vterm-mode-hook
- (lambda () (setq-local show-trailing-whitespace nil)))
-
 ;; https://github.com/syl20bnr/spacemacs/issues/12535
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 ;; other WORKAROUND:
 ;;(setq package-check-signature nil)
-
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; disable menu-bar
-;; https://www.emacswiki.org/emacs/MenuBar
-(menu-bar-mode 1)
-(scroll-bar-mode 1)
-(tool-bar-mode -1)
 
 ;; https://www.emacswiki.org/emacs/ShowParenMode
 ;; parens match
@@ -95,14 +72,6 @@
 (global-set-key (kbd "<C-right>") 'enlarge-window-horizontally)
 
 ;;--------------------------------------------------
-
-;; NOTE: need a compositor
-(defun transparency (value)
-  "Sets the transparency of the frame window. 0=transparent/100=opaque"
-  (interactive "nTransparency Value 0 - 100 opaque:")
-  (set-frame-parameter (selected-frame) 'alpha value))
-
-;;--------------------------------------------------
 ;; melpa
 (require 'package)
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -134,10 +103,6 @@
   (global-set-key (kbd "C-s") 'phi-search)
   (global-set-key (kbd "C-r") 'phi-search-backward))
 
-(use-package spaceline
-  :config (require 'spaceline-config)
-  (spaceline-emacs-theme))
-
 (use-package multiple-cursors
   :bind (("C-S-c C-S-c" . mc/edit-lines)
          ("C->"         . mc/mark-next-like-this)
@@ -146,11 +111,6 @@
 
 (use-package ace-window
   :bind ("M-o" . ace-window))
-
-(use-package imenu-list
-  :bind ("C-'" . imenu-list-smart-toggle)
-  :config
-  (setq imenu-list-auto-resize t))
 
 (use-package company
   :bind (:map
@@ -173,6 +133,11 @@
   (define-key company-search-map (kbd "C-n") #'company-select-next)
   (define-key company-search-map (kbd "C-p") #'company-select-previous))
 
+;; (use-package company-quickhelp
+;;   :hook (company-mode . company-quickhelp-local-mode)
+;;   :custom
+;;   (company-quickhelp-delay 0.2))
+
 (use-package aggressive-indent)
 
 (use-package string-inflection
@@ -189,6 +154,7 @@
     (other-window 1)
     (w3m-browse-url url))
   (setq browse-url-browser-function #'browse-url-other)
+  ;;(setq browse-url-browser-function #'browse-url-firefox)
   (add-hook 'w3m-mode-hook
             (lambda ()
               (local-set-key "\C-n"   'w3m-next-anchor)
@@ -214,13 +180,6 @@
   (add-hook 'snippet-mode-hook
             (lambda ()
               (set (make-local-variable require-final-newline) nil))))
-
-(use-package neotree
-  :bind ("C-0" . neotree-toggle)
-  :config
-  (setq neo-theme 'arrow)
-  (setq neo-hidden-regexp-list
-        '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$" "\\.meta$")))
 
 (use-package ggtags)
 
@@ -253,15 +212,7 @@
 (use-package helm-dash
   :config
   (setq dash-docs-browser-func 'eww)
-  (add-hook
-   'eww-mode-hook
-   (lambda ()
-     (setq dash-docs-enable-debugging nil)
-     (setq-local show-trailing-whitespace nil))))
-
-(use-package which-key
-  :config
-  (which-key-mode +1))
+  (setq dash-docs-enable-debugging nil))
 
 (use-package lice)
 (use-package systemd)
@@ -276,6 +227,9 @@
   :init (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
 
 (use-package lsp-mode
+  :custom
+  (lsp-disabled-clients '((web-mode . eslint) (web-tsx-mode . nil)))
+  (lsp-headerline-breadcrumb-enable nil)
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error)
          ("M-e" . flycheck-list-errors)))
@@ -302,9 +256,6 @@
         '(if (nth 8 (syntax-ppss)) ;; non-nil if in a string or comment
              '(require-snippet-condition . force-in-comment)
            t)))
-
-(use-package vertico
-  :init (vertico-mode +1))
 
 (use-package projectile
   :bind-keymap
@@ -335,7 +286,4 @@
 (load-file "~/.emacs.d/lang/html.el")
 (load-file "~/.emacs.d/lang/javascript.el")
 
-;; NOSY comments
-(set-face-foreground 'font-lock-comment-face "orange")
-;; (set-cursor-color "#FFC0CB")
-(set-cursor-color "#FF00FF")
+(load-file "~/.emacs.d/ui.el")

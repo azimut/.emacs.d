@@ -27,6 +27,7 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   (setq-local company-insertion-triggers '(?\  ?\))))
 
 (defun tsx-config ()
+  (setq-local lsp-enable-indentation       nil)
   (setq-local lsp-eldoc-enable-hover       t)
   (setq-local company-insertion-on-trigger nil)
   (setq-local company-insertion-triggers '(?\  ?\))))

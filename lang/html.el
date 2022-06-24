@@ -1,4 +1,5 @@
 ;; lsp-install-server >> html-ls
+;; lsp-install-server >> tailwindcss
 ;; npm install -g prettier
 
 (use-package impatient-mode)
@@ -23,22 +24,15 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
 
 (defun web-config ()
   (setq-local lsp-eldoc-enable-hover       nil) ;; Too busy
-  (setq-local company-insertion-on-trigger nil)
-  (setq-local company-insertion-triggers '(?\  ?\))))
+  (setq-local company-insertion-on-trigger nil))
 
 (defun tsx-config ()
+  (set (make-local-variable 'company-backends) '(company-capf company-files))
+  (setq-local create-lockfiles             nil)
+  (setq-local emmet-jsx-className-braces?  t)
   (setq-local lsp-enable-indentation       nil)
   (setq-local lsp-eldoc-enable-hover       t)
-  (setq-local company-insertion-on-trigger nil)
-  (setq-local company-insertion-triggers '(?\  ?\))))
-
-(defun radian-enter-and-indent-sexp (&rest _ignored)
-  "Insert an extra newline after point, and reindent.
-   https://github.com/Fuco1/smartparens/issues/80"
-  (newline)
-  (indent-according-to-mode)
-  (forward-line -1)
-  (indent-according-to-mode))
+  (setq-local company-insertion-on-trigger nil))
 
 (use-package web-mode
   :mode (("\\.[px]?html?\\'" . web-mode)
@@ -54,7 +48,6 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
          ("C-M-t" . web-mode-element-transpose)
          ("C-c C-d" . lsp-describe-thing-at-point))
   :custom
-  (lsp-disabled-clients '((web-mode . eslint) (web-tsx-mode . nil)))
   (lsp-html-format-enable                      nil "BUG?: hangs up <style> editing for 2 seconds")
   (web-mode-enable-auto-quoting                nil "let smartparens handle this")
   (web-mode-enable-auto-pairing                t   "let smartparens handle this")
@@ -68,16 +61,37 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   (web-mode-enable-current-element-highlight   nil "LSP already has it")
   (web-mode-enable-html-entities-fontification t)
   :init
-  (define-derived-mode web-tsx-mode web-mode "tsx")
-  :config
-  (sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3))
-  (sp-local-pair 'web-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j"))))
+  (define-derived-mode web-tsx-mode web-mode "tsx"))
 
-(use-package prettier
-  :hook ((web-mode web-tsx-mode css-mode) . prettier-mode))
+(sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3))
+(sp-local-pair 'web-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j")))
+
+(use-package json-mode
+  :hook (json-mode . lsp)
+  :hook (json-mode . smartparens-strict-mode))
 
 (use-package emmet-mode
   :hook (web-mode web-tsx-mode)
   :bind (:map emmet-mode-keymap
               ("<C-return>" . nil)
               ("C-j" . newline)))
+
+(use-package css-mode
+  :bind (:map css-mode-map
+              ("C-j" . newline))
+  :ensure nil
+  :hook (css-mode . smartparens-mode)
+  :hook (css-mode . lsp)
+  :hook (css-mode . tree-sitter-hl-mode)
+  :custom
+  (css-smie-rules)
+  (css-fontify-colors nil))
+
+(sp-local-pair 'css-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j")))
+
+(use-package prettier
+  :hook ((web-mode web-tsx-mode css-mode json-mode)
+         . prettier-mode))
+
+(use-package lsp-tailwindcss
+  :init (setq lsp-tailwindcss-add-on-mode t))

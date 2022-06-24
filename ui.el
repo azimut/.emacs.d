@@ -13,6 +13,10 @@
 (add-hook 'help-mode-hook #'disable-trailing-highlight)
 (add-hook 'eww-mode-hook #'disable-trailing-highlight)
 
+(setq read-file-name-completion-ignore-case t
+      read-buffer-completion-ignore-case t
+      completion-ignore-case t)
+
 ;; https://www.emacswiki.org/emacs/MenuBar
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -45,8 +49,11 @@
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode))
 
-(use-package mlscroll
-  :init (mlscroll-mode +1))
+(use-package nyan-mode
+  :init (nyan-mode)
+  :config (setq nyan-minimum-window-width 32
+                nyan-bar-length 16
+                nyan-animate-nyancat t))
 
 (set-face-foreground 'font-lock-comment-face "orange")
 (set-cursor-color "#FF00FF")

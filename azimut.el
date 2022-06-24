@@ -112,14 +112,14 @@
   :bind (:map
          company-active-map
          ("<tab>" . company-complete-selection))
-  :config
-  (setq company-show-numbers              nil
-        company-minimum-prefix-length     2
-        company-tooltip-limit             30
-        company-tooltip-align-annotations t
-        company-idle-delay                0.1
-        company-begin-commands '(self-insert-command))
-  (setq company-auto-complete t)
+  :custom
+  (company-insertion-on-trigger      nil)
+  (company-show-numbers              nil)
+  (company-minimum-prefix-length     2)
+  (company-tooltip-limit             30)
+  (company-tooltip-align-annotations t)
+  (company-idle-delay                0.1)
+  (company-begin-commands '(self-insert-command))
 
   ;;(setq company-tooltip-align-annotations nil)
   (define-key company-active-map (kbd "M-n") nil)
@@ -129,10 +129,9 @@
   (define-key company-search-map (kbd "C-n") #'company-select-next)
   (define-key company-search-map (kbd "C-p") #'company-select-previous))
 
-;; (use-package company-quickhelp
-;;   :hook (company-mode . company-quickhelp-local-mode)
-;;   :custom
-;;   (company-quickhelp-delay 0.2))
+(use-package company-box :custom (company-box-doc-delay 0.2))
+(use-package company-quickhelp :custom
+  (company-quickhelp-delay 0.2))
 
 (use-package aggressive-indent)
 
@@ -219,7 +218,9 @@
   (lsp-headerline-breadcrumb-enable nil)
   :bind (("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error)
-         ("M-e" . flycheck-list-errors)))
+         ("M-e" . flycheck-list-errors)
+         :map lsp-mode-map
+         ("C-c C-d" . lsp-describe-thing-at-point)))
 
 (add-hook
  'makefile-mode
@@ -245,6 +246,14 @@
   (setq projectile-completion-system 'ivy
         projectile-sort-order 'recently-active))
 
+
+(defun radian-enter-and-indent-sexp (&rest _ignored)
+  "Insert an extra newline after point, and reindent.
+   https://github.com/Fuco1/smartparens/issues/80"
+  (newline)
+  (indent-according-to-mode)
+  (forward-line -1)
+  (indent-according-to-mode))
 
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")

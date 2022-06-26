@@ -16,7 +16,12 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
               (not (or (memq (char-after) (list ?\n ?\s ?\t))
                        (eobp))))
           #'indent-for-tab-command)
-         (#'emmet-expand-yas))))
+         ((bound-and-true-p yas-minor-mode)
+          (require 'yasnippet)
+          (if (yas--templates-for-key-at-point)
+              #'yas-expand
+            #'emmet-expand-yas))
+         (#'emmet-expand-line))))
 
 (defun +web-is-auto-close-style-3 (_id action _context)
   (and (eq action 'insert)
@@ -42,6 +47,7 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   :hook (web-mode . lsp)
   :hook (web-mode . smartparens-mode)
   :hook (web-mode . web-config)
+  :hook (web-mode . yas-minor-mode)
   :bind (:map
          web-mode-map
          ("<tab>" . +web/indent-or-yas-or-emmet-expand)

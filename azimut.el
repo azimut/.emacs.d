@@ -162,8 +162,7 @@
 (use-package yasnippet-snippets)
 (use-package yasnippet
   :after yasnippet-snippets
-  :diminish yas-minor-mode
-  :config (yas-global-mode +1)
+  :config
   (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
   (define-key yas-minor-mode-map (kbd "<tab>") nil)
   (define-key yas-minor-mode-map (kbd "TAB")   nil)

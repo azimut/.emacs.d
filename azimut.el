@@ -92,6 +92,10 @@
 (setq-default dired-omit-files-p t) ; Buffer-local variable
 (setq dired-omit-files (concat dired-omit-files "\\|*.fasl"))
 (setq use-package-always-ensure t)
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (dired-hide-details-mode)
+            (dired-sort-toggle-or-edit)))
 
 (use-package smartparens)
 (use-package phi-search
@@ -113,9 +117,10 @@
          company-active-map
          ("<tab>" . company-complete-selection))
   :custom
+  (company-transformers '(company-sort-by-backend-importance))
   (company-insertion-on-trigger      nil)
   (company-show-numbers              nil)
-  (company-minimum-prefix-length     2)
+  (company-minimum-prefix-length     1)
   (company-tooltip-limit             30)
   (company-tooltip-align-annotations t)
   (company-idle-delay                0.1)
@@ -203,11 +208,13 @@
 (use-package systemd)
 (use-package vterm)
 (use-package ag
+  :bind (:map ag-mode-map ("M-." . compile-goto-error))
   :config
   (setq ag-highlight-search t)
   (setq ag-reuse-window     t))
 
 (use-package flycheck)
+
 (use-package flycheck-inline
   :init (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
 
@@ -219,7 +226,8 @@
          ("M-p" . flycheck-previous-error)
          ("M-e" . flycheck-list-errors)
          :map lsp-mode-map
-         ("C-c C-d" . lsp-describe-thing-at-point)))
+         ("C-c C-d" . lsp-describe-thing-at-point)
+         ("C-c d"   . lsp-describe-thing-at-point)))
 
 (add-hook
  'makefile-mode
@@ -259,16 +267,16 @@
 (load-file "~/.emacs.d/lang/elisp.el")
 ;;(load-file "~/.emacs.d/lang/erlang.el")
 (load-file "~/.emacs.d/lang/lisp.el")
-(load-file "~/.emacs.d/lang/clojure.el")
+;;(load-file "~/.emacs.d/lang/clojure.el")
 (load-file "~/.emacs.d/lang/go.el")
-(load-file "~/.emacs.d/lang/rust.el")
+;;(load-file "~/.emacs.d/lang/rust.el")
 (load-file "~/.emacs.d/lang/markup.el")
 ;; (load-file "~/.emacs.d/lang/elixir.el")
-(load-file "~/.emacs.d/lang/lua.el")
-(load-file "~/.emacs.d/lang/glsl.el")
+;;(load-file "~/.emacs.d/lang/lua.el")
+;;(load-file "~/.emacs.d/lang/glsl.el")
 ;;(load-file "~/.emacs.d/lang/livecoding.el")
 (load-file "~/.emacs.d/lang/c.el")
-(load-file "~/.emacs.d/lang/haskell.el")
+;;(load-file "~/.emacs.d/lang/haskell.el")
 ;;(load-file "~/.emacs.d/lang/chuck.el")
 (load-file "~/.emacs.d/lang/ocaml.el")
 

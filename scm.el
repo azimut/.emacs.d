@@ -15,3 +15,10 @@
 (use-package gitignore-mode)
 (use-package git-timemachine)
 (use-package lice)
+
+(use-package projectile
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :config
+  (setq projectile-completion-system 'ivy
+        projectile-sort-order 'recently-active))

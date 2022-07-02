@@ -97,11 +97,10 @@
             (dired-hide-details-mode)
             (dired-sort-toggle-or-edit)))
 
-(use-package smartparens)
 (use-package phi-search
   :config (require 'phi-search)
-  (global-set-key (kbd "C-s") 'phi-search)
-  (global-set-key (kbd "C-r") 'phi-search-backward))
+  :bind (("C-s" . phi-search)
+         ("C-r" . phi-search-backward)))
 
 (use-package multiple-cursors
   :bind (("C-S-c C-S-c" . mc/edit-lines)
@@ -112,38 +111,8 @@
 (use-package ace-window
   :bind ("M-o" . ace-window))
 
-(use-package company
-  :bind (:map
-         company-active-map
-         ("<tab>" . company-complete-selection))
-  :custom
-  (company-transformers '(company-sort-by-backend-importance))
-  (company-insertion-on-trigger      nil)
-  (company-show-numbers              nil)
-  (company-minimum-prefix-length     1)
-  (company-tooltip-limit             30)
-  (company-tooltip-align-annotations t)
-  (company-idle-delay                0.1)
-  (company-begin-commands '(self-insert-command))
-
-  ;;(setq company-tooltip-align-annotations nil)
-  (define-key company-active-map (kbd "M-n") nil)
-  (define-key company-active-map (kbd "M-p") nil)
-  (define-key company-active-map (kbd "C-n") #'company-select-next)
-  (define-key company-active-map (kbd "C-p") #'company-select-previous)
-  (define-key company-search-map (kbd "C-n") #'company-select-next)
-  (define-key company-search-map (kbd "C-p") #'company-select-previous))
-
-(use-package company-box :custom (company-box-doc-delay 0.2))
-(use-package company-quickhelp :custom
-  (company-quickhelp-delay 0.2))
-
-(use-package aggressive-indent)
-
-(use-package string-inflection
-  :bind ("C-c j" . string-inflection-toggle))
-
 (setq browse-url-firefox-program "/snap/bin/firefox")
+
 (use-package w3m
   :ensure nil
   :config
@@ -164,33 +133,6 @@
               (local-set-key '[left]  'backward-char)
               (local-set-key '[right] 'forward-char))))
 
-(use-package yasnippet-snippets)
-(use-package yasnippet
-  :after yasnippet-snippets
-  :config
-  (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
-  (define-key yas-minor-mode-map (kbd "<tab>") nil)
-  (define-key yas-minor-mode-map (kbd "TAB")   nil)
-  ;; Bind `SPC' to `yas-expand' when snippet expansion available (it
-  ;; will still call `self-insert-command' otherwise).
-  (define-key yas-minor-mode-map (kbd "M-SPC") yas-maybe-expand)
-  ;; Bind `C-c y' to `yas-expand' ONLY.
-  (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand)
-  (add-hook 'snippet-mode-hook
-            (lambda ()
-              (set (make-local-variable require-final-newline) nil))))
-
-;; https://stackoverflow.com/questions/25521897/how-to-never-expand-yasnippets-in-comments-and-strings
-(defun yas-no-expand-in-comment/string ()
-  (setq yas-buffer-local-condition
-        '(if (nth 8 (syntax-ppss)) ;; non-nil if in a string or comment
-             '(require-snippet-condition . force-in-comment)
-           t)))
-;;(add-hook 'prog-mode-hook 'yas-no-expand-in-comment/string)
-
-
-(use-package ggtags)
-
 ;; compile-mode
 ;; https://github.com/fsharp/zarchive-fsharpbinding/issues/246
 (add-hook 'compilation-mode-hook
@@ -199,7 +141,6 @@
             (setq compilation-scroll-output t)))
 
 (use-package dash)
-
 (use-package helm-dash
   :config
   (setq dash-docs-browser-func 'eww)
@@ -207,61 +148,29 @@
 
 (use-package systemd)
 (use-package vterm)
+(use-package lorem-ipsum)
+
 (use-package ag
   :bind (:map ag-mode-map ("M-." . compile-goto-error))
   :config
   (setq ag-highlight-search t)
   (setq ag-reuse-window     t))
 
-(use-package flycheck)
-
-(use-package flycheck-inline
-  :init (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
-
-(use-package lsp-mode
-  :custom
-  (lsp-disabled-clients '((web-mode . eslint) (web-tsx-mode . nil)))
-  (lsp-headerline-breadcrumb-enable nil)
-  :bind (("M-n" . flycheck-next-error)
-         ("M-p" . flycheck-previous-error)
-         ("M-e" . flycheck-list-errors)
-         :map lsp-mode-map
-         ("C-c C-d" . lsp-describe-thing-at-point)
-         ("C-c d"   . lsp-describe-thing-at-point)))
-
-(add-hook
- 'makefile-mode
- (lambda () (setq-local whitespace-style '(face tabs empty))))
-
-(use-package lorem-ipsum)
+(use-package string-inflection
+  :bind ("C-c j" . string-inflection-toggle))
 
 (use-package evil-numbers
-  ;; (global-set-key (kbd "C-c +") 'evil-numbers/inc-at-pt)
-  ;; (global-set-key (kbd "C-c -") 'evil-numbers/dec-at-pt)
-  ;; (global-set-key (kbd "C-c C-+") 'evil-numbers/inc-at-pt-incremental)
-  ;; (global-set-key (kbd "C-c C--") 'evil-numbers/dec-at-pt-incremental)
   :bind (("C-c +" . evil-numbers/inc-at-pt)
          ("C-c -" . evil-numbers/dec-at-pt)
          ("C-c C-+" . evil-numbers/inc-at-pt-incremental)
          ("C-c C--" . evil-numbers/dec-at-pt-incremental)))
 
+(add-hook 'makefile-mode (lambda () (setq-local whitespace-style '(face tabs empty))))
 
-(use-package projectile
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :config
-  (setq projectile-completion-system 'ivy
-        projectile-sort-order 'recently-active))
-
-
-(defun radian-enter-and-indent-sexp (&rest _ignored)
-  "Insert an extra newline after point, and reindent.
-   https://github.com/Fuco1/smartparens/issues/80"
-  (newline)
-  (indent-according-to-mode)
-  (forward-line -1)
-  (indent-according-to-mode))
-
+;;-------------------------------------------------
+(load-file "~/.emacs.d/ui.el")
+(load-file "~/.emacs.d/scm.el")
+(load-file "~/.emacs.d/prog.el")
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")
 (load-file "~/.emacs.d/lang/elisp.el")
@@ -282,6 +191,3 @@
 
 (load-file "~/.emacs.d/lang/html.el")
 (load-file "~/.emacs.d/lang/javascript.el")
-
-(load-file "~/.emacs.d/ui.el")
-(load-file "~/.emacs.d/scm.el")

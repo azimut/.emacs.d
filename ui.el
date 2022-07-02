@@ -53,7 +53,14 @@
   :init (nyan-mode)
   :config (setq nyan-minimum-window-width 32
                 nyan-bar-length 16
-                nyan-animate-nyancat t))
+                nyan-animate-nyancat nil))
 
-(set-face-foreground 'font-lock-comment-face "orange")
+(lexical-let ((color-flag t))
+  (defun toggle-color ()
+    (interactive)
+    (setf color-flag (not color-flag))
+    (if color-flag
+        (set-face-foreground 'font-lock-comment-face "orange")
+      (set-face-foreground 'font-lock-comment-face "#696969"))))
+
 (set-cursor-color "#FF00FF")

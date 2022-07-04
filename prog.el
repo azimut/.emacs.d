@@ -1,4 +1,27 @@
-(use-package flycheck)
+(use-package flycheck
+  :bind (:map flycheck-error-list-mode-map ("M-e" . spacemacs/toggle-flycheck-error-list))
+  :init
+  (defun spacemacs/goto-flycheck-error-list ()
+    "Open and go to the error list buffer."
+    (interactive)
+    (if (flycheck-get-error-list-window)
+        (switch-to-buffer flycheck-error-list-buffer)
+      (progn
+        (flycheck-list-errors)
+        (switch-to-buffer-other-window flycheck-error-list-buffer))))
+
+  (defun spacemacs/toggle-flycheck-error-list ()
+    "Toggle flycheck's error list window.
+If the error list is visible, hide it.  Otherwise, show it."
+    (interactive)
+    (-if-let (window (flycheck-get-error-list-window))
+        (quit-window nil window)
+      (flycheck-list-errors)))
+  :config
+  (setq flycheck-indication-mode 'right-fringe)
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    [16 48 112 240 112 48 16] nil nil 'center))
+
 (use-package flycheck-inline
   :init (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
 
@@ -36,7 +59,7 @@
          lsp-mode-map
          ("M-n"     . flycheck-next-error)
          ("M-p"     . flycheck-previous-error)
-         ("M-e"     . flycheck-list-errors)
+         ("M-e"     . spacemacs/goto-flycheck-error-list)
          ("C-c C-d" . lsp-describe-thing-at-point)
          ("C-c d"   . lsp-describe-thing-at-point)))
 

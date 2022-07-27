@@ -10,11 +10,13 @@
          haskell-mode-map
          ("C-c C-d" . lsp-describe-thing-at-point)
          ("C-c C-k" . haskell-process-load-file)
-         :map
-         haskell-interactive-mode-map
-         ("C-c M-o" . haskell-interactive-mode-clear))
+         ;; haskell-interactive-mode-map
+         ;; ("C-c M-o" . haskell-interactive-mode-clear)
+         )
   :init
-  (add-hook 'haskell-mode-hook #'electric-pair-local-mode))
+  (add-hook 'haskell-mode-hook #'electric-pair-local-mode)
+  :config
+  (setq-local company-auto-complete-chars nil))
 
 (add-hook 'haskell-mode-hook #'lsp)
 (add-hook 'haskell-literate-mode-hook #'lsp)

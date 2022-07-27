@@ -1,6 +1,6 @@
 (use-package redshank)
 (use-package rainbow-delimiters)
-
+(require 'cl-font-lock)
 ;; lisp-mode-hook
 ;; sly-editing-mode
 ;; (add-hook 'lisp-mode-hook
@@ -44,11 +44,12 @@
 ;;   'redshank-align-forms-as-columns)
 
 (use-package sly
-  :ensure
-  :init
+  ;;:init
   ;; (setq slime-lisp-implementations '((sbcl ("/usr/local/bin/sbcl")))
   ;;       inferior-lisp-program "/usr/local/bin/sbcl"
   ;;       slime-contribs '(slime-fancy))
+  ;; "modern" style
+  :config
   (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl"
                                                ;;"--dynamic-space-size"
                                                ;;"1024"
@@ -59,8 +60,6 @@
         sly-inhibit-pipelining       nil
         sly-load-failed-fasl         'always
         sly-description-autofocus    t)
-  ;; "modern" style
-  :config
   (sly-setup)
   (add-hook 'sly--completion-display-mode-hook
             (lambda () (setq-local show-trailing-whitespace nil)))
@@ -78,7 +77,6 @@
              "define-subject"
              "define-shader-subject" "define-shader-entity" "define-shader-pass"))
      (paredit-mode +1)
-     (yas-minor-mode +1)
      (aggressive-indent-mode +1)
      (rainbow-delimiters-mode +1)
      (display-fill-column-indicator-mode +1)

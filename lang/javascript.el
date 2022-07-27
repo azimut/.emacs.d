@@ -23,13 +23,19 @@
 (use-package add-node-modules-path
   :hook (web-mode web-tsx-mode))
 
-(defun typescript-config ()
+(defun js-config ()
   (setq-local create-lockfiles             nil)
   (setq-local lsp-enable-indentation       nil)
   (setq-local company-tooltip-align-annotations t)
   (setq-local company-insertion-on-trigger nil))
 
+(use-package js-mode
+  :hook (js-mode . lsp)
+  :hook (js-mode . smartparens-strict-mode)
+  :hook (js-mode . js-config)
+  :ensure nil)
+
 (use-package typescript-mode
   :hook (typescript-mode . lsp)
   :hook (typescript-mode . smartparens-strict-mode)
-  :hook (typescript-mode . typescript-config))
+  :hook (typescript-mode . js-config))

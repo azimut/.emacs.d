@@ -3,13 +3,16 @@
 
 (use-package ccls
   :init
-  ;;(setq ccls-executable "/usr/bin/ccls")
-  (setq ccls-executable "/usr/local/bin/ccls")
+  (setq ccls-executable "/snap/bin/ccls")
   (setq ccls-initialization-options
         '(:index
           (:comments 2 :trackDependecy 1 :threads 2)
           :completion
-          (:detailedLabel t))))
+          (:detailedLabel t)))
+  ;; :config
+  ;; (add-to-list 'ccls-root-files ".ccls")
+  ;; (add-to-list 'ccls-root-files "compile_commands.json")
+  )
 
 (defun c-config ()
   (smartparens-strict-mode +1)
@@ -20,11 +23,10 @@
   (setq-local company-auto-commit-chars nil)
   (display-fill-column-indicator-mode +1))
 
-(define-key c-mode-map (kbd "C-c C-d") #'lsp-describe-thing-at-point)
 (define-key c-mode-map (kbd "C-c C-h") #'helm-dash-at-point)
 
-
 (add-hook #'c-mode-hook #'c-config)
+
 ;; (add-hook #'c++-mode-hook   #'my-cmode-hook)
 
 ;; (defun my-cmode-hook ()
@@ -36,4 +38,5 @@
 ;;   ;;                (lambda () (interactive) (manual-entry (current-word))))
 ;;   )
 
-
+(org-babel-do-load-languages
+ 'org-babel-load-languages '((C . t)))

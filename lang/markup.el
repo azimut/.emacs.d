@@ -1,3 +1,7 @@
+(use-package org
+  :ensure nil
+  :bind (:map org-mode-map ("C-j" . org-return)))
+
 (use-package tex
   :ensure nil
   :init
@@ -28,7 +32,7 @@
    TeX-view-style nil
    bibtex-maintain-sorted-entries t
    bibtex-align-at-equal-sign t
-   ) ; end of setq
+   )                                    ; end of setq
   :config
   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)

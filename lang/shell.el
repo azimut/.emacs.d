@@ -19,6 +19,7 @@
             (flycheck-mode +1)
             (setq-local tab-width 4)
             (shfmt-on-save-mode)
+            (define-key sh-mode-map (kbd "C-c C-c") #'sh-send-line-or-region-and-step)
             (define-key sh-mode-map (kbd "M-p") #'flycheck-previous-error)
             (define-key sh-mode-map (kbd "M-n") #'flycheck-next-error)
             (electric-pair-local-mode +1)
@@ -54,5 +55,3 @@
 (defun sh-send-line-or-region-and-step ()
   (interactive)
   (sh-send-line-or-region t))
-
-(define-key sh-mode-map (kbd "C-c C-c") #'sh-send-line-or-region-and-step)

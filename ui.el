@@ -30,10 +30,9 @@
 
 (use-package neotree
   :bind ("C-0" . neotree-toggle)
-  :config
-  (setq neo-theme 'arrow)
-  (setq neo-hidden-regexp-list
-        '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$" "\\.meta$")))
+  :custom
+  (neo-theme              'arrow)
+  (neo-hidden-regexp-list '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$" "\\.meta$")))
 
 (use-package imenu-list
   :bind ("C-'" . imenu-list-smart-toggle)

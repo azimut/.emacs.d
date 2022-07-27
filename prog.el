@@ -72,6 +72,8 @@ If the error list is visible, hide it.  Otherwise, show it."
 (use-package yasnippet-snippets)
 (use-package yasnippet
   :after yasnippet-snippets
+  :diminish yas-minor-mode
+  :config (yas-global-mode +1)
   :custom (yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
   :hook (snippet-mode . yasnippet-config)
   :bind (:map

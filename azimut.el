@@ -113,25 +113,23 @@
 
 (setq browse-url-firefox-program "/snap/bin/firefox")
 
-(use-package w3m
-  :ensure nil
-  :config
-  (defun browse-url-other (url &rest args)
-    (interactive)
-    (split-window)
-    (balance-windows)
-    (other-window 1)
-    (w3m-browse-url url))
-  (setq browse-url-browser-function #'browse-url-other)
-  ;;(setq browse-url-browser-function #'browse-url-firefox)
-  (add-hook 'w3m-mode-hook
-            (lambda ()
-              (local-set-key "\C-n"   'w3m-next-anchor)
-              (local-set-key "\C-p"   'w3m-previous-anchor)
-              (local-set-key '[up]    'previous-line)
-              (local-set-key '[down]  'next-line)
-              (local-set-key '[left]  'backward-char)
-              (local-set-key '[right] 'forward-char))))
+
+(defun browse-url-other (url &rest args)
+  (interactive)
+  (split-window)
+  (balance-windows)
+  (other-window 1)
+  (w3m-browse-url url))
+;;(setq browse-url-browser-function #'browse-url-other)
+(setq browse-url-browser-function #'browse-url-firefox)
+(add-hook 'w3m-mode-hook
+          (lambda ()
+            (local-set-key "\C-n"   'w3m-next-anchor)
+            (local-set-key "\C-p"   'w3m-previous-anchor)
+            (local-set-key '[up]    'previous-line)
+            (local-set-key '[down]  'next-line)
+            (local-set-key '[left]  'backward-char)
+            (local-set-key '[right] 'forward-char)))
 
 ;; compile-mode
 ;; https://github.com/fsharp/zarchive-fsharpbinding/issues/246
@@ -146,7 +144,7 @@
   (setq dash-docs-browser-func 'eww)
   (setq dash-docs-enable-debugging nil))
 
-(use-package systemd)
+;;(use-package systemd)
 (use-package vterm)
 (use-package lorem-ipsum)
 
@@ -168,7 +166,6 @@
 (add-hook 'makefile-mode (lambda () (setq-local whitespace-style '(face tabs empty))))
 
 ;;-------------------------------------------------
-(load-file "~/.emacs.d/ui.el")
 (load-file "~/.emacs.d/scm.el")
 (load-file "~/.emacs.d/prog.el")
 ;;-------------------------------------------------
@@ -191,3 +188,6 @@
 
 (load-file "~/.emacs.d/lang/html.el")
 (load-file "~/.emacs.d/lang/javascript.el")
+
+
+(load-file "~/.emacs.d/ui.el")

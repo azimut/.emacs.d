@@ -16,7 +16,7 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
               (not (or (memq (char-after) (list ?\n ?\s ?\t))
                        (eobp))))
           #'indent-for-tab-command)
-         ((bound-and-true-p yas-minor-mode)
+         ((bound-and-true-p yas-global-mode)
           (require 'yasnippet)
           (if (yas--templates-for-key-at-point)
               #'yas-expand
@@ -29,6 +29,7 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
 
 (defun web-config ()
   (setq-local lsp-eldoc-enable-hover       nil) ;; Too busy
+  (setq-local company-tooltip-align-annotations t)
   (setq-local company-insertion-on-trigger nil))
 
 (defun tsx-config ()
@@ -47,12 +48,10 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   :hook (web-mode . lsp)
   :hook (web-mode . smartparens-mode)
   :hook (web-mode . web-config)
-  :hook (web-mode . yas-minor-mode)
   :bind (:map
          web-mode-map
          ("<tab>" . +web/indent-or-yas-or-emmet-expand)
-         ("C-M-t" . web-mode-element-transpose)
-         ("C-c C-d" . lsp-describe-thing-at-point))
+         ("C-M-t" . web-mode-element-transpose))
   :custom
   (lsp-html-format-enable                      nil "BUG?: hangs up <style> editing for 2 seconds")
   (web-mode-enable-auto-quoting                nil "let smartparens handle this")
@@ -80,13 +79,13 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   :hook (web-mode web-tsx-mode)
   :bind (:map emmet-mode-keymap
               ("<C-return>" . nil)
-              ("C-j" . newline)))
+              ("C-j"        . newline)))
 
 (use-package css-mode
   :bind (:map css-mode-map
               ("C-j" . newline))
   :ensure nil
-  :hook (css-mode . smartparens-mode)
+  :hook (css-mode . smartparens-strict-mode)
   :hook (css-mode . lsp)
   :hook (css-mode . tree-sitter-hl-mode)
   :custom
@@ -96,7 +95,7 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
 (sp-local-pair 'css-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j")))
 
 (use-package prettier
-  :hook ((web-mode web-tsx-mode css-mode json-mode)
+  :hook ((web-mode web-tsx-mode css-mode json-mode typescript-mode)
          . prettier-mode))
 
 (use-package lsp-tailwindcss

@@ -22,7 +22,6 @@
          ("C-c C-c" . utop-eval-phrase)
          ("C-c C-k" . utop-eval-buffer))
   :hook (tuareg-mode . tuareg-config)
-  :hook (tuareg-mode . yas-minor-mode)
   :hook (tuareg-mode . smartparens-mode)
   :hook (tuareg-mode . lsp)
   :hook (tuareg-mode . company-mode)

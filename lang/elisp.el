@@ -10,6 +10,7 @@
   (add-hook 'emacs-lisp-mode-hook
             (lambda ()
               (paredit-mode +1)
+              (rainbow-delimiters-mode +1)
               (aggressive-indent-mode +1)
               (eldoc-mode +1)
               ;; SLIME like keybinding instead of "C-h f"

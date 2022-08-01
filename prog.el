@@ -73,15 +73,14 @@ If the error list is visible, hide it.  Otherwise, show it."
 (use-package yasnippet
   :after yasnippet-snippets
   :diminish yas-minor-mode
-  :config (yas-global-mode +1)
+  :init (yas-global-mode +1)
   :custom (yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
   :hook (snippet-mode . yasnippet-config)
-  :bind (:map
-         yas-minor-mode-map
-         ("<tab>" . nil)
-         ("TAB"   . nil)
-         ("M-SPC" . yas-maybe-expand)
-         ("C-c y" . yas-expand)))
+  ;; :bind (         ;; ("<tab>" . nil)
+  ;;        ;; ("TAB"   . nil)
+  ;;        ("M-SPC" . #'yas-maybe-expand)
+  ;;        ("C-c y" . yas-expand))
+  )
 
 ;; https://stackoverflow.com/questions/25521897/how-to-never-expand-yasnippets-in-comments-and-strings
 (defun yas-no-expand-in-comment/string ()

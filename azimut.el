@@ -165,6 +165,21 @@
 
 (add-hook 'makefile-mode (lambda () (setq-local whitespace-style '(face tabs empty))))
 
+(defun evince-open-pdf ()
+  (interactive)
+  (let ((pdf (thing-at-point 'url t)))
+    (when (and (string-search "page=" pdf)
+               (string-search "file:///" pdf))
+      (cl-destructuring-bind (_ page)
+          (assoc "page"
+                 (url-parse-query-string
+                  (cl-subseq pdf (1+ (string-search "#" pdf)))))
+        (apply #'start-process
+               (concat "/usr/bin/evince" pdf)
+               nil
+               "/usr/bin/evince"
+               (list (format "--page-index=%d" (string-to-number page))
+                     pdf))))))
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/scm.el")
 (load-file "~/.emacs.d/prog.el")

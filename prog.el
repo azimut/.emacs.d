@@ -90,7 +90,8 @@ If the error list is visible, hide it.  Otherwise, show it."
            t)))
 ;;(add-hook 'prog-mode-hook 'yas-no-expand-in-comment/string)
 
-(use-package smartparens)
+(use-package smartparens
+  :custom (sp-base-key-bindings 'paredit))
 (defun radian-enter-and-indent-sexp (&rest _ignored)
   "Insert an extra newline after point, and reindent.
    https://github.com/Fuco1/smartparens/issues/80"

@@ -16,6 +16,9 @@
        ))
 
 (use-package tuareg
+  :custom
+  (flycheck-highlighting-style '(conditional 4 (delimiters "" "«") (delimiters "" "«")))
+  (flycheck-indication-mode 'right-fringe)
   :bind (
          :map
          tuareg-mode-map
@@ -25,6 +28,7 @@
   :hook (tuareg-mode . smartparens-mode)
   :hook (tuareg-mode . lsp)
   :hook (tuareg-mode . company-mode)
+  :hook (tuareg-mode . company-box-mode)
   :init
   (add-hook 'before-save-hook #'ocamlformat-before-save)
   (sp-local-pair 'tuareg-mode "'" nil :actions nil)

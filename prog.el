@@ -22,8 +22,8 @@ If the error list is visible, hide it.  Otherwise, show it."
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
     [16 48 112 240 112 48 16] nil nil 'center))
 
-(use-package flycheck-inline
-  :init (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
+;; (use-package flycheck-inline
+;;   :init (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
 
 (use-package company
   :bind (:map

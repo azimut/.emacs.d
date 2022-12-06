@@ -1,6 +1,10 @@
 (use-package flycheck
   :bind (:map flycheck-error-list-mode-map ("M-e" . spacemacs/toggle-flycheck-error-list))
+  :custom
+  (flycheck-highlighting-style '(conditional 4 nil (delimiters "" "«")))
+  (flycheck-indication-mode    'left-margin)
   :init
+  (add-hook 'flycheck-mode-hook #'flycheck-set-indication-mode)
   (defun spacemacs/goto-flycheck-error-list ()
     "Open and go to the error list buffer."
     (interactive)
@@ -18,7 +22,6 @@ If the error list is visible, hide it.  Otherwise, show it."
         (quit-window nil window)
       (flycheck-list-errors)))
   :config
-  (setq flycheck-indication-mode 'right-fringe)
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
     [16 48 112 240 112 48 16] nil nil 'center))
 

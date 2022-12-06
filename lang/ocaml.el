@@ -16,9 +16,7 @@
        ))
 
 (use-package tuareg
-  :custom
-  (flycheck-highlighting-style '(conditional 4 (delimiters "" "«") (delimiters "" "«")))
-  (flycheck-indication-mode 'right-fringe)
+  :custom (utop-command "opam exec -- dune utop . -- -emacs")
   :bind (
          :map
          tuareg-mode-map

@@ -12,10 +12,6 @@
 ;; js2-mode
 ;; js2-refactor
 
-(use-package copilot
-  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-  :ensure t)
-
 (use-package js2-mode)
 (use-package rjsx-mode)
 (use-package js-react-redux-yasnippets)

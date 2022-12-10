@@ -3,10 +3,13 @@
 # name: defpackage
 # key: defpackage
 # --
-(uiop:define-package   :${1:package}${2:
+(defpackage+-1:defpackage+ #:${1:package}${2:
   (:nicknames ${3:nicks})}${4:
-  (:use       ${5:packages})}${6:
+  (:use       ${5:#:cl})}${6:
   (:shadow    ${7:packages})}${8:
   (:export    ${9:packages})}${10:
-  (:documentation "${11:doc}")})
+  (:documentation "${11:doc}")}${11:
+  (:local-nicknames (#:a #:alexandria) (#:s #:serapeum) (#:re #:cl-ppcre))})
+
+(in-package #:$1)
 $0

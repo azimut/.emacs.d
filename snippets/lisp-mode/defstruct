@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# contributor: ?????
+# name: defstruct
+# key: defstruct
+# --
+(defstruct ${1:name}
+  (${2:fieldname} ${3:default-value} ${4::type fixnum}))
+$0

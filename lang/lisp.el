@@ -1,6 +1,11 @@
 (use-package redshank)
 (use-package rainbow-delimiters)
 (require 'cl-font-lock)
+
+(defun hide-lisp-shell ()
+  (interactive)
+  (previous-buffer))
+
 ;; lisp-mode-hook
 ;; sly-editing-mode
 ;; (add-hook 'lisp-mode-hook
@@ -77,16 +82,33 @@
              "define-subject"
              "define-shader-subject" "define-shader-entity" "define-shader-pass"))
      (paredit-mode +1)
+     ;; (smartparens-strict-mode +1)
+     ;; (sp-use-paredit-bindings)
      (aggressive-indent-mode +1)
      (rainbow-delimiters-mode +1)
-     (display-fill-column-indicator-mode +1)
-     )))
+     (display-fill-column-indicator-mode +1)))
+  (add-hook
+   'sly-mrepl-hook
+   (lambda ()
+     (paredit-mode +1)
+     ;; (smartparens-strict-mode +1)
+     ;; (sp-use-paredit-bindings)
+     (aggressive-indent-mode -1)
+     (setq-local show-trailing-whitespace nil)
+     (define-key sly-mrepl-mode-map (kbd "C-c C-z") nil)
+     (define-key sly-mrepl-mode-map (kbd "C-c C-z") #'previous-buffer)
+     ;;(define-key sly-mrepl-mode-map (kbd "RET") #'sly-mrepl-return)
+     ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
+     ))  )
 
-(add-hook
- 'sly-mrepl-hook
- (lambda ()
-   (paredit-mode +1)
-   (aggressive-indent-mode -1)
-   (setq-local show-trailing-whitespace nil)
-   ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
-   ))
+;; ???
+;; https://emacs.stackexchange.com/questions/74841/how-do-i-disable-paredit-ret-in-sly-mrepl
+;;; globally in every buffer and mode check if paredit-RET was called in
+;;; the repl buffer and call sly-mrepl-return
+
+(advice-add 'paredit-RET
+            :around
+            (lambda (old-function &rest arguments)
+              (if (string-prefix-p "*sly-mrepl for" (buffer-name (current-buffer)))
+                  (sly-mrepl-return)
+                (paredit-RET))))

@@ -54,6 +54,9 @@
   ;;       inferior-lisp-program "/usr/local/bin/sbcl"
   ;;       slime-contribs '(slime-fancy))
   ;; "modern" style
+  :hook (sly-mode . paredit-mode)
+  :hook (sly-mode . aggresive-indent-mode)
+  :hook (sly-mode . rainbow-delimiters-mode)
   :config
   (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl"
                                                ;;"--dynamic-space-size"
@@ -81,31 +84,20 @@
            '("defclass" "define-condition"
              "define-subject"
              "define-shader-subject" "define-shader-entity" "define-shader-pass"))
-     (paredit-mode +1)
-     ;; (smartparens-strict-mode +1)
-     ;; (sp-use-paredit-bindings)
-     (aggressive-indent-mode +1)
-     (rainbow-delimiters-mode +1)
      (display-fill-column-indicator-mode +1)))
   (add-hook
    'sly-mrepl-hook
    (lambda ()
      (paredit-mode +1)
-     ;; (smartparens-strict-mode +1)
-     ;; (sp-use-paredit-bindings)
      (aggressive-indent-mode -1)
      (setq-local show-trailing-whitespace nil)
-     (define-key sly-mrepl-mode-map (kbd "C-c C-z") nil)
-     (define-key sly-mrepl-mode-map (kbd "C-c C-z") #'previous-buffer)
-     ;;(define-key sly-mrepl-mode-map (kbd "RET") #'sly-mrepl-return)
      ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
      ))  )
 
-;; ???
+;; FIX
 ;; https://emacs.stackexchange.com/questions/74841/how-do-i-disable-paredit-ret-in-sly-mrepl
 ;;; globally in every buffer and mode check if paredit-RET was called in
 ;;; the repl buffer and call sly-mrepl-return
-
 (advice-add 'paredit-RET
             :around
             (lambda (old-function &rest arguments)

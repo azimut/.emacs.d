@@ -186,7 +186,7 @@
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/lang/shell.el")
 (load-file "~/.emacs.d/lang/elisp.el")
-;;(load-file "~/.emacs.d/lang/erlang.el")
+(load-file "~/.emacs.d/lang/erlang.el")
 (load-file "~/.emacs.d/lang/lisp.el")
 ;;(load-file "~/.emacs.d/lang/clojure.el")
 (load-file "~/.emacs.d/lang/go.el")

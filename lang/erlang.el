@@ -7,13 +7,11 @@
   (other-window 1)
   (delete-other-windows))
 
-(use-package ivy-erlang-complete)
-
 (use-package erlang
   :load-path ("~/kerl/19.2/lib/tools-3.5.3/emacs")
-  ;; :hook (after-save . ivy-erlang-complete-reparse)
   :hook (erlang-mode . aggressive-indent-mode)
   :hook (erlang-mode . smartparens-strict-mode)
+  :hook (erlang-mode . lsp-mode)
   :mode (("\\.erl\\'"             . erlang-mode)
          ("\\.hrl\\'"             . erlang-mode)
          ("\\.xrl\\'"             . erlang-mode)
@@ -29,7 +27,6 @@
          ("\\.app.src?$"          . erlang-mode)
          ("\\Emakefile"           . erlang-mode))
   :config
-  ;;
   (add-hook 'erlang-mode-hook
             (lambda ()
               (sp-use-paredit-bindings)
@@ -60,21 +57,9 @@
                                               (concat
                                                (flycheck-rebar3-project-root)
                                                "_checkouts/*/ebin"))))
-              ;;
-              ;; (require 'ivy-erlang-complete)
-              ;; (define-key erlang-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
-              ;; (define-key erlang-mode-map (kbd "C-c C-w C-c") #'ivy-erlang-complete-find-references)
-              ;;(define-key erlang-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
-              ;;
-              ;;
               ;;(setq load-path (cons "~/.kerl/builds/25.1.2/lib/tools-2.11.2/emacs" load-path))
-              ;; (setq ivy-erlang-complete-erlang-root "~/kerl/19.2")
               (setq erlang-root-dir "~/kerl/19.2")
               (setq exec-path (cons "~/kerl/19.2/bin" exec-path))
-              ;; (setq-local ivy-erlang-complete-enable-autosave nil)
-              ;;
-              ;; (setq ivy-erlang-complete-use-default-keys t
-              ;;ivy-erlang-complete-erlang-root "/usr/lib64/erlang/"
               (setq erlang-electric-commands '(erlang-electric-comma
                                                erlang-electric-semicolon))
               (setq erlang-electric-newline-inhibit-list '(erlang-electric-gt))
@@ -97,7 +82,6 @@
                                 buffer-file-name)))))
               )
             )
-  ;; (ivy-erlang-complete-init))
   ;; prevent annoying hang-on-compile
   (defvar inferior-erlang-prompt-timeout t)
   ;; rebar3 in emacs from:
@@ -122,7 +106,6 @@
   ;;(setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (setq flycheck-display-errors-function nil)
-  ;; ivy should run after flycheck...
   )
 
 (add-hook
@@ -131,18 +114,5 @@
    (electric-pair-local-mode +1)
    (define-key erlang-shell-mode-map (kbd "C-c C-d") #'erlang-man-function-no-prompt)
    ;; Bindings set from erlang-mode
-   ;; (define-key erlang-shell-mode-map (kbd "M-.") #'ivy-erlang-complete-find-definition)
    ;; (define-key erlang-shell-mode-map (kbd "M-,") #'xref-pop-marker-stack)
-   ;; ;;
-   ;; (setq-local ivy-erlang-complete-enable-autosave nil)
-   ;; ;;
-   ;; ;;(ivy-erlang-complete-autosetup-project-root)
-   ;; (setq-local ivy-erlang-complete--eldocs (make-hash-table :test 'equal))
-   ;; ;;(ivy-erlang-complete-reparse)
-   ;; (set (make-local-variable 'eldoc-documentation-function)
-   ;;      'ivy-erlang-complete-eldoc)
-   ;; ;; Other bindings..
-   ;; ;;(define-key erlang-shell-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
-   ;; (define-key erlang-shell-mode-map (kbd "M-TAB")     #'ivy-erlang-complete)
-   ;; (define-key erlang-shell-mode-map (kbd "TAB")       #'ivy-erlang-complete)
    (define-key erlang-shell-mode-map (kbd "C-c C-z")   #'hide-erlang-shell)))

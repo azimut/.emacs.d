@@ -102,3 +102,5 @@ If the error list is visible, hide it.  Otherwise, show it."
   (indent-according-to-mode)
   (forward-line -1)
   (indent-according-to-mode))
+
+(use-package dap-mode)

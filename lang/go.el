@@ -38,10 +38,11 @@
   :config
   (sp-use-paredit-bindings))
 
-(sp-local-pair 'go-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j")))
+(sp-local-pair
+ 'go-mode "{" nil
+ :post-handlers '((radian-enter-and-indent-sexp "C-j")))
 
 (use-package ob-go)    ;; Org-mode Go support
-(use-package dap-mode)
 (use-package godoctor) ;; Refactor
 ;; (use-package go-guru
 ;; (use-package gotest)

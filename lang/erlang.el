@@ -10,11 +10,14 @@
 (use-package ivy-erlang-complete)
 
 (use-package erlang
-  :load-path ("~/.kerl/builds/22.1/release_22.1/lib/tools-3.2.1/emacs")
-  :hook (after-save . ivy-erlang-complete-reparse)
+  :load-path ("~/kerl/19.2/lib/tools-3.5.3/emacs")
+  ;; :hook (after-save . ivy-erlang-complete-reparse)
+  :hook (erlang-mode . aggressive-indent-mode)
+  :hook (erlang-mode . smartparens-strict-mode)
   :mode (("\\.erl\\'"             . erlang-mode)
          ("\\.hrl\\'"             . erlang-mode)
          ("\\.xrl\\'"             . erlang-mode)
+         ("\\.escript\\'"         . erlang-mode)
          ("rebar\\.config$"       . erlang-mode)
          ("relx\\.config$"        . erlang-mode)
          ("sys\\.config\\.src$"   . erlang-mode)
@@ -29,17 +32,16 @@
   ;;
   (add-hook 'erlang-mode-hook
             (lambda ()
-              (smartparens-strict-mode +1)
               (sp-use-paredit-bindings)
-              (aggressive-indent-mode +1)
               ;;
-              (define-key erlang-mode-map (kbd "M-p") #'flycheck-previous-error)
-              (define-key erlang-mode-map (kbd "M-n") #'flycheck-next-error)
-              (flycheck-mode +1)
+              ;; (define-key erlang-mode-map (kbd "M-p") #'flycheck-previous-error)
+              ;; (define-key erlang-mode-map (kbd "M-n") #'flycheck-next-error)
+              ;; (flycheck-mode +1)
+
               ;; pretty needs to happen on init
               ;;(setq-local prettify-symbols-alist '(("fun" .  955) ("->"  . 8594)))
               (setq
-               flycheck-erlang-executable "~/.kerl/builds/22.1/release_22.1/bin/erlc"
+               flycheck-erlang-executable "~/kerl/19.2/bin/erlc"
                flycheck-erlang-include-path (append
                                              (file-expand-wildcards
                                               (concat
@@ -59,25 +61,24 @@
                                                (flycheck-rebar3-project-root)
                                                "_checkouts/*/ebin"))))
               ;;
-              (require 'ivy-erlang-complete)
-              (define-key erlang-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
-              (define-key erlang-mode-map (kbd "C-c C-w C-c") #'ivy-erlang-complete-find-references)
+              ;; (require 'ivy-erlang-complete)
+              ;; (define-key erlang-mode-map (kbd "M-TAB") #'ivy-erlang-complete)
+              ;; (define-key erlang-mode-map (kbd "C-c C-w C-c") #'ivy-erlang-complete-find-references)
               ;;(define-key erlang-mode-map (kbd "C-c C-d h") #'ivy-erlang-complete-show-doc-at-point)
               ;;
               ;;
-              ;;(setq load-path (cons "~/.kerl/builds/22.1/lib/tools-2.11.2/emacs" load-path))
-              (setq ivy-erlang-complete-erlang-root "~/.kerl/builds/22.1/release_22.1")
-              (setq erlang-root-dir "~/.kerl/builds/22.1/release_22.1")
-              (setq exec-path (cons "~/.kerl/builds/22.1/release_22.1/bin" exec-path))
-              (setq-local ivy-erlang-complete-enable-autosave nil)
+              ;;(setq load-path (cons "~/.kerl/builds/25.1.2/lib/tools-2.11.2/emacs" load-path))
+              ;; (setq ivy-erlang-complete-erlang-root "~/kerl/19.2")
+              (setq erlang-root-dir "~/kerl/19.2")
+              (setq exec-path (cons "~/kerl/19.2/bin" exec-path))
+              ;; (setq-local ivy-erlang-complete-enable-autosave nil)
               ;;
-              (setq ivy-erlang-complete-use-default-keys t
-                    ;;ivy-erlang-complete-erlang-root "/usr/lib64/erlang/"
-                    )
-	      (setq erlang-electric-commands '(erlang-electric-comma
-				               erlang-electric-semicolon))
-	      (setq erlang-electric-newline-inhibit-list '(erlang-electric-gt))
-	      (setq erlang-electric-newline-inhibit t)
+              ;; (setq ivy-erlang-complete-use-default-keys t
+              ;;ivy-erlang-complete-erlang-root "/usr/lib64/erlang/"
+              (setq erlang-electric-commands '(erlang-electric-comma
+                                               erlang-electric-semicolon))
+              (setq erlang-electric-newline-inhibit-list '(erlang-electric-gt))
+              (setq erlang-electric-newline-inhibit t)
               ;; https://github.com/massemanet/dotfiles.nixos/
               (unless (null buffer-file-name)
                 (make-local-variable 'compile-command)
@@ -93,8 +94,10 @@
                                 (if (file-exists-p "../ebin") "-o ../ebin " "")
                                 (if (file-exists-p "../include") "-I ../include " "")
                                 "+debug_info -W "
-                                buffer-file-name))))))
-            (ivy-erlang-complete-init))
+                                buffer-file-name)))))
+              )
+            )
+  ;; (ivy-erlang-complete-init))
   ;; prevent annoying hang-on-compile
   (defvar inferior-erlang-prompt-timeout t)
   ;; rebar3 in emacs from:

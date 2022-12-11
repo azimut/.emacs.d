@@ -30,7 +30,8 @@
   :hook (go-mode . lsp)
   :bind (:map go-mode-map
               ("C-c C-d" . lsp-describe-thing-at-point)
-              ("C-j" . newline))
+              ("C-c C-c" . go-run)
+              ("C-j"     . newline))
   :custom
   (gofmt-command "golines")
   (lsp-go-use-placeholders t)

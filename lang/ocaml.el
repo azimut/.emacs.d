@@ -5,7 +5,10 @@
 ;; https://github.com/emacs-lsp/lsp-ui
 
 (use-package dune)
-(use-package utop)
+(use-package utop
+  :hook (utop-mode . scroll-bar-mode)
+  :config
+  (add-hook 'utop-mode-hook (lambda () (setq-local mode-line-format nil))))
 
 (use-package ocamlformat)
 (defun tuareg-config ()

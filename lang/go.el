@@ -1,4 +1,6 @@
 ;; OS:
+;; $ go install github.com/go-delve/delve/cmd/dlv@latest
+;; - https://github.com/go-delve/delve/tree/master/Documentation/installation
 ;; GO111MODULE=on go get -v golang.org/x/tools/gopls@latest
 ;; go get -u github.com/motemen/gore/cmd/gore
 ;; go get -u github.com/stamblerre/gocode
@@ -36,6 +38,7 @@
   (gofmt-command "golines")
   (lsp-go-use-placeholders t)
   :config
+  (require 'dap-dlv-go)
   (sp-use-paredit-bindings))
 
 (sp-local-pair

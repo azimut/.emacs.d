@@ -1,6 +1,6 @@
 ;;
 ;; Erlang
-;;
+;; depends on erlang-ls https://github.com/erlang-ls/erlang_ls
 
 (defun hide-erlang-shell ()
   (interactive)

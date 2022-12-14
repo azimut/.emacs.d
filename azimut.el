@@ -145,7 +145,9 @@
   (setq dash-docs-enable-debugging nil))
 
 ;;(use-package systemd)
-(use-package vterm)
+(use-package vterm
+  :config
+  (add-hook 'vterm-mode-hook (lambda () (setq-local mode-line-format nil))))
 (use-package lorem-ipsum)
 
 (use-package ag

@@ -3,31 +3,124 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        +web/indent-or-yas-or-emmet-expand
+        LaTeX-babel-insert-hyphen
+        LaTeX-insert-left-brace
+        TeX-insert-backslash
+        TeX-insert-quote
+        artist-forward-char
+        backward-sexp
+        beginning-of-visual-line
+        c-electric-colon
+        c-electric-delete-forward
+        c-electric-paren
+        c-electric-semi&comma
         c-electric-slash
+        c-electric-star
+        comment-region
         complete-symbol
+        dabbrev-expand
+        default-indent-new-line
+        dired-unmark-backward
+        down-list
+        downcase-region
+        electric-newline-and-maybe-indent
+        electric-pair-delete-pair
+        end-of-visual-line
+        enlarge-window-horizontally
+        erlang-electric-comma
+        erlang-electric-gt
+        erlang-electric-semicolon
+        forward-sexp
+        haskell-indentation-common-electric-command
         indent-for-tab-command
+        indent-new-comment-line
+        isearch-printing-char
         keyboard-escape-quit
         kill-region
+        kill-sexp
+        kill-visual-line
+        kmacro-end-or-call-macro
+        mark-sexp
+        markdown-cycle
+        markdown-outdent-or-delete
+        org-beginning-of-line
+        org-cycle
+        org-delete-char
+        org-end-of-line
+        org-force-self-insert
+        org-kill-line
+        org-meta-return
+        org-metaright
+        org-return
+        org-self-insert-command
+        org-shiftleft
+        org-shiftright
+        org-yank
+        paredit-backslash
         paredit-backward
+        paredit-backward-barf-sexp
         paredit-backward-kill-word
+        paredit-close-round-and-newline
+        paredit-delete-char
+        paredit-doublequote
         paredit-forward
         paredit-forward-delete
+        paredit-forward-down
+        paredit-forward-kill-word
         paredit-forward-slurp-sexp
         paredit-kill
+        paredit-meta-doublequote
+        paredit-newline
         paredit-open-round
         paredit-splice-sexp
         paredit-wrap-round
+        picture-clear-column
         slime-autodoc-space
+        sly-choose-completion
+        sly-compile-defun
+        sp-backward-barf-sexp
+        sp-backward-delete-char
+        sp-backward-kill-word
+        sp-backward-sexp
+        sp-delete-char
+        sp-down-sexp
+        sp-forward-sexp
+        sp-forward-slurp-sexp
+        sp-kill-hybrid-sexp
+        sp-kill-region
+        sp-kill-word
+        sp-splice-sexp
+        string-inflection-toggle
+        transpose-sexps
+        wdired--self-insert
         xterm-paste
+        yaml-electric-bar-and-angle
+        yaml-electric-dash-and-dot
         ))
 
 (setq mc/cmds-to-run-once
       '(
+        ace-window
+        count-lines-page
         find-file
+        insert-parentheses
+        kill-sentence
+        mouse-set-region
         paredit-backward-slurp-sexp
         paredit-forward-barf-sexp
+        paredit-semicolon
         paredit-splice-sexp-killing-backward
         paredit-splice-sexp-killing-forward
+        phi-search
+        sh-assignment
         slime-compile-defun
+        slime-previous-note
+        sly-eval-region
+        sly-quit-completing
+        sp-remove-active-pair-overlay
+        suspend-frame
         switch-to-buffer
+        yaml-electric-backspace
+        yas-expand
         ))

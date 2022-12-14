@@ -2,10 +2,6 @@
 (use-package rainbow-delimiters)
 (require 'cl-font-lock)
 
-(defun hide-lisp-shell ()
-  (interactive)
-  (previous-buffer))
-
 ;; lisp-mode-hook
 ;; sly-editing-mode
 ;; (add-hook 'lisp-mode-hook
@@ -55,7 +51,7 @@
   ;;       slime-contribs '(slime-fancy))
   ;; "modern" style
   :hook (sly-mode . paredit-mode)
-  :hook (sly-mode . aggresive-indent-mode)
+  :hook (sly-mode . aggressive-indent-mode)
   :hook (sly-mode . rainbow-delimiters-mode)
   :config
   (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl"
@@ -90,6 +86,7 @@
    (lambda ()
      (paredit-mode +1)
      (aggressive-indent-mode -1)
+     (setq-local mode-line-format nil)
      (setq-local show-trailing-whitespace nil)
      ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
      ))  )

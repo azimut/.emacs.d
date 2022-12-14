@@ -12,6 +12,7 @@
 (add-hook 'vterm-mode-hook #'disable-trailing-highlight)
 (add-hook 'help-mode-hook #'disable-trailing-highlight)
 (add-hook 'eww-mode-hook #'disable-trailing-highlight)
+(add-hook 'sly-autodoc-mode-hook #'disable-trailing-highlight)
 
 (setq read-file-name-completion-ignore-case t
       read-buffer-completion-ignore-case t
@@ -48,11 +49,15 @@
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode))
 
+(use-package yascroll
+  :init (global-yascroll-bar-mode +1))
+
 (use-package nyan-mode
-  :init (nyan-mode)
-  :config (setq nyan-minimum-window-width 32
-                nyan-bar-length 16
-                nyan-animate-nyancat nil))
+  :init (nyan-mode +1)
+  :custom
+  (nyan-minimum-window-width  32)
+  (nyan-bar-length            16)
+  (nyan-animate-nyancat      nil))
 
 (lexical-let ((color-flag t))
   (defun toggle-color ()
@@ -63,3 +68,8 @@
       (set-face-foreground 'font-lock-comment-face "#696969"))))
 
 (set-cursor-color "#FF00FF")
+(setq-default left-fringe-width 1 right-fringe-width 8
+              left-margin-width 1 right-margin-width 0)
+(set-fringe-style (quote (20 . 10)))
+
+(global-set-key (kbd "M-m") 'delete-other-windows)

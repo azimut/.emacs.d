@@ -1,3 +1,25 @@
+# ME: misc
+workspace/
+.cache/
+.dap-breakpoints
+.lsp-session-v1
+bookmarks
+cache/
+diredful-conf.el
+eclipse.jdt.ls/
+eln-cache/
+forge-database-v7-20220720-1438.sql
+forge-database.sqlite
+irony/
+local-melpa/
+projects
+recentf
+snippets/go-mode/.yas-compiled-snippets.el
+snippets/html-mode/.yas-compiled-snippets.el
+snippets/lisp-mode/.yas-compiled-snippets.el
+straight/
+transient/
+
 # -*- mode: gitignore; -*-
 *~
 \#*\#

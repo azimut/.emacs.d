@@ -65,8 +65,7 @@
         sly-load-failed-fasl         'always
         sly-description-autofocus    t)
   (sly-setup)
-  (add-hook 'sly--completion-display-mode-hook
-            (lambda () (setq-local show-trailing-whitespace nil)))
+  (add-hook 'sly--completion-display-mode-hook (lambda () (setq-local show-trailing-whitespace nil)))
   (add-hook
    'sly-mode-hook
    (lambda ()
@@ -87,7 +86,10 @@
      (paredit-mode +1)
      (aggressive-indent-mode -1)
      (setq-local mode-line-format nil)
-     (setq-local show-trailing-whitespace nil)
+     ;; CEPL crashes if receives it, and i tend to do it as a tick...
+     (define-key sly-mrepl-mode-map (kbd "C-c C-c") nil)
+     (define-key sly-mrepl-mode-map (kbd "C-<escape>") #'sly-interrupt)
+     ;; (setq-local show-trailing-whitespace nil)
      ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
      ))  )
 

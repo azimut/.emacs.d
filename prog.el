@@ -1,5 +1,14 @@
 (use-package flycheck
-  :bind (:map flycheck-error-list-mode-map ("M-e" . spacemacs/toggle-flycheck-error-list))
+  :hook (flycheck-mode . display-line-numbers-mode)
+  :hook (flycheck-mode . hl-line-mode)
+  :bind (:map
+         flycheck-error-list-mode-map
+         ("M-e" . spacemacs/toggle-flycheck-error-list)
+         :map
+         flycheck-mode-map
+         ("M-e"     . spacemacs/goto-flycheck-error-list)
+         ("M-n"     . flycheck-next-error)
+         ("M-p"     . flycheck-previous-error))
   :custom
   (flycheck-highlighting-style '(conditional 4 nil (delimiters "" "«")))
   (flycheck-indication-mode    'left-margin)
@@ -60,9 +69,6 @@ If the error list is visible, hide it.  Otherwise, show it."
   (lsp-headerline-breadcrumb-enable nil)
   :bind (:map
          lsp-mode-map
-         ("M-n"     . flycheck-next-error)
-         ("M-p"     . flycheck-previous-error)
-         ("M-e"     . spacemacs/goto-flycheck-error-list)
          ("C-c C-d" . lsp-describe-thing-at-point)
          ("C-c d"   . lsp-describe-thing-at-point)))
 

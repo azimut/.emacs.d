@@ -109,4 +109,9 @@ If the error list is visible, hide it.  Otherwise, show it."
   (forward-line -1)
   (indent-according-to-mode))
 
-(use-package dap-mode)
+(use-package dap-mode
+  :config
+  (custom-set-faces
+   '(dap-ui-pending-breakpoint-face ((t (:background "dark gray" :foreground "black"))))
+   '(dap-ui-verified-breakpoint-face ((t (:background "green" :foreground "black")))))
+  (define-key dap-mode-map (kbd "C-c C-s") #'dap-breakpoint-toggle))

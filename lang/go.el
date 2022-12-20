@@ -30,6 +30,7 @@
   :hook (go-mode . go-config)
   :hook (go-mode . smartparens-strict-mode)
   :hook (go-mode . lsp)
+  :hook (go-mode . company-mode)
   :bind (:map go-mode-map
               ("C-c C-d" . lsp-describe-thing-at-point)
               ("C-c C-c" . go-run)

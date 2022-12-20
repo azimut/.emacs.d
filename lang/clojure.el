@@ -1,29 +1,23 @@
-;;--------------------------------------------------
-;; Clojure
-;;--------------------------------------------------
-
 (use-package clojure-mode
-  ;; :bind
-  ;; (("C-c C-d C-h" . cider-clojuredocs)
-  ;;  ("C-c ~"       . cider-repl-set-ns))
+  :custom (cider-repl-display-help-banner . nil)
+  :hook (clojure-mode . paredit-mode)
+  :hook (clojure-mode . flycheck-mode)
+  :hook (clojure-mode . aggressive-indent-mode)
+  :hook (clojure-mode . cider-mode)
   :config
-  (define-key clojure-mode-map (kbd "C-c C-d C-h") #'cider-clojuredocs)
-  (define-key clojure-mode-map (kbd "C-c ~") #'cider-repl-set-ns)
-  (define-key clojure-mode-map (kbd "C-x C-e") #'cider-eval-last-sexp)
-  (define-key clojure-mode-map (kbd "C-c C-c") #'cider-eval-defun-at-point)
-  (setq cider-repl-display-help-banner nil)
-  ;;(add-hook 'eldoc-documentation-functions #'cider-eldoc nil t)
-  (add-hook 'clojure-mode-hook
-            (lambda ()
-              (paredit-mode +1)
-              (aggressive-indent-mode +1)
-              (flycheck-mode +1))))
+  (add-hook 'eldoc-documentation-functions #'cider-eldoc nil t)
+  )
 
 (use-package flycheck-clj-kondo)
 (use-package cider
-  :config
-  (define-key cider-repl-mode-map
-    (kbd "C-c M-o") #'cider-repl-clear-buffer)
-  (add-hook 'cider-repl-mode-hook
-            (lambda () (electric-pair-local-mode +1))))
-
+  :hook (cider-repl-mode . electric-pair-local-mode)
+  :bind
+  (:map
+   cider-repl-mode-map
+   ("C-c M-o" . cider-repl-clear-buffer)
+   :map
+   clojure-mode-map
+   ("C-x C-e"     . cider-eval-last-sexp)
+   ("C-c C-c"     . cider-eval-defun-at-point)
+   ("C-c C-d C-h" . cider-clojuredocs)
+   ("C-c ~"       . cider-repl-set-ns)))

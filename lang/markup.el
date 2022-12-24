@@ -1,5 +1,6 @@
 (use-package org
   :ensure nil
+  :custom (org-startup-folded 'overview)
   :bind (:map org-mode-map ("C-j" . org-return)))
 
 (use-package tex

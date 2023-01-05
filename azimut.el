@@ -148,13 +148,15 @@
 (use-package vterm
   :config
   (add-hook 'vterm-mode-hook (lambda () (setq-local mode-line-format nil))))
+
 (use-package lorem-ipsum)
 
 (use-package ag
-  :bind (:map ag-mode-map ("M-." . compile-goto-error))
-  :config
-  (setq ag-highlight-search t)
-  (setq ag-reuse-window     t))
+  :custom
+  (ag-highlight-search t)
+  (ag-reuse-window     t)
+  (ag-reuse-buffer     t)
+  :bind (:map ag-mode-map ("M-." . compile-goto-error)))
 
 (use-package string-inflection
   :bind ("C-c j" . string-inflection-toggle))

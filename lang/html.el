@@ -95,6 +95,7 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
 (sp-local-pair 'css-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j")))
 
 (use-package prettier
+  :config (setq prettier-mode-sync-config-flag nil)
   :hook ((web-mode web-tsx-mode css-mode json-mode typescript-mode)
          . prettier-mode))
 

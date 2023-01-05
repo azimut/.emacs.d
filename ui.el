@@ -68,9 +68,20 @@
         (set-face-foreground 'font-lock-comment-face "orange")
       (set-face-foreground 'font-lock-comment-face "#696969"))))
 
-(set-cursor-color "#FF00FF")
-(setq-default left-fringe-width 1 right-fringe-width 8
-              left-margin-width 1 right-margin-width 0)
-(set-fringe-style (quote (20 . 10)))
+;; (set-cursor-color "#FF00FF")
+(set-cursor-color "#00FF00")
 
+(setq-default left-fringe-width 0 right-fringe-width 8
+              left-margin-width 1 right-margin-width 0)
+
+(set-fringe-style (quote (20 . 10)))
 (global-set-key (kbd "M-m") 'delete-other-windows)
+(dap-mode)
+(save-place-mode +1)
+(setq global-auto-revert-non-file-buffers t)
+
+(add-hook 'text-mode-hook (lambda () (setq-local mode-require-final-newline nil)))
+(add-hook 'package-menu-mode-hook (lambda () (hl-line-mode +1)))
+
+(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-grow-only t)

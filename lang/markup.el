@@ -1,6 +1,6 @@
 (use-package org
   :ensure nil
-  :custom (org-startup-folded 'overview)
+  :custom (org-startup-folded 'showeverything)
   :bind (:map org-mode-map ("C-j" . org-return)))
 
 (use-package tex
@@ -28,7 +28,7 @@
      )
 
    LaTeX-verbatim-environments '("verbatim" "verbatim*" "Verbatim" "Verbatim*" "lstlisting" "code" "minted" "gascode" "ccode" "pythoncode" "javacode" "bashcode")
-   
+
    TeX-view-program-selection '((output-pdf "PDF Tools") (output-html "xdg-open"))
    TeX-view-style nil
    bibtex-maintain-sorted-entries t

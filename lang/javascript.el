@@ -17,7 +17,8 @@
 (use-package js-react-redux-yasnippets)
 
 (use-package add-node-modules-path
-  :hook (web-mode web-tsx-mode))
+  ;; :hook (web-mode . web-tsx-mode)
+  )
 
 (defun js-config ()
   (setq-local create-lockfiles             nil)

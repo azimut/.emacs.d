@@ -1,6 +1,5 @@
 (use-package flycheck
   :hook (flycheck-mode . display-line-numbers-mode)
-  :hook (flycheck-mode . hl-line-mode)
   :bind (:map
          flycheck-error-list-mode-map
          ("M-e" . spacemacs/toggle-flycheck-error-list)

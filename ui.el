@@ -49,8 +49,9 @@
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode))
 
-(use-package yascroll
-  :init (global-yascroll-bar-mode +1))
+;; (use-package yascroll
+;;   :custom (yascroll:disabled-modes '(image-mode prog-mode))
+;;   :init (global-yascroll-bar-mode +1))
 
 (use-package nyan-mode
   :init (nyan-mode +1)

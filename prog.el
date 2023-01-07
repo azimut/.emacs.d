@@ -111,6 +111,20 @@ If the error list is visible, hide it.  Otherwise, show it."
   (indent-according-to-mode))
 
 (use-package dap-mode
+  :bind (:map
+         dap-mode-map
+         ("<f12>" . dap-ui-locals)
+         ("<f10>" . dap-continue)
+         ("<f9>"  . dap-next)
+         ("<f8>"  . dap-step-out)
+         ("<f7>"  . dap-step-in))
+  :custom
+  (dap-output-window-min-height 5)
+  (dap-output-window-max-height 5)
+  (dap-ui-locals-expand-depth   1)
+  (dap-ui-default-fetch-count  25)
+  (dap-debug-restart-keep-session nil)
+  (dap-auto-configure-features '(sessions locals breakpoints expressions))
   :config
   (custom-set-faces
    '(dap-ui-pending-breakpoint-face ((t (:background "dark gray" :foreground "black"))))

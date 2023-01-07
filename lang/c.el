@@ -1,6 +1,10 @@
 ;; Os: install "ccls"
 ;; Enable it per buffer with M-lsp
 
+;; (require 'dap-lldb)
+(require 'dap-codelldb)
+(require 'dap-gdb-lldb)
+
 (use-package ccls
   :init
   (setq ccls-executable "/snap/bin/ccls")

@@ -58,6 +58,7 @@ If the error list is visible, hide it.  Otherwise, show it."
   ;;(setq company-tooltip-align-annotations nil)
   )
 
+(use-package company-prescient)
 (use-package company-box :custom (company-box-doc-delay 0.2))
 (use-package company-quickhelp :custom
   (company-quickhelp-delay 0.2))
@@ -68,6 +69,7 @@ If the error list is visible, hide it.  Otherwise, show it."
   (lsp-headerline-breadcrumb-enable nil)
   :bind (:map
          lsp-mode-map
+         ("C-j"     . newline);; override electric-mode-newline
          ("C-c C-d" . lsp-describe-thing-at-point)
          ("C-c d"   . lsp-describe-thing-at-point)))
 

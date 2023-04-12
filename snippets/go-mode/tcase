@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: type case switch
+# key: tcase
+# --
+switch ${1:somevar}.(type) {
+case ${2:int}:
+    ${3:fmt.Printf("The type of '%d' is %T\n", a, a)}
+default:
+    ${4:fmt.Printf("The type of '%v' is %T\n", a, a)}
+}

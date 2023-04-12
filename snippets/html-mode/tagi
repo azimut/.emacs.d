@@ -1,9 +1,0 @@
-# name: html inline tag
-# key: trigger-key
-# keybinding : keybinding
-# expand-env : ()
-# contributor : 
-# expand-env : ()
-# key: tagi
-# --
-<$1>$0</$1>

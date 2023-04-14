@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: mutex lock struct
+# key: mutex
+# --
+type ${1:Container} struct {
+    mu       sync.Mutex
+    ${2:counters} ${3:map[string]int}
+}

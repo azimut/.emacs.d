@@ -1,0 +1,22 @@
+# -*- mode: snippet -*-
+# name: sort interface methods
+# key: sorti
+# --
+
+type ${1:typeToSort} []${2:structName}
+
+func (a $1) Len() int {
+	return len(a)
+}
+
+func (a $1) Less(i, j int) bool {
+	i${3:fieldName} := a[i].$3
+	j$3 := a[j].$3
+	return i$3 < j$3
+}
+
+func (a $1) Swap(i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+// sort.Sort($1(instanceOfType))

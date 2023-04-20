@@ -87,7 +87,6 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   :ensure nil
   :hook (css-mode . smartparens-strict-mode)
   :hook (css-mode . lsp)
-  :hook (css-mode . tree-sitter-hl-mode)
   :custom
   (css-smie-rules)
   (css-fontify-colors nil))

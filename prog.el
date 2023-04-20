@@ -130,3 +130,9 @@ If the error list is visible, hide it.  Otherwise, show it."
    '(dap-ui-pending-breakpoint-face ((t (:background "dark gray" :foreground "black"))))
    '(dap-ui-verified-breakpoint-face ((t (:background "green" :foreground "black")))))
   (define-key dap-mode-map (kbd "C-c C-s") #'dap-breakpoint-toggle))
+
+(use-package cheat-sh)
+(use-package tree-sitter
+  :config
+  (global-tree-sitter-mode +1)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))

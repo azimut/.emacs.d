@@ -1,7 +1,10 @@
 (use-package org
   :ensure nil
   :custom (org-startup-folded 'showeverything)
-  :bind (:map org-mode-map ("C-j" . org-return)))
+  :bind (:map org-mode-map
+              ("C-j" . org-return)
+              ("M-n" . org-metadown)
+              ("M-p" . org-metaup)))
 
 (use-package tex
   :ensure nil

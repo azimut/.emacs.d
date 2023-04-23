@@ -5,9 +5,9 @@
          ("M-e" . spacemacs/toggle-flycheck-error-list)
          :map
          flycheck-mode-map
-         ("M-e"     . spacemacs/goto-flycheck-error-list)
-         ("M-n"     . flycheck-next-error)
-         ("M-p"     . flycheck-previous-error))
+         ("M-e"      . spacemacs/goto-flycheck-error-list)
+         ("<C-down>" . flycheck-next-error)
+         ("<C-up>"   . flycheck-previous-error))
   :custom
   (flycheck-highlighting-style '(conditional 4 nil (delimiters "" "«")))
   (flycheck-indication-mode    'left-margin)
@@ -33,43 +33,67 @@ If the error list is visible, hide it.  Otherwise, show it."
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
     [16 48 112 240 112 48 16] nil nil 'center))
 
-;; (use-package flycheck-inline
-;;   :init (add-hook 'flycheck-mode-hook #'flycheck-inline-mode))
+(use-package flycheck-inline
+  :hook (flycheck-mode . flycheck-inline-mode))
+
+;; CHAT-GPT :) ... plus hacky stuff
+(defun my-company-or-yas-next ()
+  "Complete with company if active, otherwise go to next yasnippet field."
+  (interactive)
+  (if (and (boundp 'yas--active-field-overlay)
+           (not (numberp (yas--field-start (overlay-get yas--active-field-overlay 'yas--field)))))
+      (yas-next-field)
+    (company-complete-common-or-cycle)))
 
 (use-package company
   :bind (:map
          company-active-map
-         ("<tab>" . company-complete-selection)
-         ("M-n"   . nil)
-         ("M-p"   . nil)
-         ("C-n"   . company-select-next)
-         ("C-p"   . company-select-previous)
+         ("<backtab>" . (lambda () (interactive) (company-complete-common-or-cycle -1)))
+         ("TAB"       . my-company-or-yas-next)
+         ("M-n"   . nil); Deprecated bindings by upstream
+         ("M-p"   . nil); Deprecated bindings by upstream
          ("C-n"   . company-select-next)
          ("C-p"   . company-select-previous))
+  :config
+  (setq company-backends
+        '((company-capf :with company-yasnippet)
+          company-files
+          company-dabbrev-code))
   :custom
-  (company-transformers '(company-sort-by-backend-importance))
-  (company-insertion-on-trigger      nil)
-  (company-show-numbers              nil)
-  (company-minimum-prefix-length     1)
-  (company-tooltip-limit             30)
-  (company-tooltip-align-annotations t)
-  (company-idle-delay                0.1)
   (company-begin-commands '(self-insert-command))
-  ;;(setq company-tooltip-align-annotations nil)
-  )
+  (company-idle-delay              0.1)
+  (company-insertion-on-trigger    nil)
+  (company-minimum-prefix-length     1)
+  (company-selection-wrap-around     t)
+  (company-show-numbers            nil)
+  (company-tooltip-align-annotations t)
+  (company-tooltip-limit            30)
+  (company-transformers '(company-sort-by-backend-importance)))
 
-(use-package company-prescient)
-(use-package company-box :custom (company-box-doc-delay 0.2))
-(use-package company-quickhelp :custom
-  (company-quickhelp-delay 0.2))
+(use-package company-prescient
+  :hook (company-mode . company-prescient-mode))
+(use-package company-box
+  ;; (setq company-box-frame-behavior 'point)
+  :custom (company-box-doc-delay 0.2)
+  :hook (company-mode . company-box-mode))
+
+(use-package company-quickhelp
+  :custom (company-quickhelp-delay 0.2))
+
+(use-package move-text
+  ;; NOTE: here to avoid paredit conflicts
+  :bind (:map prog-mode-map ("M-n" . move-text-down) ("M-p" . move-text-up)))
 
 (use-package lsp-mode
   :custom
+  (lsp-completion-provider :none)
   (lsp-disabled-clients '((web-mode . eslint) (web-tsx-mode . nil)))
   (lsp-headerline-breadcrumb-enable nil)
   :bind (:map
          lsp-mode-map
-         ("C-j"     . newline);; override electric-mode-newline
+         ("C-j"      . newline);; override electric-mode-newline
+         ("M-n"     . move-text-down) ;; NOTE: override lsp-signature-previous
+         ("M-p"     . move-text-up)
          ("C-c C-d" . lsp-describe-thing-at-point)
          ("C-c d"   . lsp-describe-thing-at-point)))
 
@@ -86,10 +110,12 @@ If the error list is visible, hide it.  Otherwise, show it."
   :init (yas-global-mode +1)
   :custom (yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
   :hook (snippet-mode . yasnippet-config)
-  ;; :bind (         ;; ("<tab>" . nil)
+  ;; :bind (
+  ;;        ;; ("<tab>" . nil)
   ;;        ;; ("TAB"   . nil)
-  ;;        ("M-SPC" . #'yas-maybe-expand)
-  ;;        ("C-c y" . yas-expand))
+  ;;        ("M-SPC" . yas-maybe-expand)
+  ;;        ("C-c y" . yas-expand)
+  ;;        )
   )
 
 ;; https://stackoverflow.com/questions/25521897/how-to-never-expand-yasnippets-in-comments-and-strings
@@ -101,7 +127,9 @@ If the error list is visible, hide it.  Otherwise, show it."
 ;;(add-hook 'prog-mode-hook 'yas-no-expand-in-comment/string)
 
 (use-package smartparens
-  :custom (sp-base-key-bindings 'paredit))
+  :custom
+  (sp-base-key-bindings 'paredit)
+  (sp-hybrid-kill-excessive-whitespace t))
 (defun radian-enter-and-indent-sexp (&rest _ignored)
   "Insert an extra newline after point, and reindent.
    https://github.com/Fuco1/smartparens/issues/80"
@@ -113,11 +141,11 @@ If the error list is visible, hide it.  Otherwise, show it."
 (use-package dap-mode
   :bind (:map
          dap-mode-map
-         ("<f12>" . dap-ui-locals)
-         ("<f10>" . dap-continue)
-         ("<f9>"  . dap-next)
+         ("<f7>"  . dap-step-in)
          ("<f8>"  . dap-step-out)
-         ("<f7>"  . dap-step-in))
+         ("<f9>"  . dap-next)
+         ("<f10>" . dap-continue)
+         ("<f12>" . dap-ui-locals))
   :custom
   (dap-output-window-min-height 5)
   (dap-output-window-max-height 5)

@@ -13,8 +13,8 @@
 ;; go get -u github.com/segmentio/golines
 
 (defun go-config ()
-  (set (make-local-variable 'company-backends) '(company-capf))
   (setq-local dap-auto-configure-features '(locals repl expressions))
+  (setq-local treemacs-width 50)
   (setq-local dap-ui-buffer-configurations
               `(("*dap-ui-locals*"      . ((side . right)  (slot . 1) (window-width . 0.4) (window-height . 0.4)))
                 ;; ("*dap-ui-breakpoints*" . ((side . right)  (slot . 2) (window-width . 0.4) (window-height . 0.15)))
@@ -51,20 +51,21 @@
   :hook (go-mode . smartparens-strict-mode)
   :hook (go-mode . lsp)
   :hook (go-mode . company-mode)
+  :hook (go-mode . electric-pair-mode)
   :bind (:map go-mode-map
+              ("M-n"     . move-text-down)
+              ("M-p"     . move-text-up)
               ("C-c C-d" . lsp-describe-thing-at-point)
-              ("C-c C-c" . go-run)
-              ("C-j"     . newline))
+              ("C-c C-c" . recompile)
+              ("C-j"     . nil;;newline
+               )
+              )
   :custom
   (gofmt-command "golines")
   (lsp-go-use-placeholders t)
   :config
   (require 'dap-dlv-go)
   (sp-use-paredit-bindings))
-
-(sp-local-pair
- 'go-mode "{" nil
- :post-handlers '((radian-enter-and-indent-sexp "C-j")))
 
 (use-package ob-go)    ;; Org-mode Go support
 (use-package godoctor) ;; Refactor

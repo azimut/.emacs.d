@@ -1,3 +1,7 @@
+(use-package electric
+  :ensure nil
+  :custom (electric-pair-delete-adjacent-pairs nil))
+
 (use-package flycheck
   :hook (flycheck-mode . display-line-numbers-mode)
   :bind (:map
@@ -60,6 +64,8 @@ If the error list is visible, hide it.  Otherwise, show it."
           company-files
           company-dabbrev-code))
   :custom
+  ;; (company-echo-delay nil)
+  (company-echo-truncate-lines nil)
   (company-begin-commands '(self-insert-command))
   (company-idle-delay              0.1)
   (company-insertion-on-trigger    nil)
@@ -67,15 +73,21 @@ If the error list is visible, hide it.  Otherwise, show it."
   (company-selection-wrap-around     t)
   (company-show-numbers            nil)
   (company-tooltip-align-annotations t)
-  (company-tooltip-limit            30)
+  (company-tooltip-limit            20)
   (company-transformers '(company-sort-by-backend-importance)))
 
 (use-package company-prescient
   :hook (company-mode . company-prescient-mode))
 (use-package company-box
+  :config
+  (setq company-auto-update-doc nil)
   ;; (setq company-box-frame-behavior 'point)
-  :custom (company-box-doc-delay 0.2)
-  :hook (company-mode . company-box-mode))
+  :custom
+  (company-box-max-candidates 20)
+  (company-box-doc-delay 0.2)
+  (company-box-show-single-candidate 'never)
+  ;; :hook (company-mode . company-box-mode)
+  )
 
 (use-package company-quickhelp
   :custom (company-quickhelp-delay 0.2))
@@ -87,6 +99,7 @@ If the error list is visible, hide it.  Otherwise, show it."
 (use-package lsp-mode
   :custom
   (lsp-completion-provider :none)
+  ;; (lsp-enable-snippet t)
   (lsp-disabled-clients '((web-mode . eslint) (web-tsx-mode . nil)))
   (lsp-headerline-breadcrumb-enable nil)
   :bind (:map
@@ -130,13 +143,6 @@ If the error list is visible, hide it.  Otherwise, show it."
   :custom
   (sp-base-key-bindings 'paredit)
   (sp-hybrid-kill-excessive-whitespace t))
-(defun radian-enter-and-indent-sexp (&rest _ignored)
-  "Insert an extra newline after point, and reindent.
-   https://github.com/Fuco1/smartparens/issues/80"
-  (newline)
-  (indent-according-to-mode)
-  (forward-line -1)
-  (indent-according-to-mode))
 
 (use-package dap-mode
   :bind (:map

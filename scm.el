@@ -1,3 +1,4 @@
+(use-package sqlite3)
 (use-package magit
   :bind ("C-x g" . magit-status)
   :config

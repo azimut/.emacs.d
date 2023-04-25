@@ -46,9 +46,7 @@ If the error list is visible, hide it.  Otherwise, show it."
   (interactive)
   (cond
    ((yas-expand-from-trigger-key) nil)
-   ((and (boundp 'yas--active-field-overlay)
-         (not (numberp (yas--field-start (overlay-get yas--active-field-overlay 'yas--field)))))
-    (yas-next-field))
+   (yas--active-snippets (yas-next-field))
    (t (company-complete-common-or-cycle))))
 
 (use-package company

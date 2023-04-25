@@ -44,16 +44,18 @@ If the error list is visible, hide it.  Otherwise, show it."
 (defun my-company-or-yas-next ()
   "Complete with company if active, otherwise go to next yasnippet field."
   (interactive)
-  (if (and (boundp 'yas--active-field-overlay)
-           (not (numberp (yas--field-start (overlay-get yas--active-field-overlay 'yas--field)))))
-      (yas-next-field)
-    (company-complete-common-or-cycle)))
+  (cond
+   ((yas-expand-from-trigger-key) nil)
+   ((and (boundp 'yas--active-field-overlay)
+         (not (numberp (yas--field-start (overlay-get yas--active-field-overlay 'yas--field)))))
+    (yas-next-field))
+   (t (company-complete-common-or-cycle))))
 
 (use-package company
   :bind (:map
          company-active-map
          ("<backtab>" . (lambda () (interactive) (company-complete-common-or-cycle -1)))
-         ("TAB"       . my-company-or-yas-next)
+         ("<tab>"   . my-company-or-yas-next)
          ("M-n"   . nil); Deprecated bindings by upstream
          ("M-p"   . nil); Deprecated bindings by upstream
          ("C-n"   . company-select-next)
@@ -64,8 +66,8 @@ If the error list is visible, hide it.  Otherwise, show it."
           company-files
           company-dabbrev-code))
   :custom
-  ;; (company-echo-delay nil)
   (company-echo-truncate-lines nil)
+  ;; (company-echo-delay nil)
   (company-begin-commands '(self-insert-command))
   (company-idle-delay              0.1)
   (company-insertion-on-trigger    nil)
@@ -170,3 +172,8 @@ If the error list is visible, hide it.  Otherwise, show it."
   :config
   (global-tree-sitter-mode +1)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+(use-package chatgpt-shell
+  :config
+  (setq chatgpt-shell-openai-key
+        (lambda () (auth-source-pick-first-password :host "api.openai.com"))))

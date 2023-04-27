@@ -48,6 +48,7 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   :hook (web-mode . lsp)
   :hook (web-mode . smartparens-mode)
   :hook (web-mode . web-config)
+  :hook (web-mode . electric-pair-mode)
   :bind (:map
          web-mode-map
          ("<tab>" . +web/indent-or-yas-or-emmet-expand)
@@ -69,7 +70,6 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   (define-derived-mode web-tsx-mode web-mode "tsx"))
 
 (sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3))
-(sp-local-pair 'web-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j")))
 
 (use-package json-mode
   :hook (json-mode . lsp)

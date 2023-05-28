@@ -53,19 +53,22 @@
   :hook (sly-mode . paredit-mode)
   :hook (sly-mode . aggressive-indent-mode)
   :hook (sly-mode . rainbow-delimiters-mode)
+  :bind (:map paredit-mode-map
+              ("RET" . nil)
+              ("C-j" . paredit-newline))
   :config
   (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl"
                                                ;;"--dynamic-space-size"
                                                ;;"1024"
                                                )))
-        sly-complete-symbol-function 'sly-flex-completions;;'sly-simple-completions
+        ;;sly-complete-symbol-function 'sly-flex-completions;;'sly-simple-completions
         inferior-lisp-program        "/usr/local/bin/sbcl"
-        sly-contribs                 '(sly-fancy sly-macrostep)
+        ;;sly-contribs                 '(sly-fancy sly-macrostep)
         sly-inhibit-pipelining       nil
         sly-load-failed-fasl         'always
         sly-description-autofocus    t)
   (sly-setup)
-  (add-hook 'sly--completion-display-mode-hook (lambda () (setq-local show-trailing-whitespace nil)))
+  ;; (add-hook 'sly--completion-display-mode-hook (lambda () (setq-local show-trailing-whitespace nil)))
   (add-hook
    'sly-mode-hook
    (lambda ()
@@ -75,16 +78,15 @@
            lisp-lambda-list-keyword-parameter-indentation 0
            lisp-loop-indent-forms-like-keywords           t
            lisp-loop-indent-subclauses                    nil)
-     (setq redshank-align-slot-forms-list
-           '("defclass" "define-condition"
-             "define-subject"
-             "define-shader-subject" "define-shader-entity" "define-shader-pass"))
-     (display-fill-column-indicator-mode +1)))
+     ;; (setq redshank-align-slot-forms-list
+     ;;       '("defclass" "define-condition"
+     ;;         "define-subject"
+     ;;         "define-shader-subject" "define-shader-entity" "define-shader-pass"))
+     (display-fill-column-indicator-mode +1)
+     ))
   (add-hook
    'sly-mrepl-hook
    (lambda ()
-     (paredit-mode +1)
-     (aggressive-indent-mode -1)
      (setq-local mode-line-format nil)
      ;; CEPL crashes if receives it, and i tend to do it as a tick...
      (define-key sly-mrepl-mode-map (kbd "C-c C-c") nil)
@@ -92,14 +94,3 @@
      ;; (setq-local show-trailing-whitespace nil)
      ;;(define-key slime-repl-mode-map (kbd "C-c C-d C-d") #'slime-describe-symbol)
      ))  )
-
-;; FIX
-;; https://emacs.stackexchange.com/questions/74841/how-do-i-disable-paredit-ret-in-sly-mrepl
-;;; globally in every buffer and mode check if paredit-RET was called in
-;;; the repl buffer and call sly-mrepl-return
-(advice-add 'paredit-RET
-            :around
-            (lambda (old-function &rest arguments)
-              (if (string-prefix-p "*sly-mrepl for" (buffer-name (current-buffer)))
-                  (sly-mrepl-return)
-                (paredit-RET))))

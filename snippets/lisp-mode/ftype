@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: function type definition
+# key: ftype
+# --
+(declaim (ftype (function (${2:arguments}) ${3:return-type}) ${1:function-name}))

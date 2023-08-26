@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: for c-style
+# key: forc
+# --
+for ${1:i = 1}, ${2:10}, ${3:1} do
+	$0
+end

@@ -138,11 +138,22 @@ If the error list is visible, hide it.  Otherwise, show it."
              '(require-snippet-condition . force-in-comment)
            t)))
 ;;(add-hook 'prog-mode-hook 'yas-no-expand-in-comment/string)
+(use-package paredit
+  :bind (:map
+         paredit-mode-map
+         ("C-M-n" . move-text-down)))
 
 (use-package smartparens
   :custom
+  (sp-override-key-bindings '(("C-M-p" . move-text-up)
+                              ("C-M-n" . move-text-down)))
   (sp-base-key-bindings 'paredit)
-  (sp-hybrid-kill-excessive-whitespace t))
+  (sp-hybrid-kill-excessive-whitespace t)
+  :config
+  (sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3))
+  (sp-local-pair 'tuareg-mode "'" nil :actions nil)
+  (sp-local-pair 'tuareg-mode "`" nil :actions nil)
+  (sp-local-pair 'css-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j"))))
 
 (use-package dap-mode
   :bind (:map

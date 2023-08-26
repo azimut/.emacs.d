@@ -94,20 +94,22 @@ If the error list is visible, hide it.  Otherwise, show it."
   :custom (company-quickhelp-delay 0.2))
 
 (use-package move-text
-  ;; NOTE: here to avoid paredit conflicts
-  :bind (:map prog-mode-map ("M-n" . move-text-down) ("M-p" . move-text-up)))
+  :bind (("C-M-p" . move-text-up)
+         ("C-M-n" . move-text-down)))
 
 (use-package lsp-mode
+  :hook (lsp-mode . company-mode)
   :custom
+  (lsp-modeline-code-actions-enable nil)
   (lsp-completion-provider :none)
   ;; (lsp-enable-snippet t)
   (lsp-disabled-clients '((web-mode . eslint) (web-tsx-mode . nil)))
   (lsp-headerline-breadcrumb-enable nil)
   :bind (:map
          lsp-mode-map
-         ("C-j"      . newline);; override electric-mode-newline
-         ("M-n"     . move-text-down) ;; NOTE: override lsp-signature-previous
-         ("M-p"     . move-text-up)
+         ("C-j"     . newline) ;; override electric-mode-newline
+         ("M-n"     . flycheck-next-error) ;; NOTE: override lsp-signature-previous
+         ("M-p"     . flycheck-previous-error)
          ("C-c C-d" . lsp-describe-thing-at-point)
          ("C-c d"   . lsp-describe-thing-at-point)))
 

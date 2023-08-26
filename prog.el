@@ -9,9 +9,9 @@
          ("M-e" . spacemacs/toggle-flycheck-error-list)
          :map
          flycheck-mode-map
-         ("M-e"      . spacemacs/goto-flycheck-error-list)
-         ("<C-down>" . flycheck-next-error)
-         ("<C-up>"   . flycheck-previous-error))
+         ("M-e" . spacemacs/goto-flycheck-error-list)
+         ("M-n" . flycheck-next-error)
+         ("M-p" . flycheck-previous-error))
   :custom
   (flycheck-highlighting-style '(conditional 4 nil (delimiters "" "«")))
   (flycheck-indication-mode    'left-margin)

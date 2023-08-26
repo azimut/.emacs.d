@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: fori
+# key: range
+# --
+for (${1:Object el} : ${2:iterator}) {
+    $0
+}

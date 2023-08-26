@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: application
+# key: application
+# --
+-behaviour(application).
+-export([start/2, stop/1]).
+
+start(_StartType, _StartArgs) ->
+    ${1:application_name}_sup:start_link().
+
+stop(_State) ->
+    ok.

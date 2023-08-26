@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: dotimes
+# key: dotimes
+# --
+for ${1:i = 1} to ${2:10} do
+    $0
+done

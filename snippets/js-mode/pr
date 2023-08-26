@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# key: pr
+# --
+
+console.log(${1:object})

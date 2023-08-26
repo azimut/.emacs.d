@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: dotimes using seq
+# key: dotimes
+# --
+for ${1:_} in $(seq 1 ${2:100}); do
+    $0
+done

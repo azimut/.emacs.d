@@ -6,3 +6,9 @@ type ${1:Container} struct {
     mu       sync.Mutex
     ${2:counters} ${3:map[string]int}
 }
+
+func (c *$1) Value(key string) {
+    c.mu.Lock()
+    defer c.mu.Unlock()
+    return c.$2[key]
+}

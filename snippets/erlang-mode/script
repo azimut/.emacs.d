@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: an escript
+# key: script
+# --
+#!/usr/bin/env escript
+
+main(_) -> io:format("what?").

@@ -51,21 +51,18 @@
   :hook (go-mode . smartparens-strict-mode)
   :hook (go-mode . lsp)
   :hook (go-mode . company-mode)
-  :hook (go-mode . electric-pair-mode)
   :bind (:map go-mode-map
               ("M-n"     . move-text-down)
               ("M-p"     . move-text-up)
               ("C-c C-d" . lsp-describe-thing-at-point)
               ("C-c C-c" . recompile)
-              ("C-j"     . nil;;newline
-               )
-              )
+              ("C-c C-k" . go-test-current-file)
+              ("C-j"     . nil))
   :custom
   (gofmt-command "golines")
   (lsp-go-use-placeholders t)
   :config
-  (require 'dap-dlv-go)
-  (sp-use-paredit-bindings))
+  (require 'dap-dlv-go))
 
 (use-package ob-go)    ;; Org-mode Go support
 (use-package godoctor) ;; Refactor

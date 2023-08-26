@@ -37,8 +37,9 @@ If the error list is visible, hide it.  Otherwise, show it."
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
     [16 48 112 240 112 48 16] nil nil 'center))
 
-(use-package flycheck-inline
-  :hook (flycheck-mode . flycheck-inline-mode))
+(use-package flycheck-posframe
+  :custom (flycheck-posframe-position 'point-bottom-left-corner)
+  :hook (flycheck-mode . flycheck-posframe-mode))
 
 ;; CHAT-GPT :) ... plus hacky stuff
 (defun my-company-or-yas-next ()

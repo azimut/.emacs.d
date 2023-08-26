@@ -42,19 +42,19 @@ If the error list is visible, hide it.  Otherwise, show it."
   :hook (flycheck-mode . flycheck-posframe-mode))
 
 ;; CHAT-GPT :) ... plus hacky stuff
-(defun my-company-or-yas-next ()
-  "Complete with company if active, otherwise go to next yasnippet field."
+(defun yas-or-company ()
   (interactive)
   (cond
-   ((yas-expand-from-trigger-key) nil)
-   (yas--active-snippets (yas-next-field))
+   ((yas-expand-from-trigger-key) nil) ;; on weird yasnippet keywords, just expand
+   ((= 1 company-candidates-length) (company-complete-common)) ;; When 1, a "preview" is showed, so is instict to just TAB
+   (yas--active-snippets (yas-next-field)) ;; on an active snippet, just go forward on the fields
    (t (company-complete-common-or-cycle))))
 
 (use-package company
   :bind (:map
          company-active-map
          ("<backtab>" . (lambda () (interactive) (company-complete-common-or-cycle -1)))
-         ("<tab>"   . my-company-or-yas-next)
+         ("<tab>"   . yas-or-company)
          ("M-n"   . nil); Deprecated bindings by upstream
          ("M-p"   . nil); Deprecated bindings by upstream
          ("C-n"   . company-select-next)

@@ -13,6 +13,14 @@
 ;; go get -u github.com/segmentio/golines
 
 (defun go-config ()
+  (setq-local compile-command
+              (cond ((file-exists-p "../../go.mod")
+                     "cd ../../ && go run ...")
+                    ((file-exists-p "go.mod")
+                     "go run .")
+                    (t (concat
+                        "go run "
+                        buffer-file-name))))
   (setq-local dap-auto-configure-features '(locals repl expressions))
   (setq-local treemacs-width 50)
   (setq-local dap-ui-buffer-configurations

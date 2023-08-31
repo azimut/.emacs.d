@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: enum
+# key: enum
+# --
+typedef enum {
+  ${1:$(upcase yas-text)}_${2:FOO} = 0,
+  ${1:$(upcase yas-text)}_${3:BAR},
+  $0
+} ${1:Enum_Name};

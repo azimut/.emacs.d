@@ -3,5 +3,5 @@
 # key: fore
 # --
 for ${1:idx}, ${2:val} in pairs(${3:table_name}) do
-	$0
+   $0
 end

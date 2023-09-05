@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: for
+# key: for
+# --
+for {set ${1:i} 0} {$$1 ${2:< 30}} {incr $1} {
+    $0
+}

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: f
+# key: f
+# --
+proc ${1:name} {$2} {
+    set ${3:ret} ${4:0}
+    $0
+    return $$3
+}

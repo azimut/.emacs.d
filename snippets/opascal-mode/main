@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: main
+# key: main
+# --
+program ${1:HelloWorld};
+begin
+   $0
+end.

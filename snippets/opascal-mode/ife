@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ife
+# key: ife
+# --
+if ${1:condition} then
+   $0
+else

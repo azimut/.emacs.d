@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: f
+# key: f
+# --
+function ${1:Name}($2): ${4:Integer};
+var
+   $3
+begin
+   result := $0
+end;

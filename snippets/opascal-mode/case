@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: case
+# key: case
+# --
+case ${1:SomeVar} of
+   ${2:branchValue}: $0
+end;

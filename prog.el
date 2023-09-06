@@ -147,16 +147,18 @@ If the error list is visible, hide it.  Otherwise, show it."
          ("C-M-n" . move-text-down)))
 
 (use-package smartparens
+  :bind (:map smartparens-strict-mode-map
+              ("DEL" . sp-backward-delete-char))
   :custom
   (sp-override-key-bindings '(("C-M-p" . move-text-up)
                               ("C-M-n" . move-text-down)))
   (sp-base-key-bindings 'paredit)
   (sp-hybrid-kill-excessive-whitespace t)
   :config
-  (sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3))
-  (sp-local-pair 'tuareg-mode "'" nil :actions nil)
-  (sp-local-pair 'tuareg-mode "`" nil :actions nil)
-  (sp-local-pair 'css-mode "{" nil :post-handlers '((radian-enter-and-indent-sexp "C-j"))))
+  ;; https://emacs.stackexchange.com/questions/12368/make-ending-curly-brace-of-block-go-down-an-extra-newline-in-golang
+  (sp-with-modes '(awk-mode css-mode go-mode java-mode)
+    (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "C-j"))))
+  (sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3)))
 
 (use-package dap-mode
   :bind (:map

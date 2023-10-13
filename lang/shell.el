@@ -1,3 +1,18 @@
+(use-package awk-yasnippets)
+(require 'awk-yasnippets)
+(eval-after-load 'yasnippet '(awk-yasnippets-initialize))
+
+;; https://github.com/Beaglefoot/awk-language-server
+;; $ npm install -g awk-language-server
+(use-package awk-mode
+  :ensure nil
+  :bind (:map
+         awk-mode-map
+         ("C-c C-c" . recompile))
+  :hook (awk-mode . lsp-mode)
+  :hook (awk-mode . aggressive-indent-mode)
+  :hook (awk-mode . smartparens-strict-mode))
+
 ;; Shell - bashate
 ;; (use-package flycheck-bashate
 ;;   :ensure t
@@ -18,10 +33,11 @@
           (lambda ()
             (flycheck-mode +1)
             (setq-local tab-width 4)
+            (setq-local compile-command (concat "sh " buffer-file-name))
             (shfmt-on-save-mode)
-            (define-key sh-mode-map (kbd "C-c C-c") #'sh-send-line-or-region-and-step)
-            (electric-pair-local-mode +1)
-            (sp-use-paredit-bindings)))
+            (define-key sh-mode-map (kbd "C-c C-c") #'recompile)
+            ;;(define-key sh-mode-map (kbd "C-c C-c") #'sh-send-line-or-region-and-step)
+            (electric-pair-local-mode +1)))
 
 ;; https://nistara.net/post/emacs-send-line-or-region-to-shell/
 (defun sh-send-line-or-region (&optional step)

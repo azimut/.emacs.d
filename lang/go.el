@@ -70,6 +70,7 @@
   (gofmt-command "golines")
   (lsp-go-use-placeholders t)
   :config
+  (require 'smartparens-go)
   (require 'dap-dlv-go))
 
 (use-package ob-go)    ;; Org-mode Go support

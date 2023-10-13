@@ -17,7 +17,6 @@
 (use-package java-mode
   :ensure nil
   :hook (java-mode . smartparens-strict-mode)
-  :hook (java-mode . rainbow-delimiters-mode)
   :hook (java-mode . java-config))
 
 (use-package lsp-java

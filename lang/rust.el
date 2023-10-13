@@ -9,5 +9,4 @@
   :hook (rust-mode . lsp)
   :hook (rust-mode . rust-config)
   :config
-  (sp-use-paredit-bindings)
   (rust-enable-format-on-save))

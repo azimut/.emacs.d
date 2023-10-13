@@ -1,5 +1,4 @@
 (use-package redshank)
-(use-package rainbow-delimiters)
 (require 'cl-font-lock)
 
 ;; lisp-mode-hook

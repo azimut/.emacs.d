@@ -20,7 +20,6 @@
      (setenv "LUA_REPL_RLWRAP" "sure");?
      ;;
      (smartparens-strict-mode +1)
-     (sp-use-paredit-bindings)
      (aggressive-indent-mode +1))))
 
 (defun azm-renoise-manual ()

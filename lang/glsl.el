@@ -18,7 +18,6 @@
               (setq-local zeal-at-point-docset '("gl4"))
               (setq-local helm-dash-docsets '("OpenGL4"))
               (smartparens-strict-mode +1)
-              (sp-use-paredit-bindings)
               (aggressive-indent-mode +1))))
 
 (use-package shader-mode

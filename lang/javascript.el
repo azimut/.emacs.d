@@ -27,12 +27,15 @@
   (setq-local company-insertion-on-trigger nil))
 
 (use-package js-mode
+  :custom (js-indent-level 2)
   :hook (js-mode . lsp)
   :hook (js-mode . smartparens-strict-mode)
   :hook (js-mode . js-config)
+  :hook (js-mode . company-mode)
   :ensure nil)
 
 (use-package typescript-mode
+  :custom (typescript-indent-level 2)
   :hook (typescript-mode . lsp)
   :hook (typescript-mode . smartparens-strict-mode)
   :hook (typescript-mode . js-config))

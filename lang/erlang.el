@@ -27,9 +27,9 @@
          ("\\.app.src?$"          . erlang-mode)
          ("\\Emakefile"           . erlang-mode))
   :config
+  (require 'smartparens-erlang)
   (add-hook 'erlang-mode-hook
             (lambda ()
-              (sp-use-paredit-bindings)
               ;;
               ;; (define-key erlang-mode-map (kbd "M-p") #'flycheck-previous-error)
               ;; (define-key erlang-mode-map (kbd "M-n") #'flycheck-next-error)
@@ -105,14 +105,11 @@
 
   ;;(setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (setq flycheck-display-errors-function nil)
-  )
+  (setq flycheck-display-errors-function nil))
 
-(add-hook
- 'erlang-shell-mode-hook
- (lambda ()
-   (electric-pair-local-mode +1)
-   (define-key erlang-shell-mode-map (kbd "C-c C-d") #'erlang-man-function-no-prompt)
-   ;; Bindings set from erlang-mode
-   ;; (define-key erlang-shell-mode-map (kbd "M-,") #'xref-pop-marker-stack)
-   (define-key erlang-shell-mode-map (kbd "C-c C-z")   #'hide-erlang-shell)))
+(use-package erlang-shell-mode
+  :ensure nil
+  :hook (erlang-shell-mode . electric-pair-local-mode)
+  :bind (:map erlang-shell-mode-map
+              ("C-c C-d" . erlang-man-function-no-prompt)
+              ("C-c C-z" . hide-erlang-shell)))

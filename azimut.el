@@ -66,10 +66,13 @@
 (global-prettify-symbols-mode 1)
 
 ;; window resize
-(global-set-key (kbd "<C-up>") 'shrink-window)
-(global-set-key (kbd "<C-down>") 'enlarge-window)
-(global-set-key (kbd "<C-left>") 'shrink-window-horizontally)
+(global-set-key (kbd "<C-up>")    'shrink-window)
+(global-set-key (kbd "<C-down>")  'enlarge-window)
+(global-set-key (kbd "<C-left>")  'shrink-window-horizontally)
 (global-set-key (kbd "<C-right>") 'enlarge-window-horizontally)
+
+(global-set-key (kbd "C-x }") 'windmove-swap-states-right)
+(global-set-key (kbd "C-x {") 'windmove-swap-states-left)
 
 ;;--------------------------------------------------
 ;; melpa
@@ -87,6 +90,11 @@
 
 ;;--------------------------------------------------
 
+(use-package dired
+  :ensure nil
+  ;; from dired-do-redisplay
+  :bind (:map dired-mode-map ("l" . dired-up-directory)))
+
 (setq dired-listing-switches "-lh")
 (require 'dired-x)
 (setq-default dired-omit-files-p t) ; Buffer-local variable
@@ -96,6 +104,7 @@
           (lambda ()
             (dired-hide-details-mode)
             (dired-sort-toggle-or-edit)))
+
 
 (use-package phi-search
   :config (require 'phi-search)
@@ -146,6 +155,8 @@
 
 ;;(use-package systemd)
 (use-package vterm
+  :bind ( :map vterm-mode-map ("C-x [" . vterm-copy-mode);; TODO: C-q [
+          :map vterm-copy-mode-map ("C-c" . vterm-copy-mode-done) ("M-w" . vterm-copy-mode-done))
   :config
   (add-hook 'vterm-mode-hook (lambda () (setq-local mode-line-format nil))))
 
@@ -167,21 +178,29 @@
          ("C-c C-+" . evil-numbers/inc-at-pt-incremental)
          ("C-c C--" . evil-numbers/dec-at-pt-incremental)))
 
+(use-package image-mode
+  :bind (:map image-mode-map
+              ("b" . nil); old frame controls
+              ("f" . nil); old frame controls
+              ("," . image-previous-frame)
+              ("." . image-next-frame)
+              ("q" . kill-current-buffer))
+  :ensure nil)
+
 (use-package recentf
-  :bind ("C-S-t" . undo-kill-buffer)
+  :bind ("C-S-t" . recentf-open-most-recent-file)
   :custom
-  (recentf-auto-cleanup 'never)
+  ;; (recentf-auto-cleanup 'never)
   (recentf-save-file "~/.emacs.d/recentf")
-  (recentf-max-menu-items 10000)
+  (recentf-max-menu-items 30)
   (recentf-max-saved-items nil)
   :config
   (defun undo-kill-buffer (arg)
     "Re-open the last buffer killed.  With ARG, re-open the nth buffer."
     (interactive "p")
-    (find-file (nth (1- arg) recentf-list)))
+    (find-file (nth (1- arg) recentf-list))))
 
-  (recentf-mode t))
-
+(recentf-mode t)
 (add-hook 'makefile-mode (lambda () (setq-local whitespace-style '(face tabs empty))))
 
 (defun evince-open-pdf ()
@@ -199,29 +218,35 @@
                "/usr/bin/evince"
                (list (format "--page-index=%d" (string-to-number page))
                      pdf))))))
+
 ;;-------------------------------------------------
 (load-file "~/.emacs.d/scm.el")
 (load-file "~/.emacs.d/prog.el")
-;;-------------------------------------------------
+(load-file "~/.emacs.d/ui.el")
+
 (load-file "~/.emacs.d/lang/shell.el")
 (load-file "~/.emacs.d/lang/elisp.el")
 (load-file "~/.emacs.d/lang/erlang.el")
 (load-file "~/.emacs.d/lang/lisp.el")
 (load-file "~/.emacs.d/lang/clojure.el")
 (load-file "~/.emacs.d/lang/go.el")
-;;(load-file "~/.emacs.d/lang/rust.el")
 (load-file "~/.emacs.d/lang/markup.el")
-;; (load-file "~/.emacs.d/lang/elixir.el")
-;;(load-file "~/.emacs.d/lang/lua.el")
-;;(load-file "~/.emacs.d/lang/glsl.el")
-;;(load-file "~/.emacs.d/lang/livecoding.el")
-(load-file "~/.emacs.d/lang/c.el")
-;;(load-file "~/.emacs.d/lang/haskell.el")
-;;(load-file "~/.emacs.d/lang/chuck.el")
-(load-file "~/.emacs.d/lang/ocaml.el")
+(load-file "~/.emacs.d/lang/python.el")
 
+
+(load-file "~/.emacs.d/lang/c.el")
+(load-file "~/.emacs.d/lang/ocaml.el")
 (load-file "~/.emacs.d/lang/html.el")
 (load-file "~/.emacs.d/lang/javascript.el")
+(load-file "~/.emacs.d/lang/java.el")
 
-
-(load-file "~/.emacs.d/ui.el")
+;;(load-file "~/.emacs.d/lang/rust.el")
+;;(load-file "~/.emacs.d/lang/elixir.el")
+(load-file "~/.emacs.d/lang/lua.el")
+;;(load-file "~/.emacs.d/lang/glsl.el")
+;;(load-file "~/.emacs.d/lang/livecoding.el")
+(load-file "~/.emacs.d/lang/haskell.el")
+;;(load-file "~/.emacs.d/lang/chuck.el")
+(load-file "~/.emacs.d/lang/pascal.el")
+(load-file "~/.emacs.d/lang/cobol.el")
+(load-file "~/.emacs.d/lang/awk.el")

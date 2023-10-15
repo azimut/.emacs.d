@@ -12,14 +12,15 @@
 
 (use-package ocamlformat)
 (defun tuareg-config ()
-  (setq lsp-completion-provider :none);; have lsp-mode do not mess with -backends
+  (setq lsp-completion-provider :none) ;; have lsp-mode do not mess with -backends
   (set (make-local-variable 'company-backends)
        '((company-yasnippet :with company-capf company-files))
        ;;'(company-yasnippet company-files)
        ))
 
 (use-package tuareg
-  :custom (utop-command "opam exec -- dune utop . -- -emacs")
+  :custom
+  (utop-command "opam exec -- dune utop . -- -emacs")
   :bind (
          :map
          tuareg-mode-map
@@ -34,9 +35,8 @@
   :hook (tuareg-mode . lsp)
   :init
   (add-hook 'before-save-hook #'ocamlformat-before-save)
-  (sp-local-pair 'tuareg-mode "'" nil :actions nil)
-  (sp-local-pair 'tuareg-mode "`" nil :actions nil)
-  ;;:config
+  :config
+  (require 'smartparens-ml)
   ;; (setq tuareg-prettify-symbols-full nil)
   ;; (add-to-list 'eglot-server-programs '(tuareg-mode . ("ocamllsp")))
   ;; (put 'tuareg-mode 'eglot-language-id "ocaml")
@@ -48,4 +48,4 @@
   ;;        merlin-mode-map
   ;;        ("C-c C-d" . nil))
   ;;:hook (tuareg-mode . merlin-mode)
-  :config (setq merlin-completion-with-doc t))
+  :config (setq merlin-completion-with-doc nil))

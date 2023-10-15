@@ -19,15 +19,24 @@
   )
 
 (defun c-config ()
-  (smartparens-strict-mode +1)
-  (sp-use-paredit-bindings)
   (require 'ccls)
+  (smartparens-strict-mode +1)
+  (company-yasnippet +1)
+  (display-fill-column-indicator-mode +1)
   (lsp-mode +1)
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (setq-local lsp-enable-snippet nil) ; the quality is really poor for C
   (setq-local company-auto-commit-chars nil)
-  (display-fill-column-indicator-mode +1))
+  (setq-local compile-command
+              (cond ((file-exists-p "Makefile")
+                     "make -k")
+                    (t (concat
+                        "gcc -Wall -Wextra -pedantic -ggdb "
+                        buffer-file-name
+                        " -o out && ./out")))))
 
 (define-key c-mode-map (kbd "C-c C-h") #'helm-dash-at-point)
+(define-key c-mode-map (kbd "C-c C-c") #'recompile)
 
 (add-hook #'c-mode-hook #'c-config)
 

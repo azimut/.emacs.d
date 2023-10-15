@@ -103,11 +103,12 @@ If the error list is visible, hide it.  Otherwise, show it."
   (lsp-modeline-code-actions-enable nil)
   (lsp-completion-provider :none)
   ;; (lsp-enable-snippet t)
-  (lsp-disabled-clients '((web-mode . eslint) (web-tsx-mode . nil)))
+  (lsp-disabled-clients '((web-mode     . eslint)
+                          (web-tsx-mode . deno-ls); had nil while eslint was set on web-mode?
+                          (web-mode     . deno-ls)))
   (lsp-headerline-breadcrumb-enable nil)
   :bind (:map
          lsp-mode-map
-         ("C-j"     . newline) ;; override electric-mode-newline
          ("M-n"     . flycheck-next-error) ;; NOTE: override lsp-signature-previous
          ("M-p"     . flycheck-previous-error)
          ("C-c C-d" . lsp-describe-thing-at-point)
@@ -191,3 +192,12 @@ If the error list is visible, hide it.  Otherwise, show it."
   :config
   (setq chatgpt-shell-openai-key
         (lambda () (auth-source-pick-first-password :host "api.openai.com"))))
+
+(global-set-key (kbd "C-j") 'newline)
+
+(define-key prog-mode-map (kbd "C-c C-c") #'comment-or-uncomment-region)
+(define-key prog-mode-map (kbd "C-c C-k") #'recompile)
+
+(use-package highlight-indent-guides)
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))

@@ -90,8 +90,8 @@
         (set-face-foreground 'font-lock-comment-face "orange")
       (set-face-foreground 'font-lock-comment-face "#696969"))))
 
-;;(set-cursor-color "#FF00FF")
-(set-cursor-color "#00FF00")
+(set-cursor-color "#FF00FF")
+;;(set-cursor-color "#00FF00")
 
 (setq-default left-fringe-width 0 right-fringe-width 8
               left-margin-width 1 right-margin-width 0)

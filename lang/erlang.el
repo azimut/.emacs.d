@@ -7,11 +7,37 @@
   (other-window 1)
   (delete-other-windows))
 
+(defun erlang-config ()
+  (setq-local prettify-symbols-alist
+              '(("=>"  .  (?\s (Br . Bl) ?\s
+                               (Bl . Bl) ?= (Bc . Br) ?= (Bc . Bc) ?=
+                               (Br . Br) ?>))
+                ("->"  .  (?\s (Br . Bl) ?\s
+                               (Bl . Bl) ?- (Bc . Br) ?- (Bc . Bc) ?-
+                               (Bc . Bl) ?- (Br . Br) ?>))
+                ("<-"  .  (?\s (Br . Bl) ?\s
+                               (Bl . Bl) ?< (Bc . Br) ?- (Bc . Bc) ?-
+                               (Bc . Bl) ?- (Br . Br) ?-))
+                ("=<"  .  (?\s (Br . Bl) ?\s
+                               (Bl . Bl) ?= (Bc . Bc) ?= (Br . Br) ?<))
+                (">="  .  (?\s (Br . Bl) ?\s
+                               (Bl . Bl) ?> (Bc . Bc) ?= (Br . Br) ?=))
+                ("++"  .  (?\s (Br . Bl) ?\s
+                               (Bl . Bl) ?+ (Bc . Br) ?+ (Bc . Bc) ?-
+                               (Bc . Bl) ?+ (Br . Br) ?+))
+                ("=="  .  (?\s (Br . Bl) ?\s
+                               (Bl . Bl) ?= (Bc . Br) ?= (Bc . Bc) ?=
+                               (Bc . Bl) ?= (Br . Br) ?=))
+                ("/="  .  (?\s (Br . Bl) ?\s
+                               (Bl . Bl) ?= (Bc . Br) ?= (Bc . Bc) ?/
+                               (Bc . Bl) ?= (Br . Br) ?=)))))
+
 (use-package erlang
   :load-path ("~/kerl/19.2/lib/tools-3.5.3/emacs")
   :hook (erlang-mode . aggressive-indent-mode)
   :hook (erlang-mode . smartparens-strict-mode)
   :hook (erlang-mode . lsp-mode)
+  :hook (erlang-mode . erlang-config)
   :mode (("\\.erl\\'"             . erlang-mode)
          ("\\.hrl\\'"             . erlang-mode)
          ("\\.xrl\\'"             . erlang-mode)
@@ -82,13 +108,6 @@
                                 buffer-file-name)))))
               )
             )
-  ;; prevent annoying hang-on-compile
-  (defvar inferior-erlang-prompt-timeout t)
-  ;; rebar3 in emacs from:
-  ;; https://gist.github.com/maruks/ee19934306bc219bd969ae25aa909f1f
-  (setq inferior-erlang-machine "rebar3")
-  (setq inferior-erlang-machine-options '("shell"))
-  (setq inferior-erlang-shell-type nil)
   ;; NOTE: Prefer to use C-u M-x erlang-shell to use a glob (*) for the deps
   ;; default node name to emacs@localhost
   ;; (setq inferior-erlang-machine-options
@@ -112,4 +131,12 @@
   :hook (erlang-shell-mode . electric-pair-local-mode)
   :bind (:map erlang-shell-mode-map
               ("C-c C-d" . erlang-man-function-no-prompt)
-              ("C-c C-z" . hide-erlang-shell)))
+              ("C-c C-z" . hide-erlang-shell))
+  :config
+  ;; prevent annoying hang-on-compile
+  (defvar inferior-erlang-prompt-timeout t)
+  ;; rebar3 in emacs from:
+  ;; https://gist.github.com/maruks/ee19934306bc219bd969ae25aa909f1f
+  (setq inferior-erlang-machine "rebar3")
+  (setq inferior-erlang-machine-options '("shell"))
+  (setq inferior-erlang-shell-type nil))

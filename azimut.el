@@ -250,3 +250,4 @@
 (load-file "~/.emacs.d/lang/pascal.el")
 (load-file "~/.emacs.d/lang/cobol.el")
 (load-file "~/.emacs.d/lang/awk.el")
+(load-file "~/.emacs.d/lang/elm.el")

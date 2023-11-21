@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: new record
+# --
+type alias $1 =
+  { $0
+  }

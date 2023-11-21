@@ -1,0 +1,32 @@
+# -*- mode: snippet -*-
+# name: Browser.document
+# --
+module Main exposing (..)
+
+import Browser
+import Html exposing (Html, text)
+
+main =
+  Browser.document
+    { init = init
+    , update = update
+    , view = view
+    , subscriptions = subscriptions
+    }
+
+type alias Model = Int
+
+init : flags -> (model, Cmd msg)
+init _ = (0, Cmd.none)
+
+view : model -> Document msg
+view model =
+     { title = "document title"
+     , body = [ text "document body" ]
+     }
+
+update : msg -> model -> (model, Cmd msg)
+update model = (model, Cmd.none)
+
+subscriptions : model -> Sub msg
+subscriptions model = Sub.none

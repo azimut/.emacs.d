@@ -1,0 +1,8 @@
+# -*- coding: utf-8; mode: snippet -*-
+# name: function
+# key: f
+# contributor: Adriano Martinez <uberkael@gmail.com>
+# --
+function ${1:name}($2) {
+    $0
+}

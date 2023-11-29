@@ -1,0 +1,8 @@
+# -*- coding: utf-8; mode: snippet -*-
+# name: ife
+# key: ife
+# --
+if $1
+then $2
+else $3
+end

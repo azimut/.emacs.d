@@ -54,3 +54,8 @@
 (defun sh-send-line-or-region-and-step ()
   (interactive)
   (sh-send-line-or-region t))
+
+(use-package jq-mode
+  :hook (jq-mode . aggressive-indent-mode)
+  :hook (jq-mode . smartparens-strict-mode)
+  :mode (("\\.jq\\'" . jq-mode)))

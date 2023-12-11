@@ -1,0 +1,8 @@
+# -*- coding: utf-8; mode: snippet -*-
+# name: iterate on an array (range)
+# key: range
+# contributor: Adriano Martinez <uberkael@gmail.com>
+# --
+for (${1:idx} in ${2:array}) ${3:{
+  $4
+\}}

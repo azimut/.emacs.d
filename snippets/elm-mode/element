@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
 # name: Browser.element
+# expand-env: ((yas-indent-line nil))
 # --
 module Main exposing (..)
 

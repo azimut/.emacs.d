@@ -7,7 +7,7 @@
               '(("=="  .  (?\s (Br . Bl) ?\s
                                (Bl . Bl) ?= (Bc . Br) ?= (Bc . Bc) ?=
                                (Bc . Bl) ?= (Br . Br) ?=))
-                ("/="  .  (?\s (Br . Bl) ?\s
+                ("!="  .  (?\s (Br . Bl) ?\s
                                (Bl . Bl) ?= (Bc . Br) ?= (Bc . Bc) ?/
                                (Bc . Bl) ?= (Br . Br) ?=))
                 ("++"  .  (?\s (Br . Bl) ?\s

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: Browser.sandbox
+# name: Browser.sandbox - cannot communicate with the outside world
 # expand-env: ((yas-indent-line nil))
 # --
 module Main exposing (..)
@@ -7,6 +7,7 @@ module Main exposing (..)
 import Browser
 import Html exposing (Html, text)
 
+main : Program () Model Msg
 main =
   Browser.sandbox
     { init = init, update = update, view = view }
@@ -20,4 +21,4 @@ view : model -> Html msg
 view model = text "sandbox"
 
 update : msg -> model -> model
-update model = model
+update msg model = model

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: Browser.document
+# name: Browser.document - manages the body and title
 # expand-env: ((yas-indent-line nil))
 # --
 module Main exposing (..)
@@ -7,6 +7,7 @@ module Main exposing (..)
 import Browser
 import Html exposing (Html, text)
 
+main : Program () Model Msg
 main =
   Browser.document
     { init = init
@@ -27,7 +28,7 @@ view model =
      }
 
 update : msg -> model -> (model, Cmd msg)
-update model = (model, Cmd.none)
+update msg model = (model, Cmd.none)
 
 subscriptions : model -> Sub msg
 subscriptions model = Sub.none

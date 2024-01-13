@@ -4,20 +4,31 @@
   :hook (clojure-mode . flycheck-mode)
   :hook (clojure-mode . aggressive-indent-mode)
   :hook (clojure-mode . cider-mode)
+  :bind
+  (:map
+   paredit-mode-map
+   ("C-M-p" . nil)
+   ("C-j" . nil))
   :config
-  (add-hook 'eldoc-documentation-functions #'cider-eldoc nil t)
-  )
+  (add-hook 'eldoc-documentation-functions #'cider-eldoc nil t))
 
 (use-package flycheck-clj-kondo)
+
+
+(defun cider-switch-and-set ()
+  (interactive)
+  (cider-switch-to-repl-buffer t))
+
 (use-package cider
   :hook (cider-repl-mode . electric-pair-local-mode)
   :bind
   (:map
    cider-repl-mode-map
-   ("C-c M-o" . cider-repl-clear-buffer)
+   ("C-c M-o"     . cider-repl-clear-buffer)
+   ("C-c C-d C-h" . cider-clojuredocs)
    :map
    clojure-mode-map
    ("C-x C-e"     . cider-eval-last-sexp)
    ("C-c C-c"     . cider-eval-defun-at-point)
    ("C-c C-d C-h" . cider-clojuredocs)
-   ("C-c ~"       . cider-repl-set-ns)))
+   ("C-c ~"       . cider-switch-and-set)))

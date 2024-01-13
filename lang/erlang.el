@@ -7,37 +7,11 @@
   (other-window 1)
   (delete-other-windows))
 
-(defun erlang-config ()
-  (setq-local prettify-symbols-alist
-              '(("=>"  .  (?\s (Br . Bl) ?\s
-                               (Bl . Bl) ?= (Bc . Br) ?= (Bc . Bc) ?=
-                               (Br . Br) ?>))
-                ("->"  .  (?\s (Br . Bl) ?\s
-                               (Bl . Bl) ?- (Bc . Br) ?- (Bc . Bc) ?-
-                               (Bc . Bl) ?- (Br . Br) ?>))
-                ("<-"  .  (?\s (Br . Bl) ?\s
-                               (Bl . Bl) ?< (Bc . Br) ?- (Bc . Bc) ?-
-                               (Bc . Bl) ?- (Br . Br) ?-))
-                ("=<"  .  (?\s (Br . Bl) ?\s
-                               (Bl . Bl) ?= (Bc . Bc) ?= (Br . Br) ?<))
-                (">="  .  (?\s (Br . Bl) ?\s
-                               (Bl . Bl) ?> (Bc . Bc) ?= (Br . Br) ?=))
-                ("++"  .  (?\s (Br . Bl) ?\s
-                               (Bl . Bl) ?+ (Bc . Br) ?+ (Bc . Bc) ?-
-                               (Bc . Bl) ?+ (Br . Br) ?+))
-                ("=="  .  (?\s (Br . Bl) ?\s
-                               (Bl . Bl) ?= (Bc . Br) ?= (Bc . Bc) ?=
-                               (Bc . Bl) ?= (Br . Br) ?=))
-                ("/="  .  (?\s (Br . Bl) ?\s
-                               (Bl . Bl) ?= (Bc . Br) ?= (Bc . Bc) ?/
-                               (Bc . Bl) ?= (Br . Br) ?=)))))
-
 (use-package erlang
   :load-path ("~/kerl/19.2/lib/tools-3.5.3/emacs")
   :hook (erlang-mode . aggressive-indent-mode)
   :hook (erlang-mode . smartparens-strict-mode)
   :hook (erlang-mode . lsp-mode)
-  :hook (erlang-mode . erlang-config)
   :mode (("\\.erl\\'"             . erlang-mode)
          ("\\.hrl\\'"             . erlang-mode)
          ("\\.xrl\\'"             . erlang-mode)
@@ -53,6 +27,9 @@
          ("\\.app.src?$"          . erlang-mode)
          ("\\Emakefile"           . erlang-mode))
   :config
+  (ligature-set-ligatures
+   'erlang-mode ; todo: gte lte
+   '("==" "/=" "++" "&&" "||" "<-" "->" "=>"))
   (require 'smartparens-erlang)
   (add-hook 'erlang-mode-hook
             (lambda ()

@@ -17,8 +17,8 @@ type alias Model = Int
 init : Model
 init = 0
 
-view : model -> Html msg
-view model = text "sandbox"
-
 update : msg -> model -> model
 update msg model = model
+
+view : model -> Html msg
+view model = text "sandbox"

@@ -21,14 +21,14 @@ type alias Model = Int
 init : flags -> (model, Cmd msg)
 init _ = (0, Cmd.none)
 
+update : msg -> model -> (model, Cmd msg)
+update msg model = (model, Cmd.none)
+
 view : model -> Document msg
 view model =
      { title = "document title"
      , body = [ text "document body" ]
      }
-
-update : msg -> model -> (model, Cmd msg)
-update msg model = (model, Cmd.none)
 
 subscriptions : model -> Sub msg
 subscriptions model = Sub.none

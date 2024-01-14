@@ -21,11 +21,11 @@ type alias Model = Int
 init : flags -> (model, Cmd msg)
 init _ = (0, Cmd.none)
 
-view : model -> Html msg
-view model = text "element"
-
 update : msg -> model -> (model, Cmd msg)
 update msg model = (model, Cmd.none)
+
+view : model -> Html msg
+view model = text "element"
 
 subscriptions : model -> Sub msg
 subscriptions model = Sub.none

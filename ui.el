@@ -74,6 +74,9 @@
 ;;   :custom (yascroll:disabled-modes '(image-mode prog-mode))
 ;;   :init (global-yascroll-bar-mode +1))
 
+(use-package all-the-icons-dired
+  :hook (dired-mode . all-the-icons-dired-mode))
+
 (use-package nyan-mode
   :init (nyan-mode +1)
   :custom
@@ -105,7 +108,7 @@
 (add-hook 'text-mode-hook (lambda () (setq-local mode-require-final-newline nil)))
 (add-hook 'package-menu-mode-hook (lambda () (hl-line-mode +1)))
 
-(setq display-line-numbers-type 't)
+(setq display-line-numbers-type 'relative)
 (setq display-line-numbers-grow-only t)
 
 (add-hook 'ibuffer-mode-hook (lambda () (hl-line-mode +1)))

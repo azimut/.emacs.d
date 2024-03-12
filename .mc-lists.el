@@ -11,14 +11,18 @@
         artist-forward-char
         backward-sexp
         beginning-of-visual-line
+        c-electric-brace
         c-electric-colon
         c-electric-delete-forward
         c-electric-paren
         c-electric-semi&comma
         c-electric-slash
         c-electric-star
+        c-indent-line-or-region
         comment-region
         complete-symbol
+        completion-at-point
+        cycle-spacing
         dabbrev-expand
         default-indent-new-line
         dired-unmark-backward
@@ -44,7 +48,9 @@
         mark-sexp
         markdown-cycle
         markdown-outdent-or-delete
+        nim-electric-backspace
         org-beginning-of-line
+        org-comment-dwim
         org-cycle
         org-delete-char
         org-end-of-line
@@ -75,7 +81,13 @@
         paredit-open-round
         paredit-splice-sexp
         paredit-wrap-round
+        picture-backward-clear-column
         picture-clear-column
+        picture-clear-line
+        picture-self-insert
+        recompile
+        replace-string
+        shrink-window
         slime-autodoc-space
         sly-choose-completion
         sly-compile-defun
@@ -83,15 +95,21 @@
         sp-backward-delete-char
         sp-backward-kill-word
         sp-backward-sexp
+        sp-backward-slurp-sexp
         sp-delete-char
         sp-down-sexp
+        sp-forward-barf-sexp
         sp-forward-sexp
         sp-forward-slurp-sexp
         sp-kill-hybrid-sexp
         sp-kill-region
         sp-kill-word
         sp-splice-sexp
+        sp-wrap-round
+        string-inflection-lower-camelcase
         string-inflection-toggle
+        tcl-indent-command
+        text-scale-adjust
         transpose-sexps
         wdired--self-insert
         xterm-paste
@@ -106,6 +124,7 @@
         find-file
         insert-parentheses
         kill-sentence
+        magit-status
         mouse-set-region
         paredit-backward-slurp-sexp
         paredit-forward-barf-sexp

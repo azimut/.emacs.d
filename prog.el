@@ -193,6 +193,13 @@ If the error list is visible, hide it.  Otherwise, show it."
   (setq chatgpt-shell-openai-key
         (lambda () (auth-source-pick-first-password :host "api.openai.com"))))
 
+(use-package gptel
+  :config
+  (setq-default gptel-model "gemini-pro"
+                gptel-backend (gptel-make-gemini "Gemini"
+                                :key (auth-source-pick-first-password :host "ai.google")
+                                :stream t)))
+
 (global-set-key (kbd "C-j") 'newline)
 
 (define-key prog-mode-map (kbd "C-c C-c") #'comment-or-uncomment-region)

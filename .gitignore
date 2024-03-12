@@ -1,5 +1,10 @@
 .yas-compiled-snippets.el
 # ME: misc
+.extension/
+places
+chatgpt/
+dap-ui-repl-gdb-history
+dap-ui-repl-go-history
 workspace/
 .cache/
 .dap-breakpoints

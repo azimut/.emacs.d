@@ -13,7 +13,6 @@
   (forge-topic-list-limit '(100 . 0)))
 
 (use-package gitignore-templates)
-(use-package gitignore-mode)
 (use-package git-timemachine)
 (use-package lice)
 

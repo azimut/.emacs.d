@@ -84,14 +84,16 @@
   (nyan-bar-length            16)
   (nyan-animate-nyancat      nil))
 
+(use-package focus)
+
 (set-face-foreground 'font-lock-comment-face "orange")
-(lexical-let ((color-flag))
-  (defun toggle-color ()
-    (interactive)
-    (setf color-flag (not color-flag))
-    (if color-flag
-        (set-face-foreground 'font-lock-comment-face "orange")
-      (set-face-foreground 'font-lock-comment-face "#696969"))))
+;; (lexical-let ((color-flag))
+;;   (defun toggle-color ()
+;;     (interactive)
+;;     (setf color-flag (not color-flag))
+;;     (if color-flag
+;;         (set-face-foreground 'font-lock-comment-face "orange")
+;;       (set-face-foreground 'font-lock-comment-face "#696969"))))
 
 (set-cursor-color "#FF00FF")
 ;;(set-cursor-color "#00FF00")

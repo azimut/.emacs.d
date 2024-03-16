@@ -36,6 +36,7 @@
   :init
   (add-hook 'before-save-hook #'ocamlformat-before-save)
   :config
+  (ligature-set-ligatures 'tuareg-mode '("<=" ">=" "==" "<>" "&&" "||" "<-" "->" "|>"))
   (require 'smartparens-ml)
   ;; (setq tuareg-prettify-symbols-full nil)
   ;; (add-to-list 'eglot-server-programs '(tuareg-mode . ("ocamllsp")))

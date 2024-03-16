@@ -6,46 +6,45 @@
               ("M-n" . org-metadown)
               ("M-p" . org-metaup)))
 
-(use-package tex
-  :ensure nil
-  :init
-  (setq
-   TeX-PDF-mode t
-   TeX-engine 'xetex
-   TeX-command-default "LaTeXMK"
-   latex-run-command "LaTeXMK"
-   LaTeX-command "LaTeXMK"
-   TeX-auto-save t
-   TeX-parse-self t
-   ;;TeX-newline-function 'delete-other-windows
+;; (use-package tex
+;;   :ensure nil
+;;   :init
+;;   (setq
+;;    TeX-PDF-mode t
+;;    TeX-engine 'xetex
+;;    TeX-command-default "LaTeXMK"
+;;    latex-run-command "LaTeXMK"
+;;    LaTeX-command "LaTeXMK"
+;;    TeX-auto-save t
+;;    TeX-parse-self t
+;;    ;;TeX-newline-function 'delete-other-windows
 
-   TeX-command-list
-   '(("LaTeXMK" "latexmk %s" TeX-run-TeX nil t :help "Run latexmk")
-     ("LuaLaTeX" "%`lualatex%(mode) --synctex=1 --8bit --shell-escape%' %t" TeX-run-TeX nil t :help "Run lualatex")
-     ("XeLaTeX" "%`xelatex%(mode) -synctex=1 -8bit -shell-escape%' %t" TeX-run-TeX nil t :help "Run xelatex")
-     ("Biber" "biber %s" TeX-run-Biber nil t :help "Run Biber")
-     ("View" "%V" TeX-run-discard-or-function t t :help "Run Viewer")
-     ("Index" "makeindex %s" TeX-run-command nil t :help "Create index file")
-     ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
-     ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
-     )
+;;    TeX-command-list
+;;    '(("LaTeXMK" "latexmk %s" TeX-run-TeX nil t :help "Run latexmk")
+;;      ("LuaLaTeX" "%`lualatex%(mode) --synctex=1 --8bit --shell-escape%' %t" TeX-run-TeX nil t :help "Run lualatex")
+;;      ("XeLaTeX" "%`xelatex%(mode) -synctex=1 -8bit -shell-escape%' %t" TeX-run-TeX nil t :help "Run xelatex")
+;;      ("Biber" "biber %s" TeX-run-Biber nil t :help "Run Biber")
+;;      ("View" "%V" TeX-run-discard-or-function t t :help "Run Viewer")
+;;      ("Index" "makeindex %s" TeX-run-command nil t :help "Create index file")
+;;      ("Clean" "TeX-clean" TeX-run-function nil t :help "Delete generated intermediate files")
+;;      ("Clean All" "(TeX-clean t)" TeX-run-function nil t :help "Delete generated intermediate and output files")
+;;      )
 
-   LaTeX-verbatim-environments '("verbatim" "verbatim*" "Verbatim" "Verbatim*" "lstlisting" "code" "minted" "gascode" "ccode" "pythoncode" "javacode" "bashcode")
+;;    LaTeX-verbatim-environments '("verbatim" "verbatim*" "Verbatim" "Verbatim*" "lstlisting" "code" "minted" "gascode" "ccode" "pythoncode" "javacode" "bashcode")
 
-   TeX-view-program-selection '((output-pdf "PDF Tools") (output-html "xdg-open"))
-   TeX-view-style nil
-   bibtex-maintain-sorted-entries t
-   bibtex-align-at-equal-sign t
-   )                                    ; end of setq
-  :config
-  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-  (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "LaTeXMK")))
-  (add-hook 'LaTeX-mode-hook '(lambda () (setq TeX-command-default "LaTeXMK")))
-  (setq-default TeX-master nil)
-
-  )
+;;    TeX-view-program-selection '((output-pdf "PDF Tools") (output-html "xdg-open"))
+;;    TeX-view-style nil
+;;    bibtex-maintain-sorted-entries t
+;;    bibtex-align-at-equal-sign t
+;;    )                                    ; end of setq
+;;   :config
+;;   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+;;   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+;;   (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+;;   (add-hook 'TeX-mode-hook '(lambda () (setq TeX-command-default "LaTeXMK")))
+;;   (add-hook 'LaTeX-mode-hook '(lambda () (setq TeX-command-default "LaTeXMK")))
+;;   (setq-default TeX-master nil)
+;;   )
 
 ;; (use-package outline
 ;;   :config

@@ -1,16 +1,10 @@
-;; OS:
+;; $ go install golang.org/x/tools/cmd/godoc@latest golang.org/x/tools/cmd/goimports@latest golang.org/x/tools/cmd/gorename@latest golang.org/x/tools/cmd/guru@latest golang.org/x/tools/gopls@latest
+;;
+;; $ go install github.com/x-motemen/gore/cmd/gore@latest
 ;; $ go install github.com/go-delve/delve/cmd/dlv@latest
-;; - https://github.com/go-delve/delve/tree/master/Documentation/installation
-;; GO111MODULE=on go get -v golang.org/x/tools/gopls@latest
-;; go get -u github.com/motemen/gore/cmd/gore
-;; go get -u github.com/stamblerre/gocode
-;; go get -u golang.org/x/tools/cmd/godoc
-;; go get -u golang.org/x/tools/cmd/goimports
-;; go get -u golang.org/x/tools/cmd/gorename
-;; go get -u golang.org/x/tools/cmd/guru
-;; go get -u github.com/cweill/gotests/...
-;; go get -u github.com/fatih/gomodifytags
-;; go get -u github.com/segmentio/golines
+;; $ go install github.com/mdempsky/gocode@latest
+;; $ go install github.com/fatih/gomodifytags@latest
+;; $ go install github.com/segmentio/golines@latest
 
 (defun go-config ()
   (setq-local compile-command

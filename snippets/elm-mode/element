@@ -16,6 +16,7 @@ main =
     , subscriptions = subscriptions
     }
 
+type Msg = Idle
 type alias Model = Int
 
 init : flags -> (model, Cmd msg)

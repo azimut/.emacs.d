@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# key: case
+# --
+case ${1:intancetomatch}:
+    $0

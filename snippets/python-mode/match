@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# key: match
+# --
+match ${1:variable}:
+    case ${2:intancetomatch}:
+        print($0)
+    case _:
+        print("doh!")

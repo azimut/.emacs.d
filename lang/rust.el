@@ -3,6 +3,7 @@
   ;; Default: (32 41 46)
   (setq-local company-auto-complete-chars nil))
 
+(use-package ob-rust)
 (use-package toml-mode)
 (use-package rust-mode
   :hook (rust-mode . smartparens-strict-mode)

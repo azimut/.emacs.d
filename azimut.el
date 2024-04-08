@@ -240,7 +240,7 @@
 (load-file "~/.emacs.d/lang/javascript.el")
 (load-file "~/.emacs.d/lang/java.el")
 
-;;(load-file "~/.emacs.d/lang/rust.el")
+(load-file "~/.emacs.d/lang/rust.el")
 ;;(load-file "~/.emacs.d/lang/elixir.el")
 (load-file "~/.emacs.d/lang/lua.el")
 ;;(load-file "~/.emacs.d/lang/glsl.el")

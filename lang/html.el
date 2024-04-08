@@ -2,7 +2,9 @@
 ;; lsp-install-server >> tailwindcss
 ;; npm install -g prettier
 
-(use-package impatient-mode)
+(use-package impatient-mode
+  :config
+  (setq httpd-port 8088))
 
 (defun +web/indent-or-yas-or-emmet-expand ()
   "Do-what-I-mean on TAB.

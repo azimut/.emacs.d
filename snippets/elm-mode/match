@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: match
+# --
+case ${1:condition} of
+    ${2:match} -> ${3:action}

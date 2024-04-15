@@ -59,3 +59,5 @@
   :hook (jq-mode . aggressive-indent-mode)
   :hook (jq-mode . smartparens-strict-mode)
   :mode (("\\.jq\\'" . jq-mode)))
+
+(use-package sed-mode)

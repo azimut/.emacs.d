@@ -18,6 +18,7 @@
 (defun disable-trailing-highlight ()
   (setq-local show-trailing-whitespace nil))
 
+(add-hook 'Buffer-menu-mode-hook #'hl-line-mode)
 (add-hook 'Buffer-menu-mode-hook #'disable-trailing-highlight)
 (add-hook 'shell-mode-hook #'disable-trailing-highlight)
 (add-hook 'vterm-mode-hook #'disable-trailing-highlight)

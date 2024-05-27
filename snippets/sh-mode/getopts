@@ -1,0 +1,8 @@
+while getopts ":hf:" arg; do
+	case $arg in
+	h) echo "help" ;;
+	f) echo "$OPTARG" ;;
+        *) echo "invalid option"; exit 1 ;;
+	esac
+done
+shift $((OPTIND - 1)) # allow positional arguments

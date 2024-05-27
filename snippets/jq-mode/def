@@ -3,4 +3,5 @@
 # key: def
 # --
 def ${1:function_name}${2:()}:
-    $0;
+    $0
+;

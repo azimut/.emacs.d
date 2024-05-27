@@ -207,8 +207,19 @@ If the error list is visible, hide it.  Otherwise, show it."
 (define-key prog-mode-map (kbd "C-c C-k") #'recompile)
 
 (use-package highlight-indent-guides)
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package ligature
   :config (global-ligature-mode +1))
+
+(use-package sqlite-mode
+  :ensure nil
+  :hook (sqlite-mode . hl-line-mode)
+  :bind (:map
+         sqlite-mode-map
+         ("j" . next-line)
+         ("k" . previous-line)
+         ("n" . next-line)
+         ("p" . previous-line)))

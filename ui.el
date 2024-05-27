@@ -20,6 +20,7 @@
 
 (add-hook 'Buffer-menu-mode-hook #'hl-line-mode)
 (add-hook 'Buffer-menu-mode-hook #'disable-trailing-highlight)
+(add-hook 'sqlite-mode-hook #'disable-trailing-highlight)
 (add-hook 'shell-mode-hook #'disable-trailing-highlight)
 (add-hook 'vterm-mode-hook #'disable-trailing-highlight)
 (add-hook 'help-mode-hook #'disable-trailing-highlight)

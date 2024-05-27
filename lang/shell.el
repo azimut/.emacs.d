@@ -58,6 +58,10 @@
 (use-package jq-mode
   :hook (jq-mode . aggressive-indent-mode)
   :hook (jq-mode . smartparens-strict-mode)
-  :mode (("\\.jq\\'" . jq-mode)))
+  :hook (jq-mode . (lambda () (rainbow-delimiters-mode -1)))
+  :mode (("\\.jq\\'" . jq-mode))
+  :config
+  (ligature-set-ligatures 'jq-mode '("==" "!=" ">=" "<=")))
+
 
 (use-package sed-mode)

@@ -68,12 +68,11 @@
   ;;             )
   :config
   (require 'smartparens-config)
-  (setq sly-lisp-implementations     '((sbcl  ("/usr/local/bin/sbcl"
-                                               ;;"--dynamic-space-size"
-                                               ;;"1024"
-                                               )))
+  (setq sly-lisp-implementations '(;;(sbcl    ("sbcl") :coding-system utf-8-unix)
+                                   (roswell ("ros" "run") :coding-system utf-8-unix)
+                                   (qlot    ("qlot" "exec" "ros" "run") :coding-system utf-8-unix))
         ;;sly-complete-symbol-function 'sly-flex-completions;;'sly-simple-completions
-        inferior-lisp-program        "/usr/local/bin/sbcl"
+        inferior-lisp-program        "ros run"
         ;;sly-contribs                 '(sly-fancy sly-macrostep)
         sly-inhibit-pipelining       nil
         sly-load-failed-fasl         'always

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: case
+# key: case
+# --
+CASE${1: var}
+WHEN ${2:cond} THEN $0
+END;

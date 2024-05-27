@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: with
+# key: with
+# --
+WITH RECURSIVE
+  ${1:tbname}(${2:field1,field2}) AS (
+    $0
+  )
+SELECT 1 FROM $1

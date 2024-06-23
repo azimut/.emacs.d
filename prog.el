@@ -223,3 +223,8 @@ If the error list is visible, hide it.  Otherwise, show it."
          ("k" . previous-line)
          ("n" . next-line)
          ("p" . previous-line)))
+
+(use-package uxntal-mode
+  :bind (:map
+         uxntal-mode-map
+         ("C-c C-d" . uxntal-explain-word)))

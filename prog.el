@@ -209,7 +209,8 @@ If the error list is visible, hide it.  Otherwise, show it."
 (use-package highlight-indent-guides)
 
 (use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
+  ;; :hook (prog-mode . rainbow-delimiters-mode)
+  )
 
 (use-package ligature
   :config (global-ligature-mode +1))

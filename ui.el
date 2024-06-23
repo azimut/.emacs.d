@@ -65,6 +65,11 @@
 (use-package vertico
   :init (vertico-mode +1))
 
+(use-package marginalia
+  :init (marginalia-mode +1)
+  :bind (:map minibuffer-local-map
+              ("M-A" . marginalia-cycle)))
+
 (use-package doom-modeline
   :custom
   (doom-modeline-height      1)

@@ -1,10 +1,30 @@
+(setq image-use-external-converter t)
+
 (use-package org
   :ensure nil
-  :custom (org-startup-folded 'showeverything)
+  :custom
+  (org-startup-folded 'showeverything)
+  (org-display-remote-inline-images 'cache)
+  (org-image-actual-width '(300))
+  (org-startup-with-inline-images t)
   :bind (:map org-mode-map
               ("C-j" . org-return)
               ("M-n" . org-metadown)
               ("M-p" . org-metaup)))
+
+(use-package org-remoteimg
+  :straight (org-remoteimg :type git :host github :repo "hubisan/org-remoteimg"))
+
+;; Description: Adds fill color for transparent images
+;; Source: https://emacs.stackexchange.com/questions/20574/default-inline-image-background-in-org-mode
+;; Source: https://kimi.im/2022-04-29-background-color-of-inline-image-for-orgmode
+(defun org--create-inline-image-advice (img)
+  (nconc img (list :background "#f8f8f8")))
+(advice-add
+ 'create-image ; here it will affect remote images too
+ :filter-return #'org--create-inline-image-advice)
+
+(use-package flymake-aspell)
 
 ;; (use-package tex
 ;;   :ensure nil
@@ -92,6 +112,7 @@
 
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
+  :hook (gfm-mode . visual-line-mode)
   ;; Set Github Formatted Markdown Mode for README.md
   :mode (("README\\.md\\'" . gfm-mode))
   :init
@@ -115,7 +136,7 @@
   ;; (setq org-mind-map-engine "twopi")  ; Radial layouts
   ;; (setq org-mind-map-engine "circo")  ; Circular Layout
   )
-(setq org-image-actual-width nil)
+
 (use-package org-modern)
 
 (use-package dockerfile-mode)

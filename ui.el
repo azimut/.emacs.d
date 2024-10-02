@@ -68,7 +68,17 @@
 (use-package marginalia
   :init (marginalia-mode +1)
   :bind (:map minibuffer-local-map
-              ("M-A" . marginalia-cycle)))
+              ("M-A" . marginalia-cycle))
+  :config
+  ;; Persist cycles
+  (advice-add
+   #'marginalia-cycle
+   :after
+   (lambda ()
+     (let ((inhibit-message t))
+       (customize-save-variable
+        'marginalia-annotator-registry
+        marginalia-annotator-registry)))))
 
 (use-package doom-modeline
   :custom

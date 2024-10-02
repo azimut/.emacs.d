@@ -1,6 +1,12 @@
 (setq image-use-external-converter t)
 
+;; Needed for inline org images
+;; I do not use pixel-perfect... because it doesn't work with keynav
+(use-package good-scroll
+  :config (good-scroll-mode +1))
+
 (use-package org
+  :hook (good-scroll)
   :ensure nil
   :custom
   (org-startup-folded 'showeverything)

@@ -133,3 +133,6 @@
 (add-hook 'ibuffer-mode-hook (lambda () (hl-line-mode +1)))
 
 (column-number-mode +1)
+
+(use-package ansi-color
+  :hook (compilation-filter . ansi-color-compilation-filter))

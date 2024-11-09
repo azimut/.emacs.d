@@ -2,8 +2,8 @@
 
 (use-package lsp-haskell
   :custom
-  (lsp-haskell-server-path "haskell-language-server")
-  (lsp-haskell-server-args '("-d" "-l" "/tmp/hls.log" "-j2"))) ;; -j1 hangs
+  (lsp-haskell-server-path "haskell-language-server-wrapper")
+  (lsp-haskell-server-args '("-d" "--log-file" "/tmp/hls.log" "-j2"))) ;; -j1 hangs
 
 (use-package haskell-interactive-mode
   :ensure nil
@@ -59,7 +59,7 @@
          ("C-j" . haskell-indentation-newline-and-indent)
          ("C-c C-d" . lsp-describe-thing-at-point)
          ("C-c C-k" . haskell-process-load-file))
-  :hook (haskell-mode . electric-pair-local-mode)
+  :hook (haskell-mode . smartparens-strict-mode)
   :hook (haskell-mode . prettify-symbols-mode)
   :hook (haskell-mode . haskell-config)
   :hook (haskell-mode . lsp))

@@ -84,7 +84,6 @@
    (lambda ()
      (define-key sly-mode-map       (kbd "C-c C-z") #'jump-mrepl)
      (define-key sly-mrepl-mode-map (kbd "C-c C-z") #'jump-mrepl)
-     (setq-local display-line-numbers-type t)
      ;; (setq redshank-align-slot-forms-list
      ;;       '("defclass" "define-condition"
      ;;         "define-subject"
@@ -95,7 +94,6 @@
    (lambda ()
      (setq-local mode-line-format nil)
      (aggressive-indent-mode -1)
-     (setq-local display-line-numbers-type 'relative)
      ;; CEPL crashes if receives it, and i tend to do it as a tick...
      (define-key sly-mode-map       (kbd "C-c C-z") #'jump-mrepl)
      (define-key sly-mrepl-mode-map (kbd "C-c C-z") #'jump-mrepl)

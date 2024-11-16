@@ -25,6 +25,7 @@
   (display-fill-column-indicator-mode +1)
   (lsp-mode +1)
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (ligature-set-ligatures 'c-mode '("<=" ">=" "==" "!=" "&&" "||" "->"))
   (setq-local lsp-enable-snippet nil) ; the quality is really poor for C
   (setq-local company-auto-commit-chars nil)
   (setq-local compile-command

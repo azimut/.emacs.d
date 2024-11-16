@@ -24,6 +24,8 @@
         projectile-sort-order 'recently-active))
 
 (use-package git-gutter
+  :hook (web-mode . git-gutter-mode)
+  :hook (css-mode . git-gutter-mode)
   :hook (prog-mode . git-gutter-mode))
 
 ;; NOTE: -fringe needed (? crt.o on dnf gcc-x86_64-linux-gnu.x86_64

@@ -113,6 +113,16 @@ If the error list is visible, hide it.  Otherwise, show it."
 (use-package corfu
   :hook (corfu-mode . corfu-prescient-mode)
   :hook (corfu-mode . corfu-popupinfo-mode)
+  :bind (:map corfu-popupinfo-map
+              ("C-j" . corfu-foobar))
+  :custom-face
+  (corfu-popupinfo
+   ((t :inherit corfu-current)))
+  :config
+  (defun corfu-foobar () ;; no idea why, just copy pasting
+    (interactive)
+    (corfu-complete)
+    (corfu-quit))
   :custom
   (corfu-preview-current nil)
   (corfu-cycle           t)

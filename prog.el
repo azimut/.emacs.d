@@ -42,6 +42,7 @@ If the error list is visible, hide it.  Otherwise, show it."
   :hook (flycheck-mode . flycheck-posframe-mode))
 
 (use-package flymake
+  :hook (flymake-mode . display-line-numbers-mode)
   :bind (:map
          flymake-mode-map
          ("M-n" . flymake-goto-next-error)
@@ -110,7 +111,10 @@ If the error list is visible, hide it.  Otherwise, show it."
    'corfu-margin-formatters
    #'kind-icon-margin-formatter))
 (use-package corfu-prescient)
+(use-package corfu-popupinfo
+  :ensure nil)
 (use-package corfu
+  :after corfu-popupinfo
   :hook (corfu-mode . corfu-prescient-mode)
   :hook (corfu-mode . corfu-popupinfo-mode)
   :bind (:map corfu-popupinfo-map
@@ -280,5 +284,4 @@ If the error list is visible, hide it.  Otherwise, show it."
    'gleam-ts-mode
    '("==" "!=" ">=" "<=" "&&" "||" "->" "|>")))
 
-(use-package eglot
-  :hook (eglot-mode . display-line-numbers-mode))
+(use-package eglot)

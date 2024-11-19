@@ -41,6 +41,12 @@ If the error list is visible, hide it.  Otherwise, show it."
   :custom (flycheck-posframe-position 'point-bottom-left-corner)
   :hook (flycheck-mode . flycheck-posframe-mode))
 
+(use-package flymake
+  :bind (:map
+         flymake-mode-map
+         ("M-n" . flymake-goto-next-error)
+         ("M-p" . flymake-goto-prev-error)))
+
 ;; CHAT-GPT :) ... plus hacky stuff
 (defun yas-or-company ()
   (interactive)

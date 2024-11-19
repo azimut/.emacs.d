@@ -269,3 +269,6 @@ If the error list is visible, hide it.  Otherwise, show it."
   (ligature-set-ligatures
    'gleam-ts-mode
    '("==" "!=" ">=" "<=" "&&" "||" "->" "|>")))
+
+(use-package eglot
+  :hook (eglot-mode . display-line-numbers-mode))

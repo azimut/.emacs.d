@@ -136,3 +136,5 @@
 
 (use-package ansi-color
   :hook (compilation-filter . ansi-color-compilation-filter))
+
+(use-package indent-bars)

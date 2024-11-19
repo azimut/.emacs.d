@@ -93,6 +93,27 @@ If the error list is visible, hide it.  Otherwise, show it."
 (use-package company-quickhelp
   :custom (company-quickhelp-delay 0.2))
 
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :custom
+  (kind-icon-extra-space t)
+  (kind-icon-use-icons nil)
+  :config
+  (add-to-list
+   'corfu-margin-formatters
+   #'kind-icon-margin-formatter))
+(use-package corfu-prescient)
+(use-package corfu
+  :hook (corfu-mode . corfu-prescient-mode)
+  :hook (corfu-mode . corfu-popupinfo-mode)
+  :custom
+  (corfu-preview-current nil)
+  (corfu-cycle           t)
+  (corfu-auto            t)
+  (corfu-auto-delay      0.1)
+  (corfu-auto-prefix     3))
+
 (use-package move-text
   :bind (("C-M-p" . move-text-up)
          ("C-M-n" . move-text-down)))

@@ -286,5 +286,10 @@ If the error list is visible, hide it.  Otherwise, show it."
 
 (use-package eglot)
 
-(setq treesit-language-source-alist
- '((awk "https://github.com/Beaglefoot/tree-sitter-awk")))
+(use-package treesit
+  :ensure nil
+  :config
+  (setq-default
+   treesit-language-source-alist
+   '((awk . ("https://github.com/Beaglefoot/tree-sitter-awk"))
+     (css . ("https://github.com/tree-sitter/tree-sitter-css")))))

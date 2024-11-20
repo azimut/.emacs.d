@@ -89,6 +89,7 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   :hook (css-mode . lsp)
   :custom
   (css-smie-rules)
+  (css-indent-offset 2)
   (css-fontify-colors nil))
 
 (use-package prettier

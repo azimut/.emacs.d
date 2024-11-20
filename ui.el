@@ -20,25 +20,25 @@
 
 (add-hook 'Buffer-menu-mode-hook #'hl-line-mode)
 (add-hook 'Buffer-menu-mode-hook #'disable-trailing-highlight)
-(add-hook 'sqlite-mode-hook #'disable-trailing-highlight)
-(add-hook 'shell-mode-hook #'disable-trailing-highlight)
-(add-hook 'vterm-mode-hook #'disable-trailing-highlight)
-(add-hook 'help-mode-hook #'disable-trailing-highlight)
-(add-hook 'eww-mode-hook #'disable-trailing-highlight)
+(add-hook 'sqlite-mode-hook      #'disable-trailing-highlight)
+(add-hook 'shell-mode-hook       #'disable-trailing-highlight)
+(add-hook 'vterm-mode-hook       #'disable-trailing-highlight)
+(add-hook 'help-mode-hook        #'disable-trailing-highlight)
+(add-hook 'eww-mode-hook         #'disable-trailing-highlight)
 ;;(add-hook 'sly-autodoc-mode-hook #'disable-trailing-highlight)
 
 (setq read-file-name-completion-ignore-case t
-      read-buffer-completion-ignore-case t
-      completion-ignore-case t)
+      read-buffer-completion-ignore-case    t
+      completion-ignore-case                t)
 
 ;; (set-face-attribute 'mode-line nil :height 100)
 ;; (set-face-attribute 'mode-line-inactive nil :height 100)
 
 
 ;; https://www.emacswiki.org/emacs/MenuBar
-(menu-bar-mode -1)
+(menu-bar-mode   -1)
 (scroll-bar-mode -1)
-(tool-bar-mode -1)
+(tool-bar-mode   -1)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -82,14 +82,10 @@
 
 (use-package doom-modeline
   :custom
-  (doom-modeline-height      1)
+  (doom-modeline-height    1)
   (doom-modeline-bar-width 0)
-  (doom-modeline-icon nil)
+  (doom-modeline-icon    nil)
   :hook (after-init . doom-modeline-mode))
-
-;; (use-package yascroll
-;;   :custom (yascroll:disabled-modes '(image-mode prog-mode))
-;;   :init (global-yascroll-bar-mode +1))
 
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))

@@ -20,22 +20,26 @@
   ;; :hook (web-mode . web-tsx-mode)
   )
 
-(defun js-config ()
-  (setq-local create-lockfiles             nil)
-  (setq-local lsp-enable-indentation       nil)
-  (setq-local company-tooltip-align-annotations t)
-  (setq-local company-insertion-on-trigger nil))
-
 (use-package js-mode
+  :ensure nil
   :custom (js-indent-level 2)
   :hook (js-mode . lsp)
   :hook (js-mode . smartparens-strict-mode)
-  :hook (js-mode . js-config)
   :hook (js-mode . company-mode)
-  :ensure nil)
+  :hook (js-mode . js-config)
+  :config
+  (defun js-config ()
+    (setq-local create-lockfiles             nil)
+    (setq-local lsp-enable-indentation       nil)
+    (setq-local company-tooltip-align-annotations t)
+    (setq-local company-insertion-on-trigger nil)))
 
 (use-package typescript-mode
   :custom (typescript-indent-level 2)
   :hook (typescript-mode . lsp)
   :hook (typescript-mode . smartparens-strict-mode)
   :hook (typescript-mode . js-config))
+
+(use-package json-mode
+  :hook (json-mode . lsp)
+  :hook (json-mode . smartparens-strict-mode))

@@ -71,10 +71,6 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   :init
   (define-derived-mode web-tsx-mode web-mode "tsx"))
 
-(use-package json-mode
-  :hook (json-mode . lsp)
-  :hook (json-mode . smartparens-strict-mode))
-
 (use-package emmet-mode
   :hook (web-mode web-tsx-mode)
   :bind (:map emmet-mode-keymap

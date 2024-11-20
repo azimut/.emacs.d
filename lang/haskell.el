@@ -24,15 +24,13 @@
   :hook (haskell-mode . haskell-config)
   :hook (haskell-mode . lsp)
   :config
+  (defun haskell-config ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t))
   (ligature-set-ligatures
    'haskell-mode
    '(">>=" "=<<" "=>" "->" "<-" "-<" ">-" "++" "==" "/=" "<>" "||")))
 
 (add-hook 'haskell-literate-mode-hook #'lsp)
-
-(defun lsp-haskell-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t))
-(add-hook 'haskell-mode-hook #'lsp-haskell-install-save-hooks)
 
 ;; (use-package haskell-cabal-mode
 ;;   :ensure nil

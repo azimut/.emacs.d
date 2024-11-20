@@ -285,3 +285,6 @@ If the error list is visible, hide it.  Otherwise, show it."
    '("==" "!=" ">=" "<=" "&&" "||" "->" "|>")))
 
 (use-package eglot)
+
+(setq treesit-language-source-alist
+ '((awk "https://github.com/Beaglefoot/tree-sitter-awk")))

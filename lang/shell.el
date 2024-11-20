@@ -63,5 +63,4 @@
   :config
   (ligature-set-ligatures 'jq-mode '("==" "!=" ">=" "<=")))
 
-
 (use-package sed-mode)

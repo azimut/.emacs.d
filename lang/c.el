@@ -1,7 +1,10 @@
 ;; Os: install "ccls"
 
-(setq gdb-many-windows t
-      gdb-debuginfod-enable-setting nil)
+(setq gdb-many-windows t)
+(use-package gdb-mi
+  :custom
+  (gud-gdb-command-name "gdb -q -i=mi")
+  (gdb-debuginfod-enable-setting nil))
 
 (defun c-config ()
   (smartparens-strict-mode +1)
@@ -15,7 +18,7 @@
               (cond ((file-exists-p "Makefile")
                      "make -k")
                     (t (concat
-                        "gcc -Wall -Wextra -pedantic -ggdb "
+                        "gcc -Wall -Wextra -pedantic -O0 -ggdb "
                         buffer-file-name
                         " -o out && ./out")))))
 

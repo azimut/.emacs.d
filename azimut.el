@@ -201,7 +201,7 @@
     (find-file (nth (1- arg) recentf-list))))
 
 (recentf-mode t)
-(add-hook 'makefile-mode (lambda () (setq-local whitespace-style '(face tabs empty))))
+(add-hook 'makefile-mode-hook (lambda () (setq-local whitespace-style '(face tabs empty))))
 
 (defun evince-open-pdf ()
   (interactive)

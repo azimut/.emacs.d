@@ -1,28 +1,25 @@
-;; Shell - bashate
-;; (use-package flycheck-bashate
-;;   :ensure t
-;;   :config)
+;; OS npm i -g bash-language-server
+;; OS go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
-;; go install mvdan.cc/sh/v3/cmd/shfmt@latest
 (use-package shfmt)
-
-;; https://emacs.stackexchange.com/questions/24719/set-indentation-for-shell-script-function
-(setq sh-basic-offset 4)
-(setq sh-indentation 4)
-(setq smie-indent-basic 4)
-
-(setq flycheck-disabled-checkers '(sh-posix-bash))
-(setq-default flycheck-shellcheck-excluded-warnings '("SC2086"))
-
-(add-hook 'sh-mode-hook
-          (lambda ()
-            (flycheck-mode +1)
-            (setq-local tab-width 4)
-            (setq-local compile-command (concat "sh " buffer-file-name))
-            (shfmt-on-save-mode)
-            (define-key sh-mode-map (kbd "C-c C-c") #'recompile)
-            ;;(define-key sh-mode-map (kbd "C-c C-c") #'sh-send-line-or-region-and-step)
-            (electric-pair-local-mode +1)))
+(use-package sh
+  :ensure nil
+  :custom
+  ;; https://emacs.stackexchange.com/questions/24719/set-indentation-for-shell-script-function
+  (sh-basic-offset   4)
+  (sh-indentation    4)
+  (smie-indent-basic 4)
+  :bind (:map
+         sh-mode-map
+         ("C-c C-c" . recompile))
+  :hook (sh-mode . eglot-ensure)
+  :hook (sh-mode . electric-pair-local-mode)
+  :hook (sh-mode . sh-config)
+  :init
+  (defun sh-config ()
+    (shfmt-on-save-mode)
+    (setq-local tab-width 4)
+    (setq-local compile-command (concat "sh " buffer-file-name))))
 
 ;; https://nistara.net/post/emacs-send-line-or-region-to-shell/
 (defun sh-send-line-or-region (&optional step)

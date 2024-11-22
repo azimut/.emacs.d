@@ -25,6 +25,7 @@
     (add-to-list 'eglot-server-programs
                  '(awk-ts-mode . ("awk-language-server"))))
   (defun awk-config ()
+    (setq-local eglot-stay-out-of '(eldoc))
     (setq-local
      compile-command
      (concat "time gawk -f " buffer-file-name))))

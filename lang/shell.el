@@ -1,7 +1,10 @@
 ;; OS npm i -g bash-language-server
 ;; OS go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
-(use-package shfmt)
+(use-package shfmt
+  :custom
+  (shfmt-arguments '("-i" "4")))
+
 (use-package sh-mode
   :ensure nil
   :custom

@@ -48,6 +48,23 @@ If the error list is visible, hide it.  Otherwise, show it."
          ("M-n" . flymake-goto-next-error)
          ("M-p" . flymake-goto-prev-error)))
 
+(use-package sideline
+  :init
+  (setq sideline-format-right "   %s"
+        sideline-priority 100
+        sideline-truncate t
+        sideline-display-backend-name t))
+
+(use-package sideline-flymake
+  :hook (flymake-mode . sideline-mode)
+  :init
+  (setq sideline-flymake-display-mode 'line) ; 'point to show errors only on point
+                                        ; 'line to show errors on the current line
+  (setq sideline-force-display-if-exceeds t)
+  (setq sideline-backends-right '((sideline-flymake . up)))
+  ;;(setq sideline-backends-right '((sideline-blame . up)))
+  )
+
 ;; CHAT-GPT :) ... plus hacky stuff
 (defun yas-or-company ()
   (interactive)

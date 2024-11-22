@@ -21,8 +21,7 @@
 (use-package tuareg
   :custom
   (utop-command "opam exec -- dune utop . -- -emacs")
-  :bind (
-         :map
+  :bind (:map
          tuareg-mode-map
          ("C-c C-z" . utop-switch-to-repl)
          ("C-c C-c" . utop-eval-phrase)

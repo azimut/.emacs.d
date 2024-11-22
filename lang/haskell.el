@@ -1,9 +1,9 @@
 ;; OS: hlint
-
+;; (haskell-mode . ("haskell-language-server-wrapper" "--lsp"))
 (use-package lsp-haskell
   :custom
   (lsp-haskell-server-path "haskell-language-server-wrapper")
-  (lsp-haskell-server-args '("-d" "--log-file" "/tmp/hls.log" "-j2"))) ;; -j1 hangs
+  (lsp-haskell-server-args '("-j2"))) ;; -j1 hangs
 
 (use-package haskell-interactive-mode
   :ensure nil
@@ -24,11 +24,12 @@
   :hook (haskell-mode . haskell-config)
   :hook (haskell-mode . lsp)
   :config
-  (defun haskell-config ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t))
   (ligature-set-ligatures
    'haskell-mode
-   '(">>=" "=<<" "=>" "->" "<-" "-<" ">-" "++" "==" "/=" "<>" "||")))
+   '(">>=" "=<<" "=>" "->" "<-" "-<" ">-" "++" "==" "/=" "<>" "||"))
+  :init
+  (defun haskell-config ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)))
 
 (add-hook 'haskell-literate-mode-hook #'lsp)
 

@@ -2,7 +2,7 @@
 ;; OS go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
 (use-package shfmt)
-(use-package sh
+(use-package sh-mode
   :ensure nil
   :custom
   ;; https://emacs.stackexchange.com/questions/24719/set-indentation-for-shell-script-function
@@ -14,12 +14,17 @@
          ("C-c C-c" . recompile))
   :hook (sh-mode . eglot-ensure)
   :hook (sh-mode . electric-pair-local-mode)
+  :hook (sh-mode . rainbow-delimiters-mode)
   :hook (sh-mode . sh-config)
   :init
   (defun sh-config ()
     (shfmt-on-save-mode)
+    (ligature-set-ligatures ;; NOTE: for some reason this didn't worked on :config
+     'sh-mode
+     '("==" "!=" "<=" ">=" "&&" "||" "--" "++" "**"))
     (setq-local tab-width 4)
-    (setq-local compile-command (concat "sh " buffer-file-name))))
+    (setq-local whitespace-style '(face tabs empty))
+    (setq-local compile-command (concat "sh " buffer-file-name)))  )
 
 ;; https://nistara.net/post/emacs-send-line-or-region-to-shell/
 (defun sh-send-line-or-region (&optional step)

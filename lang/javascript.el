@@ -27,7 +27,7 @@
   :hook (js-mode . smartparens-strict-mode)
   :hook (js-mode . company-mode)
   :hook (js-mode . js-config)
-  :config
+  :init
   (defun js-config ()
     (setq-local create-lockfiles             nil)
     (setq-local lsp-enable-indentation       nil)

@@ -134,3 +134,6 @@
   :hook (compilation-filter . ansi-color-compilation-filter))
 
 (use-package indent-bars)
+
+;; NOTE: needed to enforce it when needed, because some themes just wash it out
+(set-face-attribute 'whitespace-tab nil :inverse-video t)

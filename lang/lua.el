@@ -1,12 +1,12 @@
-;;
-;; Lua
-;;
 (use-package lua-mode
   :mode (("\\.nse\\'" . lua-mode))
-  :bind (:map lua-mode-map
-              ("C-c C-d" . lua-search-documentation)
-              ("C-c C-k" . lua-send-buffer)
-              ("C-c C-c" . lua-send-region))
+  :hook (lua-mode . smartparens-strict-mode)
+  :hook (lua-mode . aggressive-indent-mode)
+  :bind
+  (:map lua-mode-map
+        ("C-c C-d" . lua-search-documentation)
+        ("C-c C-k" . lua-send-buffer)
+        ("C-c C-c" . lua-send-region))
   :config
   (add-hook
    #'lua-mode-hook
@@ -18,9 +18,7 @@
                                 "/usr/share/awesome/lib/?.lua;"
                                 "/usr/share/awesome/lib/?/?.lua;;"))
      (setenv "LUA_REPL_RLWRAP" "sure");?
-     ;;
-     (smartparens-strict-mode +1)
-     (aggressive-indent-mode +1))))
+     )))
 
 (defun azm-renoise-manual ()
   (interactive)

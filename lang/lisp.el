@@ -6,9 +6,6 @@
 ;; (add-hook 'lisp-mode-hook
 ;;           (lambda ()
 ;;             (paredit-mode +1)
-;;             ;; (projectile-mode +1)
-;;             ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-;;             ;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 ;;             (redshank-mode +1)
 ;;             (aggressive-indent-mode +1)
 ;;             (yas-minor-mode +1)

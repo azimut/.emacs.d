@@ -1,22 +1,13 @@
-;; pip install --user python-lsp-server
-
-(defun python-config ()
-  (setq-local sp-hybrid-kill-excessive-whitespace nil)
-  (add-hook 'before-save-hook #'lsp-format-buffer t t))
-
 (use-package python
-  :custom
-  (lsp-pylsp-plugins-autopep8-enabled t)
   :ensure nil
-  :hook (python-mode . lsp-mode)
-  :hook (python-mode . company-mode)
+  :hook (python-mode . eglot-ensure)
+  :hook (python-mode . corfu-mode)
+  :hook (python-mode . indent-bars-mode)
   :hook (python-mode . smartparens-strict-mode)
-  :hook (python-mode . python-config))
+  :hook (python-mode . python-config)
+  :init
+  (defun python-config ()
+    ;;  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (setq-local sp-hybrid-kill-excessive-whitespace nil)))
 
-(use-package lsp-pyright)
-
-;; jupyter elpy
-(setenv "IPY_TEST_SIMPLE_PROMPT" "1")
-(setq python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt")
 ;; (add-hook 'python-mode-hook (lambda () (elpy-mode)))

@@ -65,6 +65,9 @@
 (use-package vertico
   :init (vertico-mode +1))
 
+(use-package vertico-posframe
+  :hook (vertico-mode . vertico-posframe-mode))
+
 (use-package marginalia
   :init (marginalia-mode +1)
   :bind (:map minibuffer-local-map

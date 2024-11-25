@@ -66,7 +66,7 @@
   :init (vertico-mode +1))
 
 (use-package vertico-posframe
-  :hook (vertico-mode . vertico-posframe-mode))
+  :init (vertico-posframe-mode +1))
 
 (use-package marginalia
   :init (marginalia-mode +1)

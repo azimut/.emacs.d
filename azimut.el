@@ -228,7 +228,6 @@
 (load-file "~/.emacs.d/lang/awk.el")
 (load-file "~/.emacs.d/lang/c.el")
 (load-file "~/.emacs.d/lang/clojure.el")
-(load-file "~/.emacs.d/lang/cobol.el")
 (load-file "~/.emacs.d/lang/elisp.el")
 (load-file "~/.emacs.d/lang/elm.el")
 (load-file "~/.emacs.d/lang/erlang.el")
@@ -246,6 +245,7 @@
 (load-file "~/.emacs.d/lang/rust.el")
 (load-file "~/.emacs.d/lang/shell.el")
 
+;;(load-file "~/.emacs.d/lang/cobol.el")
 ;;(load-file "~/.emacs.d/lang/chuck.el")
 ;;(load-file "~/.emacs.d/lang/glsl.el")
 ;;(load-file "~/.emacs.d/lang/elixir.el")

@@ -29,10 +29,10 @@
   :hook (js-mode . js-config)
   :init
   (defun js-config ()
-    (setq-local create-lockfiles             nil)
-    (setq-local lsp-enable-indentation       nil)
-    (setq-local company-tooltip-align-annotations t)
-    (setq-local company-insertion-on-trigger nil)))
+    (setq-local create-lockfiles                  nil)
+    (setq-local lsp-enable-indentation            nil)
+    (setq-local company-insertion-on-trigger      nil)
+    (setq-local company-tooltip-align-annotations t)))
 
 (use-package typescript-mode
   :custom (typescript-indent-level 2)

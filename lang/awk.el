@@ -8,9 +8,6 @@
 
 (use-package awk-mode
   :ensure nil
-  :bind (:map
-         awk-mode-map
-         ("C-c C-c" . recompile))
   :hook (awk-mode . eglot-ensure)
   :hook (awk-mode . aggressive-indent-mode)
   :hook (awk-mode . smartparens-strict-mode)
@@ -25,6 +22,9 @@
     (add-to-list 'eglot-server-programs
                  '(awk-mode . ("awk-language-server"))))
   (defun awk-config ()
+    ;; NOTE: doesn't work on :bind
+    (define-key awk-mode-map "\M-h" 'mark-defun)
+    (define-key awk-mode-map "\C-c\C-c" 'recompile)
     (setq-local eglot-stay-out-of '(eldoc))
     (setq-local
      compile-command

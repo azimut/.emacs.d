@@ -11,6 +11,7 @@
   (org-image-actual-width '(300))
   (org-startup-with-inline-images t)
   :bind (:map org-mode-map
+              ("C-'" . imenu-list-show)
               ("C-j" . org-return)
               ("M-n" . org-metadown)
               ("M-p" . org-metaup)))

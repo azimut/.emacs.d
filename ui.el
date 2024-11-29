@@ -56,7 +56,9 @@
   (neo-hidden-regexp-list '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$" "\\.meta$")))
 
 (use-package imenu-list
-  :bind ("C-'" . imenu-list-smart-toggle)
+  :bind (("C-'" . imenu-list-show)
+         :map imenu-list-major-mode-map
+         ("C-'" . imenu-list-quit-window))
   :custom
   (imenu-list-auto-resize t))
 

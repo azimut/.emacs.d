@@ -1,7 +1,7 @@
 ;; OS: erlang-ls https://github.com/erlang-ls/erlang_ls
 
 (use-package erlang
-  :load-path ("~/kerl/19.2/lib/tools-3.5.3/emacs")
+  :load-path ("~/kerl/27.1/lib/tools-4.1/emacs")
   :hook (erlang-mode . aggressive-indent-mode)
   :hook (erlang-mode . smartparens-strict-mode)
   :hook (erlang-mode . erlang-config)
@@ -30,14 +30,8 @@
   (setq flycheck-display-errors-function nil)
   :init
   (defun erlang-config ()
-    ;;
-    ;; (define-key erlang-mode-map (kbd "M-p") #'flycheck-previous-error)
-    ;; (define-key erlang-mode-map (kbd "M-n") #'flycheck-next-error)
-    ;; (flycheck-mode +1)
-    ;; pretty needs to happen on init
-    ;;(setq-local prettify-symbols-alist '(("fun" .  955) ("->"  . 8594)))
     (setq
-     flycheck-erlang-executable "~/kerl/19.2/bin/erlc"
+     flycheck-erlang-executable "~/kerl/27.1/bin/erlc"
      flycheck-erlang-include-path (append
                                    (file-expand-wildcards
                                     (concat
@@ -57,8 +51,8 @@
                                      (flycheck-rebar3-project-root)
                                      "_checkouts/*/ebin"))))
     ;;(setq load-path (cons "~/.kerl/builds/25.1.2/lib/tools-2.11.2/emacs" load-path))
-    (setq erlang-root-dir "~/kerl/19.2")
-    (setq exec-path (cons "~/kerl/19.2/bin" exec-path))
+    (setq erlang-root-dir "~/kerl/27.1")
+    (setq exec-path (cons "~/kerl/27.1/bin" exec-path))
     (setq erlang-electric-commands '(erlang-electric-comma
                                      erlang-electric-semicolon))
     (setq erlang-electric-newline-inhibit-list '(erlang-electric-gt))

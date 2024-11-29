@@ -12,11 +12,10 @@
   :hook (awk-mode . aggressive-indent-mode)
   :hook (awk-mode . smartparens-strict-mode)
   :hook (awk-mode . awk-config)
-  :config
+  :init
   (ligature-set-ligatures
    'awk-mode
-   '("<=" ">=" "==" "!=" "++" "&&" "||"))
-  :init
+   '("<=" ">=" "==" "!=" "&&" "||"))
   ;; NOTE: because is not added by default, but took this from lsp server github
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs

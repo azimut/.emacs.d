@@ -21,14 +21,20 @@
   )
 
 (use-package js-mode
+  :mode "\\.mjs\\'"
   :ensure nil
   :custom (js-indent-level 2)
   :hook (js-mode . lsp)
   :hook (js-mode . smartparens-strict-mode)
   :hook (js-mode . company-mode)
   :hook (js-mode . js-config)
+  :hook (js-mode . prettier-mode)
   :init
+  (ligature-set-ligatures
+   'js-mode
+   '("<=" ">=" "===" "!==" "&&" "||" "=>"))
   (defun js-config ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
     (setq-local create-lockfiles                  nil)
     (setq-local lsp-enable-indentation            nil)
     (setq-local company-insertion-on-trigger      nil)

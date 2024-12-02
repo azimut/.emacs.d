@@ -51,7 +51,7 @@
   :bind ("C-0" . neotree-toggle)
   ;;  neo-theme
   :custom
-  (neo-theme              'classic)
+  (neo-theme (if (display-graphic-p) 'icons))
   (neo-show-hidden-files  t)
   (neo-hidden-regexp-list '("^\\." "\\.pyc$" "\\.fasl$" "~$" "^#.*#$" "\\.elc$" "\\.beam$" "\\.meta$")))
 

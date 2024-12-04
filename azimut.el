@@ -140,12 +140,13 @@
             (local-set-key '[left]  'backward-char)
             (local-set-key '[right] 'forward-char)))
 
-;; compile-mode
-;; https://github.com/fsharp/zarchive-fsharpbinding/issues/246
-(add-hook 'compilation-mode-hook
-          (lambda ()
-            ;;(setq compilation-auto-jump-to-first-error t)
-            (setq compilation-scroll-output t)))
+(use-package compile
+  :ensure nil
+  :custom
+  ;; https://github.com/fsharp/zarchive-fsharpbinding/issues/246
+  (compilation-auto-jump-to-first-error nil) ;; ME: Set it up "t" per language
+  (compilation-ask-about-save nil)
+  (compilation-scroll-output t))
 
 (use-package dash)
 (use-package helm-dash

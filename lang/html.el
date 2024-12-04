@@ -69,6 +69,9 @@ snippet, or `emmet-expand-yas'/`emmet-expand-line', depending on whether
   (web-mode-enable-current-element-highlight   nil "LSP already has it")
   (web-mode-enable-html-entities-fontification t)
   :init
+  (ligature-set-ligatures
+   'web-mode
+   '("<=" ">=" "===" "!==" "&&" "||" "=>"))
   (define-derived-mode web-tsx-mode web-mode "tsx"))
 
 (use-package emmet-mode

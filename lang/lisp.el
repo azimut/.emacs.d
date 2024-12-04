@@ -57,6 +57,7 @@
   :hook (sly-mode . rainbow-delimiters-mode)
   :hook (sly-mode . smartparens-strict-mode)
   :hook (sly-mode . display-line-numbers-mode)
+  :hook (sly-mode . corfu-mode)
   ;; :bind (:map paredit-mode-map
   ;;             ("C-M-p" . move-text-up)
   ;;             ("RET" . nil)

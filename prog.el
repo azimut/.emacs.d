@@ -134,8 +134,12 @@ If the error list is visible, hide it.  Otherwise, show it."
   :after corfu-popupinfo
   :hook (corfu-mode . corfu-prescient-mode)
   :hook (corfu-mode . corfu-popupinfo-mode)
-  :bind (:map corfu-popupinfo-map
-              ("C-j" . corfu-foobar))
+  :bind (:map
+         corfu-popupinfo-map
+         ("C-j" . corfu-foobar)
+         :map corfu-map
+         ("<remap> <move-beginning-of-line>" . nil)
+         ("<remap> <move-end-of-line>" . nil))
   :custom-face
   (corfu-popupinfo
    ((t :inherit corfu-current)))

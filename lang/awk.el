@@ -12,6 +12,7 @@
   :hook (awk-mode . lsp)
   :hook (awk-mode . aggressive-indent-mode)
   :hook (awk-mode . smartparens-strict-mode)
+  :hook (awk-mode . prettier-mode);; NOTE: faster than after-save-hook (?
   :hook (awk-mode . awk-config)
   :init
   (ligature-set-ligatures
@@ -21,7 +22,6 @@
     ;; NOTE: doesn't work on :bind
     (define-key awk-mode-map "\M-h" 'mark-defun)
     (define-key awk-mode-map "\C-c\C-c" 'recompile)
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
     (setq-local
      compile-command
      (concat "time gawk -f " buffer-file-name))))

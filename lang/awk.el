@@ -1,5 +1,6 @@
 ;; https://github.com/Beaglefoot/awk-language-server
 ;; $ npm install -g awk-language-server
+;; $ npm install -g prettier@^2 prettier-plugin-awk
 ;; M-x treesit-install-language-grammar awk
 
 (use-package awk-yasnippets)
@@ -20,6 +21,7 @@
     ;; NOTE: doesn't work on :bind
     (define-key awk-mode-map "\M-h" 'mark-defun)
     (define-key awk-mode-map "\C-c\C-c" 'recompile)
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
     (setq-local
      compile-command
      (concat "time gawk -f " buffer-file-name))))

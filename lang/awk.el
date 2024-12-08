@@ -12,9 +12,10 @@
   :hook (awk-mode . lsp)
   :hook (awk-mode . aggressive-indent-mode)
   :hook (awk-mode . smartparens-strict-mode)
-  :hook (awk-mode . prettier-mode);; NOTE: faster than after-save-hook (?
+  ;;:hook (awk-mode . prettier-mode);; NOTE: faster than after-save-hook (?
   :hook (awk-mode . awk-config)
   :init
+  (setenv "AWKPATH" "/usr/share/doc/gawk/examples/lib"); for LSP @include to work
   (ligature-set-ligatures
    'awk-mode
    '("<=" ">=" "==" "!=" "&&" "||"))

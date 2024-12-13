@@ -25,4 +25,4 @@
     (define-key awk-mode-map "\C-c\C-c" 'recompile)
     (setq-local
      compile-command
-     (concat "time gawk -f " buffer-file-name))))
+     (concat "gawk -f " buffer-file-name))))

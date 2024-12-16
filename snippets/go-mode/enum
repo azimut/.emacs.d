@@ -2,9 +2,9 @@
 # name: enum with const
 # key: enum
 # --
-type ${1:enumName} ${2:int}
+type ${1:EnumName} ${2:int}
 
 const (
-    ${3:foo} $1 = ${4:iota}
+    ${3:Foo} $1 = ${4:iota}
     $0
 )

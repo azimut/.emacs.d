@@ -1,0 +1,4 @@
+func ($1) String() (ret string) {
+     $0
+     return
+}

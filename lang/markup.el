@@ -146,3 +146,9 @@
 (use-package dockerfile-mode)
 (use-package yaml-mode
   :mode "\\.mat\\'"); UNITY
+
+(use-package nroff-mode
+  :ensure nil
+  :mode "\\.mom\\'"
+  :mode "\\.me\\'"
+  :mode "\\.ms\\'")

@@ -6,6 +6,9 @@
   :hook (python-mode . smartparens-strict-mode)
   :hook (python-mode . python-config)
   :hook (inferior-python-mode . corfu-mode)
+  :bind (:map
+         python-mode-map
+         ("C-c C-k" . recompile))
   :init
   (defun python-config ()
     ;;  (add-hook 'before-save-hook #'lsp-format-buffer t t)

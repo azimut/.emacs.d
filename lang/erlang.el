@@ -25,31 +25,8 @@
    'erlang-mode ; todo: gte lte
    '("==" "/=" "++" "&&" "||" "<-" "->" "=>"))
   (require 'smartparens-erlang)
-  ;;(setq flycheck-check-syntax-automatically '(save idle-change new-line mode-enabled))
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (setq flycheck-display-errors-function nil)
   :init
   (defun erlang-config ()
-    (setq
-     flycheck-erlang-executable "~/kerl/27.1/bin/erlc"
-     flycheck-erlang-include-path (append
-                                   (file-expand-wildcards
-                                    (concat
-                                     (flycheck-rebar3-project-root)
-                                     "_build/*/lib/*/include"))
-                                   (file-expand-wildcards
-                                    (concat
-                                     (flycheck-rebar3-project-root)
-                                     "_checkouts/*/include")))
-     flycheck-erlang-library-path (append
-                                   (file-expand-wildcards
-                                    (concat
-                                     (flycheck-rebar3-project-root)
-                                     "_build/*/lib/*/ebin"))
-                                   (file-expand-wildcards
-                                    (concat
-                                     (flycheck-rebar3-project-root)
-                                     "_checkouts/*/ebin"))))
     ;;(setq load-path (cons "~/.kerl/builds/25.1.2/lib/tools-2.11.2/emacs" load-path))
     (setq erlang-root-dir "~/kerl/27.1")
     (setq exec-path (cons "~/kerl/27.1/bin" exec-path))

@@ -60,7 +60,7 @@
 (global-set-key (kbd "C-x 3") 'split-and-follow-vertically)
 
 ;; kill this
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "C-x k") 'kill-current-buffer)
 
 ;; pretty lambda
 (global-prettify-symbols-mode 1)

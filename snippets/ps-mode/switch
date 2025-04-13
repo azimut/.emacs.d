@@ -2,3 +2,4 @@ ${1:variable} {
   dup ${2:10} eq { $0 pop exit } if
   exit
 } loop
+pop

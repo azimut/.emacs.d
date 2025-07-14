@@ -20,6 +20,9 @@
 
 (add-hook 'Buffer-menu-mode-hook #'hl-line-mode)
 (add-hook 'dired-mode-hook       #'hl-line-mode)
+(add-hook 'dape-repl-mode-hook   #'disable-trailing-highlight)
+(add-hook 'dape-info-scope-mode-hook #'disable-trailing-highlight)
+(add-hook 'dape-info-stack-mode-hook #'disable-trailing-highlight)
 (add-hook 'Buffer-menu-mode-hook #'disable-trailing-highlight)
 (add-hook 'sqlite-mode-hook      #'disable-trailing-highlight)
 (add-hook 'shell-mode-hook       #'disable-trailing-highlight)

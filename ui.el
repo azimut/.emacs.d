@@ -144,5 +144,12 @@
 
 (use-package indent-bars)
 
+(use-package doc-view
+  :ensure nil
+  :bind (:map
+         doc-view-mode-map
+         ("k" . doc-view-previous-line-or-previous-page)
+         ("j" . doc-view-next-line-or-next-page)))
+
 ;; NOTE: needed to enforce it when needed, because some themes just wash it out
 (set-face-attribute 'whitespace-tab nil :inverse-video t)

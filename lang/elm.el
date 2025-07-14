@@ -1,4 +1,4 @@
-;; npm install -g elm elm-test elm-format elm-review
+;; npm install -g elm elm-test elm-format elm-review @elm-tooling/elm-language-server
 
 (use-package elm-mode
   :hook (elm-mode . elm-config)
@@ -8,7 +8,6 @@
    '("<=" ">=" "==" "/=" "++" "&&" "||"
      "<-" "->" "|>" "<|" ">>" "::"))
   (defun elm-config ()
-    ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
-    (setq-local lsp-lens-enable          nil) ; hide "exposed|references"
-    (setq-local lsp-completion-show-kind nil) ; hide "(Function)"
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)))
+    (eglot-ensure)
+    (corfu-mode +1)
+    (add-hook 'before-save-hook #'eglot-format-buffer t t)))

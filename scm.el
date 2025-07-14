@@ -32,6 +32,7 @@
 (use-package lice)
 
 (use-package git-gutter
+  :hook (yaml-mode . git-gutter-mode)
   :hook (web-mode . git-gutter-mode)
   :hook (css-mode . git-gutter-mode)
   :hook (prog-mode . git-gutter-mode))

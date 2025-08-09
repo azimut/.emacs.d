@@ -1,4 +1,4 @@
-;; OS npm i -g bash-language-server
+;; OS npm i -g bash-language-server fish-lsp
 ;; OS go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
 (use-package shfmt
@@ -68,4 +68,10 @@
   :config
   (ligature-set-ligatures 'jq-mode '("==" "!=" ">=" "<=")))
 
-(use-package sed-mode)
+(use-package sed-mode
+  :hook (sed-mode . aggressive-indent-mode))
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(fish-mode . ("fish-lsp" "start"))))
+

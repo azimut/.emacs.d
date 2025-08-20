@@ -117,6 +117,14 @@ If the error list is visible, hide it.  Otherwise, show it."
 (use-package company-quickhelp
   :custom (company-quickhelp-delay 0.2))
 
+(defun yas-or-corfu ()
+  (interactive)
+  (cond
+   ((yas-expand-from-trigger-key) nil) ;; on weird yasnippet keywords, just expand
+   ((= 1 (length corfu--candidates)) (corfu-complete) ) ;; When 1, a "preview" is showed, so is instict to just TAB
+   (yas--active-snippets (yas-next-field)) ;; on an active snippet, just go forward on the fields
+   (t (corfu-complete))))
+
 (use-package kind-icon
   :ensure t
   :after corfu
@@ -138,9 +146,12 @@ If the error list is visible, hide it.  Otherwise, show it."
          corfu-popupinfo-map
          ("C-j" . corfu-foobar)
          :map corfu-map
+         ("<tab>" . yas-or-corfu)
          ("<remap> <move-beginning-of-line>" . nil)
          ("<remap> <move-end-of-line>" . nil))
   :custom-face
+  (corfu-current
+   ((t (:foreground "#fff" :weight bold :extend t))))
   (corfu-popupinfo
    ((t :inherit corfu-current)))
   :config

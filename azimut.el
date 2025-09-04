@@ -144,8 +144,9 @@
   :ensure nil
   :custom
   ;; https://github.com/fsharp/zarchive-fsharpbinding/issues/246
-  (compilation-auto-jump-to-first-error nil) ;; ME: Set it up "t" per language
+  (compilation-auto-jump-to-first-error nil)
   (compilation-ask-about-save nil)
+  (compilation-always-kill t)
   (compilation-scroll-output t))
 
 (use-package dash)

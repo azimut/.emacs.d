@@ -145,6 +145,7 @@
 
 (use-package dockerfile-mode)
 (use-package yaml-mode
+  :hook (yaml-mode . display-line-numbers-mode)
   :mode "\\.mat\\'"); UNITY
 
 (use-package nroff-mode

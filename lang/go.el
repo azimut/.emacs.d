@@ -15,19 +15,8 @@
                     (t (concat
                         "go run "
                         buffer-file-name))))
-  (setq-local dap-auto-configure-features '(locals repl expressions))
   (setq-local treemacs-width 50)
-  (setq-local dap-ui-buffer-configurations
-              `(("*dap-ui-locals*"      . ((side . right)  (slot . 1) (window-width . 0.4) (window-height . 0.4)))
-                ;; ("*dap-ui-breakpoints*" . ((side . right)  (slot . 2) (window-width . 0.4) (window-height . 0.15)))
-                ("*dap-ui-expressions*" . ((side . right)  (slot . 2) (window-width . 0.4) (window-height . 0.3)))
-                ("*dap-ui-repl*"        . ((side . right)  (slot . 3) (window-width . 0.4) (window-height . 0.3)))
-                ;; ("*dap-ui-sessions*"    . ((side . right)  (slot . 3) (window-width . 0.4) (window-height . 0.3)))
-                ;; ("*debug-window*"       . ((side . right) (slot . 4) (window-width . 0.15)))
-                ))
-  (setq-local dap-auto-show-output nil)
   (setq-local company-tooltip-align-annotations nil)
-  (setq-local dap-ui-default-fetch-count  25)
   (setq-local prettify-symbols-alist '(("func" . 955) ("<-"   . ?←)))
   (setq-local tab-width 4)
   (setq-local lsp-register-custom-settings '(("gopls.completeUnimported" t t)
@@ -64,8 +53,7 @@
   (gofmt-command "golines")
   (lsp-go-use-placeholders t)
   :config
-  (require 'smartparens-go)
-  (require 'dap-dlv-go))
+  (require 'smartparens-go))
 
 (use-package ob-go)    ;; Org-mode Go support
 (use-package godoctor) ;; Refactor

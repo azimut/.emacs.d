@@ -1,4 +1,4 @@
-;; Os: install "ccls"
+;; Os: install "ccls "
 
 (setq gdb-many-windows t)
 (use-package gdb-mi
@@ -13,7 +13,7 @@
   (eglot-ensure)
   (corfu-mode +1)
   (ligature-set-ligatures 'c-mode '("<=" ">=" "==" "!=" "&&" "||" "->"))
-  ;; (setq-local lsp-enable-snippet nil) ; the quality is really poor for C
+  (setq-local lsp-enable-snippet nil) ; the quality is really poor for C
   (setq-local compile-command
               (cond ((file-exists-p "Makefile")
                      "make -k")

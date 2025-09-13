@@ -10,7 +10,12 @@
   (org-display-remote-inline-images 'cache)
   (org-image-actual-width '(300))
   (org-startup-with-inline-images t)
+  (org-confirm-babel-evaluate nil)
   :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((C . t)
+     (gnuplot . t)))
   (plist-put org-format-latex-options :scale 2.0)
   :bind (:map org-mode-map
               ("C-'" . imenu-list-show)

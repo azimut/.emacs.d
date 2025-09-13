@@ -36,6 +36,3 @@
 ;;   ;; (local-set-key (kbd "C-c C-d d")
 ;;   ;;                (lambda () (interactive) (manual-entry (current-word))))
 ;;   )
-
-(org-babel-do-load-languages
- 'org-babel-load-languages '((C . t)))

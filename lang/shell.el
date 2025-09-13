@@ -75,3 +75,10 @@
   (add-to-list 'eglot-server-programs
                '(fish-mode . ("fish-lsp" "start"))))
 
+(use-package gnuplot
+  :hook (gnuplot-mode . display-line-numbers-mode)
+  :hook (gnuplot-mode . corfu-mode)
+  :config
+  (ligature-set-ligatures
+   'gnuplot-mode
+   '("<=" ">=" "==" "!=" "&&" "||" "**")))

@@ -233,6 +233,7 @@
 (load-file "~/.emacs.d/lang/elisp.el")
 (load-file "~/.emacs.d/lang/elm.el")
 (load-file "~/.emacs.d/lang/erlang.el")
+(load-file "~/.emacs.d/lang/futhark.el")
 (load-file "~/.emacs.d/lang/go.el")
 (load-file "~/.emacs.d/lang/haskell.el")
 (load-file "~/.emacs.d/lang/html.el")

@@ -144,9 +144,18 @@
 
 (use-package indent-bars)
 
+(defun ps-custom-view ()
+  (interactive)
+  (when (eq major-mode 'ps-mode)
+    (save-buffer))
+  (doc-view-toggle-display))
+
 (use-package doc-view
   :ensure nil
   :bind (:map
+         doc-view-minor-mode-map
+         ("C-c C-c" . ps-custom-view)
+         :map
          doc-view-mode-map
          ("k" . doc-view-previous-line-or-previous-page)
          ("j" . doc-view-next-line-or-next-page)))

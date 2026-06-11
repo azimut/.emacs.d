@@ -149,13 +149,6 @@
   (compilation-always-kill t)
   (compilation-scroll-output t))
 
-(use-package dash)
-(use-package helm-dash
-  :config
-  (setq dash-docs-browser-func 'eww)
-  (setq dash-docs-enable-debugging nil))
-
-;;(use-package systemd)
 (use-package vterm
   :bind ( :map vterm-mode-map ("C-x [" . vterm-copy-mode);; TODO: C-q [
           :map vterm-copy-mode-map ("C-c" . vterm-copy-mode-done) ("M-w" . vterm-copy-mode-done))

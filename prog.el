@@ -255,24 +255,11 @@ If the error list is visible, hide it.  Otherwise, show it."
    '(dap-ui-verified-breakpoint-face ((t (:background "green" :foreground "black")))))
   (define-key dap-mode-map (kbd "C-c C-s") #'dap-breakpoint-toggle))
 
-(use-package cheat-sh)
 (use-package tree-sitter
   :config
   (global-tree-sitter-mode +1)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 (use-package tree-sitter-langs)
-
-(use-package chatgpt-shell
-  :config
-  (setq chatgpt-shell-openai-key
-        (lambda () (auth-source-pick-first-password :host "api.openai.com"))))
-
-(use-package gptel
-  :config
-  (setq-default gptel-model "gemini-pro"
-                gptel-backend (gptel-make-gemini "Gemini"
-                                :key (auth-source-pick-first-password :host "ai.google")
-                                :stream t)))
 
 (global-set-key (kbd "C-j") 'newline)
 
@@ -287,34 +274,6 @@ If the error list is visible, hide it.  Otherwise, show it."
 
 (use-package ligature
   :config (global-ligature-mode +1))
-
-(use-package sqlite-mode
-  :ensure nil
-  :hook (sqlite-mode . hl-line-mode)
-  :bind (:map
-         sqlite-mode-map
-         ("j" . next-line)
-         ("k" . previous-line)
-         ("n" . next-line)
-         ("p" . previous-line)))
-
-(use-package uxntal-mode
-  :bind (:map
-         uxntal-mode-map
-         ("C-c C-d" . uxntal-explain-word)))
-
-(defun gleam-config ()
-  (setq-local create-lockfiles nil)
-  (add-hook 'before-save-hook #'lsp-format-buffer t t))
-
-(use-package gleam-ts-mode
-  :mode (rx ".gleam" eos)
-  :hook (gleam-ts-mode . gleam-config)
-  :hook (gleam-ts-mode . lsp)
-  :config
-  (ligature-set-ligatures
-   'gleam-ts-mode
-   '("==" "!=" ">=" "<=" "&&" "||" "->" "|>")))
 
 (use-package eglot)
 

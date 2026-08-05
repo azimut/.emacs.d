@@ -22,11 +22,6 @@
 (use-package magit-todos
   :init (magit-todos-mode +1))
 
-(use-package forge
-  :custom
-  (auth-sources '("~/.authinfo.gpg"))
-  (forge-topic-list-limit '(100 . 0)))
-
 (use-package gitignore-templates)
 (use-package git-timemachine)
 (use-package lice)

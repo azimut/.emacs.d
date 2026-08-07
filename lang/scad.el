@@ -1,10 +1,13 @@
 (use-package scad-mode
-  :hook (scad-mode . flymake-mode)
+  :custom (scad-command "/usr/bin/openscad"); 2021
+  ;; :custom (scad-command "/usr/local/bin/openscad");2026 - slow w/BOSL2
+  ;;:hook (scad-mode . flymake-mode)
   :hook (scad-mode . corfu-mode))
 
 (use-package scad-preview-mode
   :after scad-mode
   :ensure nil
+  :hook (scad-preview-mode . scad-preview-config)
   :bind (:map scad-preview-mode-map
               ("1" . scad-view-reset)
               ("2" . scad-view-top)
@@ -14,6 +17,11 @@
               ("6" . scad-view-front)
               ("7" . scad-view-back))
   :init
+  (defun scad-preview-config ()
+    (setq-local doom-modeline-buffer-name            nil)
+    (setq-local doom-modeline-enable-buffer-position nil)
+    (setq-local doom-modeline-buffer-encoding        nil))
+
   (defun scad-view-reset ()
     (interactive)
     (setq-local scad-preview-camera (copy-tree '(0 0 0  50 0  20 500)))

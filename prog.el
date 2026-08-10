@@ -65,14 +65,7 @@ If the error list is visible, hide it.  Otherwise, show it."
   ;;(setq sideline-backends-right '((sideline-blame . up)))
   )
 
-;; CHAT-GPT :) ... plus hacky stuff
-(defun yas-or-company ()
-  (interactive)
-  (cond
-   ((yas-expand-from-trigger-key) nil) ;; on weird yasnippet keywords, just expand
-   ((= 1 company-candidates-length) (company-complete-common)) ;; When 1, a "preview" is showed, so is instict to just TAB
-   (yas--active-snippets (yas-next-field)) ;; on an active snippet, just go forward on the fields
-   (t (company-complete-common-or-cycle))))
+(use-package cape)
 
 (use-package company
   :bind (:map
@@ -83,6 +76,15 @@ If the error list is visible, hide it.  Otherwise, show it."
          ("M-p"   . nil); Deprecated bindings by upstream
          ("C-n"   . company-select-next)
          ("C-p"   . company-select-previous))
+  :init
+  ;; CHAT-GPT :) ... plus hacky stuff
+  (defun yas-or-company ()
+    (interactive)
+    (cond
+     ((yas-expand-from-trigger-key) nil) ;; on weird yasnippet keywords, just expand
+     ((= 1 company-candidates-length) (company-complete-common)) ;; When 1, a "preview" is showed, so is instict to just TAB
+     (yas--active-snippets (yas-next-field)) ;; on an active snippet, just go forward on the fields
+     (t (company-complete-common-or-cycle))))
   :config
   (setq company-backends
         '((company-capf :with company-yasnippet)
@@ -117,14 +119,6 @@ If the error list is visible, hide it.  Otherwise, show it."
 (use-package company-quickhelp
   :custom (company-quickhelp-delay 0.2))
 
-(defun yas-or-corfu ()
-  (interactive)
-  (cond
-   ((yas-expand-from-trigger-key) nil) ;; on weird yasnippet keywords, just expand
-   ((= 1 (length corfu--candidates)) (corfu-complete) ) ;; When 1, a "preview" is showed, so is instict to just TAB
-   (yas--active-snippets (yas-next-field)) ;; on an active snippet, just go forward on the fields
-   (t (corfu-complete))))
-
 (use-package kind-icon
   :ensure t
   :after corfu
@@ -149,6 +143,14 @@ If the error list is visible, hide it.  Otherwise, show it."
          ("<tab>" . yas-or-corfu)
          ("<remap> <move-beginning-of-line>" . nil)
          ("<remap> <move-end-of-line>" . nil))
+  :init
+  (defun yas-or-corfu ()
+    (interactive)
+    (cond
+     ((yas-expand-from-trigger-key) nil) ;; on weird yasnippet keywords, just expand
+     ((= 1 (length corfu--candidates)) (corfu-complete) ) ;; When 1, a "preview" is showed, so is instict to just TAB
+     (yas--active-snippets (yas-next-field)) ;; on an active snippet, just go forward on the fields
+     (t (corfu-complete))))
   :custom-face
   (corfu-current
    ((t (:foreground "#fff" :weight bold :extend t))))
@@ -190,9 +192,6 @@ If the error list is visible, hide it.  Otherwise, show it."
 (use-package aggressive-indent)
 (use-package ggtags)
 
-(defun yasnippet-config ()
-  (set (make-local-variable require-final-newline) nil))
-
 (use-package yasnippet-snippets)
 (use-package yasnippet
   :after yasnippet-snippets
@@ -200,6 +199,9 @@ If the error list is visible, hide it.  Otherwise, show it."
   :init (yas-global-mode +1)
   :custom (yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
   :hook (snippet-mode . yasnippet-config)
+  :init
+  (defun yasnippet-config ()
+    (set (make-local-variable require-final-newline) nil))
   ;; :bind (
   ;;        ;; ("<tab>" . nil)
   ;;        ;; ("TAB"   . nil)

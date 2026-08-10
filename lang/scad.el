@@ -2,14 +2,20 @@
   :custom (scad-command "/usr/bin/openscad"); 2021
   ;; :custom (scad-command "/usr/local/bin/openscad");2026 - slow w/BOSL2
   ;;:hook (scad-mode . flymake-mode)
-  :hook (scad-mode . corfu-mode))
+  :hook (scad-mode . completion-preview-mode)
+  :hook (scad-mode . scad-mode-config)
+  :init
+  (defun scad-mode-config ()
+    (setq-local completion-at-point-functions
+                (list (cape-capf-super #'scad-completion-at-point #'cape-dabbrev)))))
 
 (use-package scad-preview-mode
   :after scad-mode
   :ensure nil
   :hook (scad-preview-mode . scad-preview-config)
   :bind (:map scad-preview-mode-map
-              ("1" . scad-view-reset)
+              ("0" . scad-view-reset)
+              ("1" . scad-view-angle)
               ("2" . scad-view-top)
               ("3" . scad-view-bottom)
               ("4" . scad-view-left)
@@ -36,6 +42,8 @@
                      (append ,camera-args (list scad-preview-old-distance)))
          (scad--preview-render))))
 
+
+  (define-scad-view angle  (copy-tree '(0 0 0  50 0  20))))
   (define-scad-view top    (copy-tree '(0 0 0   0 0   0)))
   (define-scad-view bottom (copy-tree '(0 0 0 180 0   0)))
   (define-scad-view left   (copy-tree '(0 0 0  90 0 180)))

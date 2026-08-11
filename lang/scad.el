@@ -4,6 +4,8 @@
   ;;:hook (scad-mode . flymake-mode)
   :hook (scad-mode . completion-preview-mode)
   :hook (scad-mode . scad-mode-config)
+  :config
+  (ligature-set-ligatures 'scad-mode '("<=" ">=" "==" "!=" "&&" "||"))
   :init
   (defun scad-mode-config ()
     (setq-local completion-at-point-functions

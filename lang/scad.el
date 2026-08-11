@@ -42,8 +42,7 @@
                      (append ,camera-args (list scad-preview-old-distance)))
          (scad--preview-render))))
 
-
-  (define-scad-view angle  (copy-tree '(0 0 0  50 0  20))))
+  (define-scad-view angle  (copy-tree '(0 0 0  50 0  20)))
   (define-scad-view top    (copy-tree '(0 0 0   0 0   0)))
   (define-scad-view bottom (copy-tree '(0 0 0 180 0   0)))
   (define-scad-view left   (copy-tree '(0 0 0  90 0 180)))

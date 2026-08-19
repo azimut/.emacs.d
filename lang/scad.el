@@ -4,6 +4,7 @@
   ;;:hook (scad-mode . flymake-mode)
   :hook (scad-mode . completion-preview-mode)
   :hook (scad-mode . scad-mode-config)
+  :hook (scad-mode . smartparens-strict-mode)
   :config
   (ligature-set-ligatures 'scad-mode '("<=" ">=" "==" "!=" "&&" "||"))
   :init

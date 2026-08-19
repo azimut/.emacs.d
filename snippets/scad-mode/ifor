@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: intersection_for
+# key: ifor
+# --
+intersection_for (${1:i} = [${2:start:step:end}]) {
+  $0
+}

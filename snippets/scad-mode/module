@@ -2,6 +2,6 @@
 # name: module
 # key: module
 # --
-module ${1:name} ({$2}) {
+module ${1:name} ($2) {
   $0
 }

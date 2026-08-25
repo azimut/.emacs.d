@@ -125,7 +125,7 @@
 
 (set-fringe-style (quote (20 . 10)))
 (global-set-key (kbd "M-m") 'delete-other-windows)
-(dap-mode)
+
 (save-place-mode +1)
 (setq global-auto-revert-non-file-buffers t)
 

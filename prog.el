@@ -236,27 +236,6 @@ If the error list is visible, hide it.  Otherwise, show it."
     (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "C-j"))))
   (sp-local-pair 'web-mode "<" ">" :unless '(:add +web-is-auto-close-style-3)))
 
-(use-package dap-mode
-  :bind (:map
-         dap-mode-map
-         ("<f7>"  . dap-step-in)
-         ("<f8>"  . dap-step-out)
-         ("<f9>"  . dap-next)
-         ("<f10>" . dap-continue)
-         ("<f12>" . dap-ui-locals))
-  :custom
-  (dap-output-window-min-height 5)
-  (dap-output-window-max-height 5)
-  (dap-ui-locals-expand-depth   1)
-  (dap-ui-default-fetch-count  25)
-  (dap-debug-restart-keep-session nil)
-  (dap-auto-configure-features '(sessions locals breakpoints expressions))
-  :config
-  (custom-set-faces
-   '(dap-ui-pending-breakpoint-face ((t (:background "dark gray" :foreground "black"))))
-   '(dap-ui-verified-breakpoint-face ((t (:background "green" :foreground "black")))))
-  (define-key dap-mode-map (kbd "C-c C-s") #'dap-breakpoint-toggle))
-
 (use-package tree-sitter
   :config
   (global-tree-sitter-mode +1)

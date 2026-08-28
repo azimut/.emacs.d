@@ -20,6 +20,7 @@
 
 (add-hook 'Buffer-menu-mode-hook #'hl-line-mode)
 (add-hook 'dired-mode-hook       #'hl-line-mode)
+(add-hook 'sql-interactive-mode-hook #'disable-trailing-highlight)
 (add-hook 'dape-repl-mode-hook   #'disable-trailing-highlight)
 (add-hook 'dape-info-scope-mode-hook #'disable-trailing-highlight)
 (add-hook 'dape-info-stack-mode-hook #'disable-trailing-highlight)
@@ -160,5 +161,10 @@
          ("k" . doc-view-previous-line-or-previous-page)
          ("j" . doc-view-next-line-or-next-page)))
 
+(use-package golden-ratio
+  :config
+  (add-to-list 'golden-ratio-extra-commands 'ace-window))
+(golden-ratio-mode +1)
+
 ;; NOTE: needed to enforce it when needed, because some themes just wash it out
-(set-face-attribute 'whitespace-tab nil :inverse-video t)
+(set-face-attribute 'whitespace-tab nil :inherit 'hl-line :inverse-video nil)

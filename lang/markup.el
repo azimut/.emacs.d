@@ -15,7 +15,8 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((C . t)
-     (gnuplot . t)))
+     (gnuplot . t)
+     (dot . t)))
   (plist-put org-format-latex-options :scale 2.0)
   :bind (:map org-mode-map
               ("C-'" . imenu-list-show)

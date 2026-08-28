@@ -120,7 +120,7 @@
 (use-package ace-window
   :bind ("M-o" . ace-window))
 
-(setq browse-url-firefox-program "/snap/bin/firefox")
+(setq browse-url-firefox-program "/usr/bin/brave-browser")
 
 
 (defun browse-url-other (url &rest args)
@@ -149,20 +149,29 @@
   (compilation-always-kill t)
   (compilation-scroll-output t))
 
+(use-package bury-successful-compilation)
+
 (use-package vterm
   :bind ( :map vterm-mode-map ("C-x [" . vterm-copy-mode);; TODO: C-q [
           :map vterm-copy-mode-map ("C-c" . vterm-copy-mode-done) ("M-w" . vterm-copy-mode-done))
+  :custom
+  (vterm-shell "/bin/fish")
   :config
   (add-hook 'vterm-mode-hook (lambda () (setq-local mode-line-format nil))))
 
 (use-package lorem-ipsum)
 
 (use-package ag
+  :hook (ag-mode . ag-config)
   :custom
   (ag-highlight-search t)
   (ag-reuse-window     t)
   (ag-reuse-buffer     t)
-  :bind (:map ag-mode-map ("M-." . compile-goto-error)))
+  :bind (:map ag-mode-map ("M-." . compile-goto-error))
+  :init
+  (defun ag-config ()
+    ;; NOTE: otherwise it will jump to first occurence ...
+    (setq-local compilation-auto-jump-to-first-error nil)))
 
 (use-package string-inflection
   :bind ("C-c j" . string-inflection-toggle))
@@ -220,23 +229,24 @@
 (load-file "~/.emacs.d/prog.el")
 (load-file "~/.emacs.d/ui.el")
 
-(load-file "~/.emacs.d/lang/awk.el")
-(load-file "~/.emacs.d/lang/c.el")
-(load-file "~/.emacs.d/lang/clojure.el")
-(load-file "~/.emacs.d/lang/elisp.el")
-(load-file "~/.emacs.d/lang/elm.el")
-(load-file "~/.emacs.d/lang/erlang.el")
-(load-file "~/.emacs.d/lang/futhark.el")
-(load-file "~/.emacs.d/lang/go.el")
-(load-file "~/.emacs.d/lang/haskell.el")
-(load-file "~/.emacs.d/lang/html.el")
-(load-file "~/.emacs.d/lang/javascript.el")
-(load-file "~/.emacs.d/lang/lisp.el")
-(load-file "~/.emacs.d/lang/lua.el")
-(load-file "~/.emacs.d/lang/markup.el")
-(load-file "~/.emacs.d/lang/ocaml.el")
+(load-file "~/.emacs.d/lang/scad.el")
+;(load-file "~/.emacs.d/lang/awk.el")
+;(load-file "~/.emacs.d/lang/c.el")
+;(load-file "~/.emacs.d/lang/clojure.el")
+;(load-file "~/.emacs.d/lang/elisp.el")
+;(load-file "~/.emacs.d/lang/elm.el")
+;(load-file "~/.emacs.d/lang/erlang.el")
+;(load-file "~/.emacs.d/lang/futhark.el")
+;(load-file "~/.emacs.d/lang/go.el")
+;(load-file "~/.emacs.d/lang/haskell.el")
+;(load-file "~/.emacs.d/lang/html.el")
+;(load-file "~/.emacs.d/lang/javascript.el")
+;(load-file "~/.emacs.d/lang/lisp.el")
+;(load-file "~/.emacs.d/lang/lua.el")
+;(load-file "~/.emacs.d/lang/markup.el")
+;(load-file "~/.emacs.d/lang/ocaml.el")
 (load-file "~/.emacs.d/lang/python.el")
-(load-file "~/.emacs.d/lang/shell.el")
+;(load-file "~/.emacs.d/lang/shell.el")
 
 ;;(load-file "~/.emacs.d/lang/arduino.el")
 ;;(load-file "~/.emacs.d/lang/chuck.el")

@@ -2,12 +2,9 @@
 
 (use-package elm-mode
   :hook (elm-mode . elm-config)
+  :hook (elm-mode . lsp)
   :config
   (ligature-set-ligatures
    'elm-mode
    '("<=" ">=" "==" "/=" "++" "&&" "||"
-     "<-" "->" "|>" "<|" ">>" "::"))
-  (defun elm-config ()
-    (eglot-ensure)
-    (corfu-mode +1)
-    (add-hook 'before-save-hook #'eglot-format-buffer t t)))
+     "<-" "->" "|>" "<|" ">>" "::")))

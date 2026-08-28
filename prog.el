@@ -6,10 +6,10 @@
   :hook (flycheck-mode . display-line-numbers-mode)
   :bind (:map
          flycheck-error-list-mode-map
-         ("M-e" . spacemacs/toggle-flycheck-error-list)
+         ("M-q" . spacemacs/toggle-flycheck-error-list)
          :map
          flycheck-mode-map
-         ("M-e" . spacemacs/goto-flycheck-error-list)
+         ("M-q" . spacemacs/goto-flycheck-error-list)
          ("M-n" . flycheck-next-error)
          ("M-p" . flycheck-previous-error))
   :custom
@@ -53,7 +53,7 @@ If the error list is visible, hide it.  Otherwise, show it."
   (setq sideline-format-right "   %s"
         sideline-priority 100
         sideline-truncate t
-        sideline-display-backend-name t))
+        sideline-display-backend-name nil))
 
 (use-package sideline-flymake
   :hook (flymake-mode . sideline-mode)
@@ -153,7 +153,7 @@ If the error list is visible, hide it.  Otherwise, show it."
      (t (corfu-complete))))
   :custom-face
   (corfu-current
-   ((t (:foreground "#fff" :weight bold :extend t))))
+   ((t (:foreground "#0f0" :weight bold :extend t))))
   (corfu-popupinfo
    ((t :inherit corfu-current)))
   :config
@@ -169,8 +169,8 @@ If the error list is visible, hide it.  Otherwise, show it."
   (corfu-auto-prefix     3))
 
 (use-package move-text
-  :bind (("C-M-p" . move-text-up)
-         ("C-M-n" . move-text-down)))
+  :bind (("C-S-p" . move-text-up)
+         ("C-S-n" . move-text-down)))
 
 (use-package lsp-mode
   :hook (lsp-mode . company-mode)
@@ -244,8 +244,9 @@ If the error list is visible, hide it.  Otherwise, show it."
 
 (global-set-key (kbd "C-j") 'newline)
 
-(define-key prog-mode-map (kbd "C-c C-c") #'comment-or-uncomment-region)
-(define-key prog-mode-map (kbd "C-c C-k") #'recompile)
+(define-key prog-mode-map (kbd "C-M-{") #'mark-sexp)
+;; (define-key prog-mode-map (kbd "C-c C-c") #'comment-or-uncomment-region)
+;; (define-key prog-mode-map (kbd "C-c C-k") #'recompile)
 
 (use-package highlight-indent-guides)
 
@@ -265,3 +266,13 @@ If the error list is visible, hide it.  Otherwise, show it."
    treesit-language-source-alist
    '((awk . ("https://github.com/Beaglefoot/tree-sitter-awk"))
      (css . ("https://github.com/tree-sitter/tree-sitter-css")))))
+
+(use-package dape
+  :custom (dape-buffer-window-arrangement 'gud)
+   :config
+  (add-hook 'dape-compile-hook 'kill-buffer))
+
+;; (use-package repeat-mode ; for dape
+;;   :ensure nil
+;;   :custom
+;;   (repeat-mode +1))

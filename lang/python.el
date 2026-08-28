@@ -1,6 +1,8 @@
+;; sudo ln -s /usr/bin/python3 /usr/bin/python
+;; pip3 install --user debugpy
 (use-package python
   :ensure nil
-  :hook (python-mode . eglot-ensure)
+  ;;:hook (python-mode . eglot-ensure)
   :hook (python-mode . corfu-mode)
   :hook (python-mode . indent-bars-mode)
   :hook (python-mode . smartparens-strict-mode)
@@ -11,7 +13,6 @@
          ("C-c C-k" . recompile))
   :init
   (defun python-config ()
-    ;;  (add-hook 'before-save-hook #'lsp-format-buffer t t)
     (setq-local sp-hybrid-kill-excessive-whitespace nil)))
 
 ;; (add-hook 'python-mode-hook (lambda () (elpy-mode)))

@@ -60,6 +60,12 @@
   (interactive)
   (sh-send-line-or-region t))
 
+(use-package fish-mode
+  :config
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(fish-mode . ("fish-lsp" "start"))))  )
+
 (use-package jq-mode
   :hook (jq-mode . aggressive-indent-mode)
   :hook (jq-mode . smartparens-strict-mode)
@@ -78,6 +84,11 @@
 (use-package gnuplot
   :hook (gnuplot-mode . display-line-numbers-mode)
   :hook (gnuplot-mode . corfu-mode)
+  :hook (gnuplot-mode . gnuplot-config)
+  :init
+  (defun gnuplot-config ()
+    (setq-local compile-command
+                (concat "gnuplot -p " buffer-file-name)))
   :config
   (ligature-set-ligatures
    'gnuplot-mode

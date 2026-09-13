@@ -3,9 +3,10 @@
   :hook (pov-mode . font-lock-mode)
   :hook (pov-mode . pov-config)
   :hook (pov-mode . corfu-mode)
+  :hook (pov-mode . git-gutter-mode)
   :custom
   (pov-run-default             "+p +i%s")
-  (pov-run-test                "+p res120 -Q3 +i%s")
+  (pov-run-test                "+p res120 +i%s -Q3")
   (pov-run-low                 "+p res320 +i%s")
   (pov-run-mid                 "+p res640 +i%s")
   (pov-run-high                "+p res800 +i%s")

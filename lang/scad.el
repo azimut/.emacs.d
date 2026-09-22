@@ -1,9 +1,7 @@
 (use-package scad-mode
-  ;;:custom (scad-command "/usr/bin/openscad"); 2021
   :custom (scad-command "OpenSCAD-2026.08.30-x86_64.AppImage")
   :custom (c-default-style "stroustrup")
   :custom (c-basic-offset 2)
-  ;; :custom (scad-command "/usr/local/bin/openscad");2026 - slow w/BOSL2
   ;;:hook (scad-mode . flymake-mode)
   :hook (scad-mode . aggressive-indent-mode)
   :hook (scad-mode . corfu-mode)
@@ -28,7 +26,10 @@
               ("4" . scad-view-left)
               ("5" . scad-view-right)
               ("6" . scad-view-front)
-              ("7" . scad-view-back))
+              ("7" . scad-view-back)
+              ("7" . scad-view-back)
+              ("8" . nil)
+              ("9" . nil))
   :init
   (defun scad-preview-config ()
     (setq-local doom-modeline-buffer-name            nil)

@@ -1,6 +1,8 @@
 (use-package scad-mode
   ;;:custom (scad-command "/usr/bin/openscad"); 2021
   :custom (scad-command "OpenSCAD-2026.08.30-x86_64.AppImage")
+  :custom (c-default-style "stroustrup")
+  :custom (c-basic-offset 2)
   ;; :custom (scad-command "/usr/local/bin/openscad");2026 - slow w/BOSL2
   ;;:hook (scad-mode . flymake-mode)
   :hook (scad-mode . aggressive-indent-mode)

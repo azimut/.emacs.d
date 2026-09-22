@@ -1,8 +1,10 @@
 (use-package scad-mode
-  :custom (scad-command "/usr/bin/openscad"); 2021
+  ;;:custom (scad-command "/usr/bin/openscad"); 2021
+  :custom (scad-command "OpenSCAD-2026.08.30-x86_64.AppImage")
   ;; :custom (scad-command "/usr/local/bin/openscad");2026 - slow w/BOSL2
   ;;:hook (scad-mode . flymake-mode)
-  :hook (scad-mode . completion-preview-mode)
+  :hook (scad-mode . aggressive-indent-mode)
+  :hook (scad-mode . corfu-mode)
   :hook (scad-mode . scad-mode-config)
   :hook (scad-mode . smartparens-strict-mode)
   :config

@@ -3,6 +3,7 @@
   :custom (c-default-style "stroustrup")
   :custom (c-basic-offset 2)
   ;;:hook (scad-mode . flymake-mode)
+  :hook (scad-mode . display-line-numbers-mode)
   :hook (scad-mode . aggressive-indent-mode)
   :hook (scad-mode . corfu-mode)
   :hook (scad-mode . scad-mode-config)
